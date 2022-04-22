@@ -16,7 +16,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                arguments "-DOpenCV_DIR=" + file('../sdk').absolutePath + "/native/jni",
+                arguments "-DOpenCV_DIR=" + file('../opencvsdk455').absolutePath + "/native/jni",
                         "-DANDROID_TOOLCHAIN=clang",
                         "-DANDROID_STL=c++_shared"
                 cppFlags ''
