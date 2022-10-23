@@ -16,3 +16,4 @@ local.properties
 
 # Ignore OpenCV folder for reduce git repository size
 opencvsdk455
+opencvsdk460

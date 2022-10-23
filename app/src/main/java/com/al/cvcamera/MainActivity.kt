@@ -4,6 +4,7 @@ package com.al.cvcamera
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceView
+import android.view.Window
 import android.view.WindowManager
 import com.al.cvcamera.databinding.ActivityMainBinding
 import org.opencv.android.*
@@ -15,8 +16,8 @@ import org.opencv.imgproc.Imgproc
 
 class MainActivity : CameraActivity() ,CameraBridgeViewBase.CvCameraViewListener2 {
 
+    val TAG: String = javaClass.simpleName
     private lateinit var binding: ActivityMainBinding
-    private var TAG = "OpenCV_Camera_Main"
     private lateinit var mOpenCvCameraView: JavaCamera2View
     private lateinit var mRGBA:Mat
     private lateinit var mRGBAT:Mat
@@ -38,6 +39,7 @@ class MainActivity : CameraActivity() ,CameraBridgeViewBase.CvCameraViewListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -54,7 +56,7 @@ class MainActivity : CameraActivity() ,CameraBridgeViewBase.CvCameraViewListener
 
     }
 
-    external fun stringFromJNI(): String
+    //external fun stringFromJNI(): String
 
     companion object {
         // Used to load the 'cvcamera' library on application startup.
@@ -68,11 +70,13 @@ class MainActivity : CameraActivity() ,CameraBridgeViewBase.CvCameraViewListener
 
     override fun onCameraViewStarted(width: Int, height: Int) {
         mRGBA = Mat(height,width,CvType.CV_8UC4)
+        mRGBAT = Mat()
 
     }
 
     override fun onCameraViewStopped() {
-       mRGBA.release()
+        mRGBA.release()
+        mRGBAT.release()
     }
 
     override fun onCameraFrame(inputFrame: CameraBridgeViewBase.CvCameraViewFrame?): Mat {
@@ -80,10 +84,9 @@ class MainActivity : CameraActivity() ,CameraBridgeViewBase.CvCameraViewListener
         if (inputFrame != null) {
             mRGBA = inputFrame.rgba()
         }
-        mRGBAT = mRGBA.t()
-        Core.flip(mRGBA.t(),mRGBAT,1)
-        Imgproc.resize(mRGBAT,mRGBAT,mRGBA.size())
-        return mRGBAT;
+        Core.flip(mRGBA,mRGBAT,-1)
+        Imgproc.resize(mRGBAT, mRGBAT, mRGBA.size())
+        return mRGBA
     }
 
     override fun onPointerCaptureChanged(hasCapture: Boolean) {
