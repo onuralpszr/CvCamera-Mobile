@@ -1,33 +1,35 @@
-package com.al.cvcamera
+package com.os.cvCamera
 
 
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceView
-import android.view.Window
 import android.view.WindowManager
-import com.al.cvcamera.databinding.ActivityMainBinding
-import org.opencv.android.*
+import com.os.cvCamera.databinding.ActivityMainBinding
+import org.opencv.android.BaseLoaderCallback
+import org.opencv.android.CameraActivity
+import org.opencv.android.CameraBridgeViewBase
+import org.opencv.android.OpenCVLoader
 import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 
 
-class MainActivity : CameraActivity() ,CameraBridgeViewBase.CvCameraViewListener2 {
+class MainActivity : CameraActivity(), CameraBridgeViewBase.CvCameraViewListener2 {
 
     val TAG: String = javaClass.simpleName
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mOpenCvCameraView: JavaCamera2View
-    private lateinit var mRGBA:Mat
-    private lateinit var mRGBAT:Mat
+    private lateinit var mRGBA: Mat
+    private lateinit var mRGBAT: Mat
+    private var selectedCamera: Int = 1
 
     private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
         override fun onManagerConnected(status: Int) {
             when (status) {
                 SUCCESS -> {
                     Log.i(TAG, "OpenCV loaded successfully")
-                    mOpenCvCameraView.enableView()
+                    binding.CvCamera.enableView()
                 }
                 else -> {
                     super.onManagerConnected(status)
@@ -39,21 +41,19 @@ class MainActivity : CameraActivity() ,CameraBridgeViewBase.CvCameraViewListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        loadOpenCVconfigs()
+    }
 
-
+    private fun loadOpenCVconfigs() {
         //OpenCV Camera
-        mOpenCvCameraView = binding.CvCamera
-        Log.d(TAG,"CvCameraLoaded")
-        mOpenCvCameraView.visibility = SurfaceView.VISIBLE
-        mOpenCvCameraView.setCameraIndex(1)
-        mOpenCvCameraView.setCvCameraViewListener(this)
-        mOpenCvCameraView.setCameraPermissionGranted()
-
+        Log.d(TAG, "CvCameraLoaded")
+        binding.CvCamera.visibility = SurfaceView.VISIBLE
+        binding.CvCamera.setCameraIndex(selectedCamera)
+        binding.CvCamera.setCvCameraViewListener(this)
+        binding.CvCamera.setCameraPermissionGranted()
     }
 
     //external fun stringFromJNI(): String
@@ -67,9 +67,8 @@ class MainActivity : CameraActivity() ,CameraBridgeViewBase.CvCameraViewListener
     }
 
 
-
     override fun onCameraViewStarted(width: Int, height: Int) {
-        mRGBA = Mat(height,width,CvType.CV_8UC4)
+        mRGBA = Mat(height, width, CvType.CV_8UC4)
         mRGBAT = Mat()
 
     }
@@ -84,7 +83,7 @@ class MainActivity : CameraActivity() ,CameraBridgeViewBase.CvCameraViewListener
         if (inputFrame != null) {
             mRGBA = inputFrame.rgba()
         }
-        Core.flip(mRGBA,mRGBAT,-1)
+        Core.flip(mRGBA, mRGBAT, -1)
         Imgproc.resize(mRGBAT, mRGBAT, mRGBA.size())
         return mRGBA
     }
@@ -95,12 +94,12 @@ class MainActivity : CameraActivity() ,CameraBridgeViewBase.CvCameraViewListener
 
     override fun onDestroy() {
         super.onDestroy()
-        mOpenCvCameraView.disableView()
+        binding.CvCamera.disableView()
     }
 
     override fun onPause() {
         super.onPause()
-        mOpenCvCameraView.disableView()
+        binding.CvCamera.disableView()
     }
 
     override fun onResume() {
@@ -109,11 +108,9 @@ class MainActivity : CameraActivity() ,CameraBridgeViewBase.CvCameraViewListener
         if (OpenCVLoader.initDebug()) {
             Log.d(TAG, "OpenCV loaded")
             mLoaderCallback.onManagerConnected(BaseLoaderCallback.SUCCESS)
-        }
-        else
-        {
+        } else {
             Log.d(TAG, "OpenCV didn't load")
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION,this,mLoaderCallback)
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mLoaderCallback)
         }
         //mOpenCvCameraView.enableView()
     }

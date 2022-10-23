@@ -1,4 +1,4 @@
-package com.al.cvcamera
+package com.os.cvCamera
 
 import org.junit.Test
 
