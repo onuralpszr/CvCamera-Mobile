@@ -1,6 +1,5 @@
 package com.os.cvCamera
 
-
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceView
@@ -9,6 +8,8 @@ import com.os.cvCamera.databinding.ActivityMainBinding
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.CameraActivity
 import org.opencv.android.CameraBridgeViewBase
+import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_BACK
+import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_FRONT
 import org.opencv.android.OpenCVLoader
 import org.opencv.core.Core
 import org.opencv.core.CvType
@@ -22,7 +23,7 @@ class MainActivity : CameraActivity(), CameraBridgeViewBase.CvCameraViewListener
     private lateinit var binding: ActivityMainBinding
     private lateinit var mRGBA: Mat
     private lateinit var mRGBAT: Mat
-    private var selectedCamera: Int = 1
+    private var mCameraId: Int = CAMERA_ID_BACK
 
     private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
         override fun onManagerConnected(status: Int) {
@@ -45,13 +46,30 @@ class MainActivity : CameraActivity(), CameraBridgeViewBase.CvCameraViewListener
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         loadOpenCVconfigs()
+
+        binding.cvCameraChangeFab.setOnClickListener {
+            cameraSwitch()
+        }
+    }
+
+    private fun cameraSwitch() {
+        mCameraId = if (mCameraId == CAMERA_ID_BACK) {
+            CAMERA_ID_FRONT
+        } else {
+            CAMERA_ID_BACK
+        }
+
+        binding.CvCamera.disableView()
+        binding.CvCamera.setCameraIndex(mCameraId)
+        binding.CvCamera.enableView()
+
     }
 
     private fun loadOpenCVconfigs() {
         //OpenCV Camera
         Log.d(TAG, "CvCameraLoaded")
         binding.CvCamera.visibility = SurfaceView.VISIBLE
-        binding.CvCamera.setCameraIndex(selectedCamera)
+        binding.CvCamera.setCameraIndex(CAMERA_ID_BACK)
         binding.CvCamera.setCvCameraViewListener(this)
         binding.CvCamera.setCameraPermissionGranted()
     }

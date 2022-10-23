@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">OpenCV Camera</string>
     <string name="fab_Text">Configuration</string>
+    <string name="cameraSwitch">Change Camera</string>
 </resources>

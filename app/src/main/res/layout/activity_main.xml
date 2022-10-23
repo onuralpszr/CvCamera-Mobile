@@ -9,14 +9,25 @@
 
 
     <org.opencv.android.JavaCamera2View
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/CvCamera"
         android:visibility="gone"
         opencv:show_fps="true"
-        />
+        opencv:camera_id="any" />
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cvCameraChangeFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/ic_baseline_switch_camera_24"
+        android:contentDescription="@string/cameraSwitch"
+        android:backgroundTint="@color/purple_700"
+        app:tint="@android:color/white"
+        app:borderWidth="0dp"
+        android:layout_margin="25dp" />
 
 
 </FrameLayout>
