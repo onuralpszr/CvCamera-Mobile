@@ -1,23 +1,21 @@
 package com.os.cvCamera
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceView
+import android.view.View
 import android.view.WindowManager
 import com.os.cvCamera.databinding.ActivityMainBinding
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.CameraActivity
-import org.opencv.android.CameraBridgeViewBase
-import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_BACK
-import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_FRONT
+import org.opencv.android.CameraBridgeViewBase.*
 import org.opencv.android.OpenCVLoader
 import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat
-import org.opencv.imgproc.Imgproc
 
-
-class MainActivity : CameraActivity(), CameraBridgeViewBase.CvCameraViewListener2 {
+class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     val TAG: String = javaClass.simpleName
     private lateinit var binding: ActivityMainBinding
@@ -43,6 +41,8 @@ class MainActivity : CameraActivity(), CameraBridgeViewBase.CvCameraViewListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         loadOpenCVconfigs()
@@ -88,7 +88,6 @@ class MainActivity : CameraActivity(), CameraBridgeViewBase.CvCameraViewListener
     override fun onCameraViewStarted(width: Int, height: Int) {
         mRGBA = Mat(height, width, CvType.CV_8UC4)
         mRGBAT = Mat()
-
     }
 
     override fun onCameraViewStopped() {
@@ -96,14 +95,21 @@ class MainActivity : CameraActivity(), CameraBridgeViewBase.CvCameraViewListener
         mRGBAT.release()
     }
 
-    override fun onCameraFrame(inputFrame: CameraBridgeViewBase.CvCameraViewFrame?): Mat {
-
+    override fun onCameraFrame(inputFrame: CvCameraViewFrame?): Mat {
         if (inputFrame != null) {
-            mRGBA = inputFrame.rgba()
+            return if (mCameraId == CAMERA_ID_BACK) {
+                inputFrame.rgba()
+            } else {
+                mRGBA = inputFrame.rgba()
+                // flipping to show portrait mode properly
+                Core.flip(mRGBA, mRGBAT, 1)
+                // releasing what's not anymore needed
+                mRGBA.release()
+                mRGBAT
+            }
+        } else {
+            return mRGBA
         }
-        Core.flip(mRGBA, mRGBAT, -1)
-        Imgproc.resize(mRGBAT, mRGBAT, mRGBA.size())
-        return mRGBA
     }
 
     override fun onPointerCaptureChanged(hasCapture: Boolean) {
@@ -122,7 +128,6 @@ class MainActivity : CameraActivity(), CameraBridgeViewBase.CvCameraViewListener
 
     override fun onResume() {
         super.onResume()
-
         if (OpenCVLoader.initDebug()) {
             Log.d(TAG, "OpenCV loaded")
             mLoaderCallback.onManagerConnected(BaseLoaderCallback.SUCCESS)
@@ -130,6 +135,5 @@ class MainActivity : CameraActivity(), CameraBridgeViewBase.CvCameraViewListener
             Log.d(TAG, "OpenCV didn't load")
             OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION, this, mLoaderCallback)
         }
-        //mOpenCvCameraView.enableView()
     }
 }

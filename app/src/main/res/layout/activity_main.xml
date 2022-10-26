@@ -27,6 +27,7 @@
         android:backgroundTint="@color/purple_700"
         app:tint="@android:color/white"
         app:borderWidth="0dp"
+        android:rotation="90"
         android:layout_margin="25dp" />
 
 
