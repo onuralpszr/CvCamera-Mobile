@@ -1,10 +1,8 @@
 package com.os.cvCamera
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceView
-import android.view.View
 import android.view.WindowManager
 import com.os.cvCamera.databinding.ActivityMainBinding
 import org.opencv.android.BaseLoaderCallback
@@ -23,6 +21,13 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     private lateinit var mRGBAT: Mat
     private var mCameraId: Int = CAMERA_ID_BACK
 
+    companion object {
+        init {
+            System.loadLibrary("cvcamera")
+            System.loadLibrary("opencv_java4")
+        }
+    }
+
     private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
         override fun onManagerConnected(status: Int) {
             when (status) {
@@ -37,12 +42,9 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         loadOpenCVconfigs()
@@ -76,15 +78,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     //external fun stringFromJNI(): String
 
-    companion object {
-        // Used to load the 'cvcamera' library on application startup.
-        init {
-            System.loadLibrary("cvcamera")
-            System.loadLibrary("opencv_java4")
-        }
-    }
-
-
     override fun onCameraViewStarted(width: Int, height: Int) {
         mRGBA = Mat(height, width, CvType.CV_8UC4)
         mRGBAT = Mat()
@@ -96,8 +89,8 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     }
 
     override fun onCameraFrame(inputFrame: CvCameraViewFrame?): Mat {
-        if (inputFrame != null) {
-            return if (mCameraId == CAMERA_ID_BACK) {
+        return if (inputFrame != null) {
+            if (mCameraId == CAMERA_ID_BACK) {
                 inputFrame.rgba()
             } else {
                 mRGBA = inputFrame.rgba()
@@ -108,7 +101,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                 mRGBAT
             }
         } else {
-            return mRGBA
+            mRGBA
         }
     }
 

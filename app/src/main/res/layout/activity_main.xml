@@ -8,27 +8,25 @@
     tools:context=".MainActivity">
 
 
-    <org.opencv.android.JavaCamera2View
+    <com.os.cvCamera.ExtendJavaCamera2View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/CvCamera"
         android:visibility="gone"
-        opencv:show_fps="true"
-        opencv:camera_id="any" />
-
+        app:show_fps="true"
+        app:camera_id="any" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/cvCameraChangeFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:src="@drawable/ic_baseline_switch_camera_24"
-        android:contentDescription="@string/cameraSwitch"
+        android:layout_margin="25dp"
         android:backgroundTint="@color/purple_700"
-        app:tint="@android:color/white"
+        android:contentDescription="@string/cameraSwitch"
+        android:src="@drawable/ic_baseline_switch_camera_24"
         app:borderWidth="0dp"
-        android:rotation="90"
-        android:layout_margin="25dp" />
+        app:tint="@android:color/white" />
 
 
 </FrameLayout>
