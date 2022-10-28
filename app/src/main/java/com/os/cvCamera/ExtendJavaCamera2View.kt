@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
-import org.opencv.android.CameraBridgeViewBase
 import org.opencv.android.JavaCamera2View
 import org.opencv.android.Utils
 import org.opencv.core.Mat
@@ -16,7 +15,7 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
     private val mMatrix: Matrix = Matrix()
     private var mCacheBitmap: Bitmap? = null
     private val TAG = this.javaClass.name
-    private val mListenerField = CameraBridgeViewBase::class.java.getDeclaredField("mListener")
+    private var mListener: CvCameraViewListener2? = null
 
     private fun updateMatrix() {
 
@@ -57,10 +56,6 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
     }
 
     override fun deliverAndDrawFrame(frame: CvCameraViewFrame?) {
-        mListenerField.isAccessible = true
-        val mListener: CvCameraViewListener2? = mListenerField.get(this) as CvCameraViewListener2
-
-
         val modified: Mat? = if (mListener != null) {
             mListener!!.onCameraFrame(frame)
         } else {
@@ -134,6 +129,12 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
 
     override fun disableFpsMeter() {
         mFpsMeter = null
+    }
+
+    override fun setCvCameraViewListener(listener: CvCameraViewListener2?) {
+        super.setCvCameraViewListener(listener)
+        mListener = listener
+        Log.d(TAG, "Enter setCvCameraViewListener")
     }
 
 }

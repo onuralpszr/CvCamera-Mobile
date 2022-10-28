@@ -1,6 +1,8 @@
 *.iml
 .gradle
 /local.properties
+/.idea/.name
+/.idea/deploymentTargetDropDown.xml
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
@@ -15,5 +17,7 @@
 local.properties
 
 # Ignore OpenCV folder for reduce git repository size
-opencvsdk455
 opencvsdk460
+
+# Ignore zip files, because setupOpenCV.sh will download a zip file
+*.zip
