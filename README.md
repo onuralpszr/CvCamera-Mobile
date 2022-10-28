@@ -1,5 +1,5 @@
 
-# Android Camera2 with OpenCV4 - cvCamera
+# CvCamera-Mobile - Android Camera2 with OpenCV4
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![kotlin-version](https://img.shields.io/badge/kotlin-1.7.20-orange)![opencv-version](https://img.shields.io/badge/opencvAndroid-4.6.0-green)[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
