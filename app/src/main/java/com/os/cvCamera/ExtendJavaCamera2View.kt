@@ -14,26 +14,26 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
 
 
     private val mMatrix: Matrix = Matrix()
-    private var mListener: CvCameraViewListener2? = null
     private var mCacheBitmap: Bitmap? = null
     private val TAG = this.javaClass.name
     private val mListenerField = CameraBridgeViewBase::class.java.getDeclaredField("mListener")
 
     private fun updateMatrix() {
-        val mw = this.width.toFloat()
-        val mh = this.height.toFloat()
-        val hw = this.width / 2.0f
-        val hh = this.height / 2.0f
+
+        val mw:Float = this.width.toFloat()
+        val mh:Float = this.height.toFloat()
+        val hw:Float = this.width.toFloat() / 2.0f
+        val hh:Float = this.height.toFloat() / 2.0f
         val cw = Resources.getSystem().displayMetrics.widthPixels.toFloat()
         val ch = Resources.getSystem().displayMetrics.heightPixels.toFloat()
-        var scale = cw / mh
-        val scale2 = ch / mw
+        var scale:Float = cw / mh
+        val scale2:Float = ch / mw
         if (scale2 > scale) {
             scale = scale2
         }
         mMatrix.reset()
         if (mCameraIndex == CAMERA_ID_FRONT) {
-            mMatrix.preScale(-1f, 1f, hw, hh) //MH - this will mirror the camera
+            mMatrix.preScale(-1f, 1f, hw, hh)
         }
 
         mMatrix.preTranslate(hw, hh)
@@ -58,7 +58,7 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
 
     override fun deliverAndDrawFrame(frame: CvCameraViewFrame?) {
         mListenerField.isAccessible = true
-        mListener = mListenerField.get(this) as CvCameraViewListener2
+        val mListener: CvCameraViewListener2? = mListenerField.get(this) as CvCameraViewListener2
 
 
         val modified: Mat? = if (mListener != null) {
@@ -120,6 +120,20 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
 
     override fun AllocateCache() {
         mCacheBitmap = Bitmap.createBitmap(mFrameWidth, mFrameHeight, Bitmap.Config.ARGB_8888)
+    }
+
+    /**
+     * This method enables label with fps value on the screen
+     */
+    override fun enableFpsMeter() {
+        if (mFpsMeter == null) {
+            mFpsMeter = CvFpsMeter()
+            mFpsMeter.setResolution(mFrameWidth, mFrameHeight)
+        }
+    }
+
+    override fun disableFpsMeter() {
+        mFpsMeter = null
     }
 
 }

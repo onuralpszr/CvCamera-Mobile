@@ -47,7 +47,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        loadOpenCVconfigs()
+        loadOpenCVConfigs()
 
         binding.cvCameraChangeFab.setOnClickListener {
             cameraSwitch()
@@ -67,7 +67,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     }
 
-    private fun loadOpenCVconfigs() {
+    private fun loadOpenCVConfigs() {
         //OpenCV Camera
         Log.d(TAG, "CvCameraLoaded")
         binding.CvCamera.visibility = SurfaceView.VISIBLE
