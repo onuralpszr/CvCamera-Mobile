@@ -1,10 +1,15 @@
 
 # CvCamera-Mobile - Android Camera2 with OpenCV4
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![kotlin-version](https://img.shields.io/badge/kotlin-1.7.20-orange)![opencv-version](https://img.shields.io/badge/opencvAndroid-4.6.0-green)[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![kotlin-version](https://img.shields.io/badge/kotlin-1.7.20-orange) ![opencv-version](https://img.shields.io/badge/opencvAndroid-4.6.0-green) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 ![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84.svg?style=for-the-badge&logo=android-studio&logoColor=white)
+
+
+ <p align="center">
+    <img src="appPreview/appOverview.png" width="200" max-height="%20"/>
+    <img src="appPreview/appOverview2.png" width="200" max-height="%20"/>
+</p>
 
 
 This android project is barebone setting up OpenCV 4.6.0 (and other 4.x.y versions) for Android in [Android Studio](https://developer.android.com/studio) with Native Development Kit (NDK) support.
