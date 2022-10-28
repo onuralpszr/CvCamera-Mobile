@@ -2,19 +2,18 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:opencv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
 
     <com.os.cvCamera.ExtendJavaCamera2View
+        android:id="@+id/CvCamera"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/CvCamera"
-        android:visibility="gone"
-        app:show_fps="true"
-        app:camera_id="any" />
+        app:camera_id="any"
+        app:show_fps="true" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/cvCameraChangeFab"
@@ -22,11 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="25dp"
-        android:backgroundTint="@color/purple_700"
         android:contentDescription="@string/cameraSwitch"
         android:src="@drawable/ic_baseline_switch_camera_24"
-        app:borderWidth="0dp"
-        app:tint="@android:color/white" />
+        app:borderWidth="0dp" />
 
 
 </FrameLayout>

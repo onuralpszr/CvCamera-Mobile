@@ -8,7 +8,7 @@ import org.opencv.android.FpsMeter
 import org.opencv.core.Core
 import java.text.DecimalFormat
 
-class CvFpsMeter: FpsMeter() {
+class CvFpsMeter : FpsMeter() {
 
     private val TAG = this.javaClass.name
     private val STEP = 20

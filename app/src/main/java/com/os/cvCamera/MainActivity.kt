@@ -2,7 +2,6 @@ package com.os.cvCamera
 
 import android.os.Bundle
 import android.util.Log
-import android.view.SurfaceView
 import android.view.WindowManager
 import com.os.cvCamera.databinding.ActivityMainBinding
 import org.opencv.android.BaseLoaderCallback
@@ -32,7 +31,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         override fun onManagerConnected(status: Int) {
             when (status) {
                 SUCCESS -> {
-                    Log.i(TAG, "OpenCV loaded successfully")
+                    Log.d(TAG, "OpenCV loaded successfully")
                     binding.CvCamera.enableView()
                 }
                 else -> {
@@ -70,7 +69,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     private fun loadOpenCVConfigs() {
         //OpenCV Camera
         Log.d(TAG, "CvCameraLoaded")
-        binding.CvCamera.visibility = SurfaceView.VISIBLE
         binding.CvCamera.setCameraIndex(CAMERA_ID_BACK)
         binding.CvCamera.setCvCameraViewListener(this)
         binding.CvCamera.setCameraPermissionGranted()

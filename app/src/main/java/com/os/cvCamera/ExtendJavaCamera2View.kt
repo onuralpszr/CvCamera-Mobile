@@ -1,4 +1,5 @@
 package com.os.cvCamera
+
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.*
@@ -19,14 +20,14 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
 
     private fun updateMatrix() {
 
-        val mw:Float = this.width.toFloat()
-        val mh:Float = this.height.toFloat()
-        val hw:Float = this.width.toFloat() / 2.0f
-        val hh:Float = this.height.toFloat() / 2.0f
+        val mw: Float = this.width.toFloat()
+        val mh: Float = this.height.toFloat()
+        val hw: Float = this.width.toFloat() / 2.0f
+        val hh: Float = this.height.toFloat() / 2.0f
         val cw = Resources.getSystem().displayMetrics.widthPixels.toFloat()
         val ch = Resources.getSystem().displayMetrics.heightPixels.toFloat()
-        var scale:Float = cw / mh
-        val scale2:Float = ch / mw
+        var scale: Float = cw / mh
+        val scale2: Float = ch / mw
         if (scale2 > scale) {
             scale = scale2
         }
@@ -82,23 +83,27 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
                 canvas.setMatrix(mMatrix)
                 if (mScale != 0f) {
                     canvas.drawBitmap(
-                        mCacheBitmap!!, Rect(0, 0, mCacheBitmap!!.width, mCacheBitmap!!.height),
+                        mCacheBitmap!!,
+                        Rect(0, 0, mCacheBitmap!!.width, mCacheBitmap!!.height),
                         Rect(
                             ((canvas.width - mScale * mCacheBitmap!!.width) / 2).toInt(),
                             ((canvas.height - mScale * mCacheBitmap!!.height) / 2).toInt(),
                             ((canvas.width - mScale * mCacheBitmap!!.width) / 2 + mScale * mCacheBitmap!!.width).toInt(),
                             ((canvas.height - mScale * mCacheBitmap!!.height) / 2 + mScale * mCacheBitmap!!.height).toInt()
-                        ), null
+                        ),
+                        null
                     )
                 } else {
                     canvas.drawBitmap(
-                        mCacheBitmap!!, Rect(0, 0, mCacheBitmap!!.width, mCacheBitmap!!.height),
+                        mCacheBitmap!!,
+                        Rect(0, 0, mCacheBitmap!!.width, mCacheBitmap!!.height),
                         Rect(
                             (canvas.width - mCacheBitmap!!.width) / 2,
                             (canvas.height - mCacheBitmap!!.height) / 2,
                             (canvas.width - mCacheBitmap!!.width) / 2 + mCacheBitmap!!.width,
                             (canvas.height - mCacheBitmap!!.height) / 2 + mCacheBitmap!!.height
-                        ), null
+                        ),
+                        null
                     )
                 }
 
