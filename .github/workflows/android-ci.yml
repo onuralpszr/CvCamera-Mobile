@@ -1,0 +1,44 @@
+name: android-ci
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+      - 'main'
+      - 'dev'
+  branch_protection_rule:
+     types: [created,completed]
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
+
+      - name: Android-OpenCV-SDK Setup
+        run: ./setupOpenCV.sh
+
+      - name: Set up JDK 11.x
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11.x'
+
+      - name: Build the app
+        run: ./gradlew assembleDebug
+
+      - name: Upload apk
+        uses: actions/upload-artifact@v3
+        with:
+          name: debug apk
+          path: app/build/outputs/apk/debug/app-debug.apk
