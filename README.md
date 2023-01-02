@@ -29,7 +29,7 @@ This sample Android application displays a live camera feed only and camera swit
      * Paste this repository *Github URL*, choose a *project directory* and click next.
 
 4. Install *OpenCV Android release* :
-    * Download [OpenCV 4.7.0 Android release](https://sourceforge.net/projects/opencvlibrary/files/4.7.0/opencv-4.7.0-android-sdk.zip/download) or download latest available Android release on [OpenCV website](https://opencv.org/releases/).
+    * Download [OpenCV 4.7.0 Android release](https://github.com/opencv/opencv/releases/download/4.7.0/opencv-4.7.0-android-sdk.zip) or download latest available Android release on [OpenCV website](https://opencv.org/releases/).
     * Unzip downloaded file and put **OpenCV-android-sdk** directory next your project and rename folder `opencvsdk460`. If you want to place somewhere else please change path in `settings.gradle` 
 
     * Optional(For linux) you can run setupOpenCV.sh for automatic download and setup gradle file for opencv 
