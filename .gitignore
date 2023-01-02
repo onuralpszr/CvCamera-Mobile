@@ -16,8 +16,11 @@
 .cxx
 local.properties
 
-# Ignore OpenCV folder for reduce git repository size
-opencvsdk460
-
+# Ignore OpenCV folder and zip files for reduce git repository size
+opencvsdk460/
+opencvsdk470/
+OpenCV-android-sdk/
+opencv-4.7.0-android-sdk.zip
+OpenCV4Android.zip
 # Ignore zip files, because setupOpenCV.sh will download a zip file
 *.zip
