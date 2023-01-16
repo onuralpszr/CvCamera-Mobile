@@ -8,9 +8,11 @@ import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.CameraActivity
 import org.opencv.android.CameraBridgeViewBase.*
 import org.opencv.android.OpenCVLoader
+import org.opencv.android.OpenCVLoader.OPENCV_VERSION
 import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat
+import org.opencv.core.Size
 
 class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
@@ -32,6 +34,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
             when (status) {
                 SUCCESS -> {
                     Log.d(TAG, "OpenCV loaded successfully")
+                    Log.d(TAG, "OpenCV Version: $OPENCV_VERSION")
                     binding.CvCamera.enableView()
                 }
                 else -> {
@@ -88,8 +91,22 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     override fun onCameraFrame(inputFrame: CvCameraViewFrame?): Mat {
         return if (inputFrame != null) {
+
+            // Frame information
+            val rgba = inputFrame.rgba()
+            val sizeRgba: Size = rgba.size()
+
+            val rows = sizeRgba.height.toInt()
+            val cols = sizeRgba.width.toInt()
+
+            val left = cols / 8
+            val top = rows / 8
+
+            val width = cols * 3 / 4
+            val height = rows * 3 / 4
+
             if (mCameraId == CAMERA_ID_BACK) {
-                inputFrame.rgba()
+                inputFrame.toCanny(mRGBA)
             } else {
                 mRGBA = inputFrame.rgba()
                 // flipping to show portrait mode properly
