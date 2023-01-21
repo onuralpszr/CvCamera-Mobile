@@ -1,10 +1,15 @@
 
 # CvCamera-Mobile - Android Camera2 with OpenCV4
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![kotlin-version](https://img.shields.io/badge/kotlin-1.8.0-orange) ![opencv-version](https://img.shields.io/badge/opencvAndroid-4.7.0-green) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org) [![android-build](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml/badge.svg?branch=main)](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml)
+<p>
+    <a href=""><img alt="MIT" src="https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white"></a>
+    <a href="#"><img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-1.8.0-%23E34F26?logo=Kotlin&logoColor=white"></a>
+    <a href="#"><img alt="OpenCV" src="https://img.shields.io/badge/OpenCV-4.7.0-5C3EE8?logo=OpenCV&logoColor=white"></a>
+    <a href="https://conventionalcommits.org"><img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white"></a>
+    <a href="#"><img alt="android-studio" src="https://img.shields.io/badge/android studio-ElectricEel-3DDC84?logo=androidstudio&logoColor=white"></a>
+</p>
 
-![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84.svg?style=for-the-badge&logo=android-studio&logoColor=white)
-
+[![android-build](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml/badge.svg?branch=main)](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml)
 
  <p align="center">
     <img src="appPreview/appOverview.png" width="200" max-height="%20"/>
