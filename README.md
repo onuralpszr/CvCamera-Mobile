@@ -10,6 +10,8 @@
 </p>
 
 [![android-build](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml/badge.svg?branch=main)](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml)
+[![ktlint](https://img.shields.io/badge/ktlint%20code--style-%E2%9D%A4-FF4081)](https://pinterest.github.io/ktlint/)
+
 
  <p align="center">
     <img src="appPreview/appOverview.png" width="200" max-height="%20"/>
