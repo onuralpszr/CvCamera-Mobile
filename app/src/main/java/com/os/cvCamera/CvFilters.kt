@@ -5,7 +5,10 @@ import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.CvType.CV_8UC1
 import org.opencv.core.Mat
+import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc
+import org.opencv.imgproc.Imgproc.*
+import org.opencv.photo.Photo.pencilSketch
 
 
 fun Mat.toSobel(): Mat {
@@ -37,4 +40,23 @@ fun CameraBridgeViewBase.CvCameraViewFrame.toCanny(inputMat: Mat): Mat {
     return inputMat
 }
 
+fun Mat.toPencilSketch(): Mat {
+    val grayImg = Mat()
+    val invertImg = Mat()
+    val blurImg = Mat()
+    val invblurImg = Mat()
+    val sketchImg = Mat()
+    cvtColor(this, grayImg, COLOR_BGR2GRAY)
+    Core.bitwise_not(grayImg, invertImg)
+    GaussianBlur(invertImg, blurImg, Size(7.0, 7.0), 0.0)
+    Core.bitwise_not(blurImg, invblurImg)
+    Core.divide(256.0, grayImg, sketchImg)
 
+    grayImg.release()
+    invertImg.release()
+    blurImg.release()
+    invertImg.release()
+
+    //pencilSketch(this,tmpMat,tmpMat1, 40f, 0.07f, 0.05f)
+    return sketchImg
+}

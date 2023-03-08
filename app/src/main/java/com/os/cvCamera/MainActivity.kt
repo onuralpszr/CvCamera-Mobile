@@ -24,7 +24,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     companion object {
         init {
-            System.loadLibrary("cvcamera")
+            //System.loadLibrary("cvcamera")
             System.loadLibrary("opencv_java4")
         }
     }
@@ -37,6 +37,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                     Log.d(TAG, "OpenCV Version: $OPENCV_VERSION")
                     binding.CvCamera.enableView()
                 }
+
                 else -> {
                     super.onManagerConnected(status)
                 }
@@ -106,7 +107,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
             val height = rows * 3 / 4
 
             if (mCameraId == CAMERA_ID_BACK) {
-                inputFrame.toCanny(mRGBA)
+                inputFrame.rgba()
             } else {
                 mRGBA = inputFrame.rgba()
                 // flipping to show portrait mode properly
