@@ -1,7 +1,5 @@
 #include <jni.h>
 #include <string>
-#include <opencv2/opencv.hpp>
-
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_al_cvcamera_MainActivity_stringFromJNI(
