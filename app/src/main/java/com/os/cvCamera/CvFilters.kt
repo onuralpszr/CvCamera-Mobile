@@ -6,13 +6,15 @@ import org.opencv.core.CvType
 import org.opencv.core.CvType.CV_8UC1
 import org.opencv.core.Mat
 import org.opencv.core.Size
-import org.opencv.imgproc.Imgproc
-import org.opencv.imgproc.Imgproc.*
-import org.opencv.photo.Photo.pencilSketch
+import org.opencv.imgproc.Imgproc.COLOR_BGR2GRAY
+import org.opencv.imgproc.Imgproc.GaussianBlur
+import org.opencv.imgproc.Imgproc.cvtColor
+import org.opencv.imgproc.Imgproc.Canny
+import org.opencv.imgproc.Imgproc.Sobel
 
 
 fun Mat.toSobel(): Mat {
-    Imgproc.Sobel(this, this, CV_8UC1, 1, 0)
+    Sobel(this, this, CV_8UC1, 1, 0)
     return this
 }
 
@@ -31,12 +33,12 @@ fun Mat.toSepia(): Mat {
 }
 
 fun CameraBridgeViewBase.CvCameraViewFrame.toSobel(inputMat: Mat): Mat {
-    Imgproc.Sobel(this.gray(), inputMat, CV_8UC1, 1, 0);
+    Sobel(this.gray(), inputMat, CV_8UC1, 1, 0);
     return inputMat
 }
 
 fun CameraBridgeViewBase.CvCameraViewFrame.toCanny(inputMat: Mat): Mat {
-    Imgproc.Canny(this.rgba(), inputMat, 80.0, 90.0);
+    Canny(this.rgba(), inputMat, 80.0, 90.0);
     return inputMat
 }
 

@@ -58,7 +58,7 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
 
     override fun deliverAndDrawFrame(frame: CvCameraViewFrame?) {
         val modified: Mat? = if (mListener != null) {
-            mListener!!.onCameraFrame(frame)
+            mListener?.onCameraFrame(frame)
         } else {
             frame!!.rgba()
         }
