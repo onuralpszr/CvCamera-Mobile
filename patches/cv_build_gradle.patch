@@ -11,7 +11,7 @@
      defaultConfig {
 -        minSdkVersion 21
 -        targetSdkVersion 26
-+        minSdkVersion 30
++        minSdkVersion 24
 +        targetSdkVersion 33
  
          versionCode openCVersionCode
