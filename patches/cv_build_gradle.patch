@@ -1,0 +1,34 @@
+--- build.gradle.in	2023-04-16 03:53:59
++++ build.gradle	2023-04-16 03:54:22
+@@ -97,11 +97,12 @@
+ println "OpenCV: " +openCVersionName + " " + project.buildscript.sourceFile
+ 
+ android {
+-    compileSdkVersion 26
++    namespace 'org.opencv'
++    compileSdk 33
+ 
+     defaultConfig {
+-        minSdkVersion 21
+-        targetSdkVersion 26
++        minSdkVersion 30
++        targetSdkVersion 33
+ 
+         versionCode openCVersionCode
+         versionName openCVersionName
+@@ -114,6 +115,15 @@
+         }
+     }
+ 
++    compileOptions {
++        sourceCompatibility JavaVersion.VERSION_17
++        targetCompatibility JavaVersion.VERSION_17
++    }
++
++    buildFeatures {
++        aidl true
++    }
++
+     buildTypes {
+         debug {
+             packagingOptions {
