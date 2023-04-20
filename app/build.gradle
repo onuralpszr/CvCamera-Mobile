@@ -35,7 +35,7 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     externalNativeBuild {
         cmake {
@@ -64,6 +64,9 @@ dependencies {
 
     //Timber Log
     implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    // AndroidX Startup
+    implementation 'androidx.startup:startup-runtime:1.1.1'
 
 
     // Test
