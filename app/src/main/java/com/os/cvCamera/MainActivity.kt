@@ -5,10 +5,10 @@ import android.view.WindowManager
 import com.os.cvCamera.databinding.ActivityMainBinding
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.CameraActivity
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame
-import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_FRONT
 import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_BACK
+import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_FRONT
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2
 import org.opencv.android.OpenCVLoader
 import org.opencv.android.OpenCVLoader.OPENCV_VERSION
 import org.opencv.core.Core
@@ -72,7 +72,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     }
 
     private fun loadOpenCVConfigs() {
-        binding.CvCamera.setCameraIndex(CAMERA_ID_BACK)
+        binding.CvCamera.setCameraIndex(mCameraId)
         binding.CvCamera.setCvCameraViewListener(this)
         binding.CvCamera.setCameraPermissionGranted()
         Timber.d("OpenCV Camera Loaded")
@@ -116,12 +116,9 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                 mRGBAT
             }
         } else {
+            // return mRGBA
             mRGBA
         }
-    }
-
-    override fun onPointerCaptureChanged(hasCapture: Boolean) {
-        super.onPointerCaptureChanged(hasCapture)
     }
 
     override fun onDestroy() {
