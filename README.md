@@ -1,5 +1,6 @@
 
-# CvCamera-Mobile - Android Camera2 with OpenCV4
+<h1 align="center">CvCamera-Mobile</h1>
+<h3 align="center">OpenCV's Android Camera2 with OpenCV4 (JavaCamera2View)</h3>
 
 <p>
     <a href=""><img alt="MIT" src="https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white"></a>
