@@ -4,6 +4,10 @@ plugins {
 }
 
 android {
+
+    // https://stackoverflow.com/questions/28498688/gradle-script-to-autoversion-and-include-the-commit-hash-in-android
+    def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
+
     compileSdk 33
 
     defaultConfig {
@@ -12,6 +16,7 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
+        buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
