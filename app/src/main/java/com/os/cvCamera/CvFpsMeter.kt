@@ -3,14 +3,13 @@ package com.os.cvCamera
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
 import org.opencv.android.FpsMeter
 import org.opencv.core.Core
+import timber.log.Timber
 import java.text.DecimalFormat
 
 class CvFpsMeter : FpsMeter() {
 
-    private val TAG = this.javaClass.name
     private val STEP = 20
     private val FPS_FORMAT = DecimalFormat("0.00")
 
@@ -49,7 +48,7 @@ class CvFpsMeter : FpsMeter() {
                     if (mWidth != 0 && mHeight != 0) FPS_FORMAT.format(fps) + " FPS@" + Integer.valueOf(
                         mWidth
                     ) + "x" + Integer.valueOf(mHeight) else FPS_FORMAT.format(fps) + " FPS"
-                Log.i(TAG, mStrfps!!)
+                Timber.d(mStrfps!!)
             }
         }
     }
@@ -60,7 +59,7 @@ class CvFpsMeter : FpsMeter() {
     }
 
     override fun draw(canvas: Canvas, offsetx: Float, offsety: Float) {
-        Log.d(TAG, mStrfps!!)
+        Timber.d(mStrfps!!)
         canvas.drawText(mStrfps!!, offsetx + mExtraOffsetX, offsety + mExtraOffsetY, mPaint!!)
     }
 }

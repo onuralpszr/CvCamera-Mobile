@@ -8,10 +8,10 @@ import android.graphics.Matrix
 import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.util.AttributeSet
-import android.util.Log
 import org.opencv.android.JavaCamera2View
 import org.opencv.android.Utils
 import org.opencv.core.Mat
+import timber.log.Timber
 
 class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
     JavaCamera2View(context, attrs) {
@@ -19,7 +19,6 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
 
     private val mMatrix: Matrix = Matrix()
     private var mCacheBitmap: Bitmap? = null
-    private val TAG = this.javaClass.name
     private var mListener: CvCameraViewListener2? = null
 
     private fun updateMatrix() {
@@ -72,9 +71,9 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
             try {
                 Utils.matToBitmap(modified, mCacheBitmap)
             } catch (e: Exception) {
-                Log.e(TAG, "Mat type: $modified")
-                Log.e(TAG, "Bitmap type: " + mCacheBitmap!!.width + "*" + mCacheBitmap!!.height)
-                Log.e(TAG, "Utils.matToBitmap() throws an exception: " + e.message)
+                Timber.e("Mat type: $modified")
+                Timber.e("Bitmap type: " + mCacheBitmap!!.width + "*" + mCacheBitmap!!.height)
+                Timber.e("Utils.matToBitmap() throws an exception: " + e.message)
                 bmpValid = false
             }
         }
@@ -143,7 +142,7 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
     override fun setCvCameraViewListener(listener: CvCameraViewListener2?) {
         super.setCvCameraViewListener(listener)
         mListener = listener
-        Log.d(TAG, "Enter setCvCameraViewListener")
+        Timber.d("Enter setCvCameraViewListener")
     }
 
 }
