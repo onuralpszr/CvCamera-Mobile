@@ -2,17 +2,16 @@
 <h1 align="center">CvCamera-Mobile</h1>
 <h3 align="center">OpenCV's Android Camera2 with OpenCV4 (JavaCamera2View)</h3>
 
-<p>
-    <a href=""><img alt="MIT" src="https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white"></a>
-    <a href="#"><img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-1.8.0-%23E34F26?logo=Kotlin&logoColor=white"></a>
-    <a href="#"><img alt="OpenCV" src="https://img.shields.io/badge/OpenCV-4.7.0-5C3EE8?logo=OpenCV&logoColor=white"></a>
+<p align="center">
+    <a href="https://opensource.org/license/mit/"><img alt="MIT" src="https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white"></a>
+    <a href="https://kotlinlang.org/"><img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-1.8.10-%23E34F26?logo=Kotlin&logoColor=white"></a>
+    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-8.0-02303A?logo=Gradle&logoColor=white"></a>
+    <a href="https://developer.android.com/jetpack/compose"><img alt="JetpackCompose" src="https://img.shields.io/badge/JetpackCompose-1.4.1-4285F4?logo=JetpackCompose&logoColor=white"></a>
+    <a href="https://opencv.org/"><img alt="OpenCV" src="https://img.shields.io/badge/OpenCV-4.7.0-5C3EE8?logo=OpenCV&logoColor=white"></a>
     <a href="https://conventionalcommits.org"><img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white"></a>
-    <a href="#"><img alt="android-studio" src="https://img.shields.io/badge/android studio-ElectricEel-3DDC84?logo=androidstudio&logoColor=white"></a>
+    <a href="https://developer.android.com/studio"><img alt="android-studio" src="https://img.shields.io/badge/android studio-Giraffe-3DDC84?logo=androidstudio&logoColor=white"></a>
+    <a href="https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml"><img alt="GithubCI" src="https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml/badge.svg?branch=main"></a>
 </p>
-
-
-[![android-build](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml/badge.svg?branch=main)](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml)
-
 
 
  <p align="center">
