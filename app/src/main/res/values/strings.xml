@@ -2,4 +2,6 @@
     <string name="app_name">OpenCV Camera</string>
     <string name="fab_Text">Configuration</string>
     <string name="cameraSwitch">Change Camera</string>
+    <string name="flashlight">Flashlight</string>
+    <string name="about">About</string>
 </resources>
