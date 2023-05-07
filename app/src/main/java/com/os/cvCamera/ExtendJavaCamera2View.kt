@@ -7,6 +7,8 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.PorterDuff
 import android.graphics.Rect
+import android.hardware.camera2.CameraDevice
+import android.hardware.camera2.CaptureRequest
 import android.util.AttributeSet
 import org.opencv.android.JavaCamera2View
 import org.opencv.android.Utils
@@ -20,6 +22,7 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
     private val mMatrix: Matrix = Matrix()
     private var mCacheBitmap: Bitmap? = null
     private var mListener: CvCameraViewListener2? = null
+
 
     private fun updateMatrix() {
 
@@ -139,11 +142,30 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
         mFpsMeter = null
     }
 
+    override fun enableView() {
+        super.enableView()
+    }
+
+    override fun disableView() {
+        super.disableView()
+    }
+
     override fun setCvCameraViewListener(listener: CvCameraViewListener2?) {
         super.setCvCameraViewListener(listener)
         mListener = listener
-        Timber.d("Enter setCvCameraViewListener")
+       }
+
+
+    fun getCameraDevice(): CameraDevice? {
+        return mCameraDevice
     }
+
+    fun turnOnFlashlight() {
+        val captureRequestBuilder = mCameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+        captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH);
+        mCaptureSession!!.setRepeatingRequest(mPreviewRequestBuilder.build(), null, mBackgroundHandler);
+    }
+
 
 }
 

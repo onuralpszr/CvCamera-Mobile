@@ -1,7 +1,13 @@
 package com.os.cvCamera
 
+import android.hardware.camera2.CameraAccessException
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.Toast
+import com.os.cvCamera.BuildConfig.GIT_HASH
+import com.os.cvCamera.BuildConfig.VERSION_NAME
 import com.os.cvCamera.databinding.ActivityMainBinding
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.CameraActivity
@@ -14,8 +20,8 @@ import org.opencv.android.OpenCVLoader.OPENCV_VERSION
 import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat
-import org.opencv.core.Size
 import timber.log.Timber
+
 
 class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
@@ -23,6 +29,9 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     private lateinit var mRGBA: Mat
     private lateinit var mRGBAT: Mat
     private var mCameraId: Int = CAMERA_ID_BACK
+    private var mTorchCameraId: String = ""
+    private var mTorchState = false
+    private lateinit var mCameraManager: CameraManager
 
     companion object {
         init {
@@ -37,6 +46,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                     Timber.d("OpenCV loaded successfully")
                     Timber.d("OpenCV Version: $OPENCV_VERSION")
                     binding.CvCamera.enableView()
+                    binding.CvCamera.getCameraDevice()
                 }
 
                 else -> {
@@ -51,12 +61,53 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        mCameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
+
+        // 
         loadOpenCVConfigs()
+
+        // Find the flashlight
+        findFlashLight()
+
+        // Load buttonConfigs
+        configButtons()
+
+
+    }
+
+
+    private fun configButtons() {
 
         binding.cvCameraChangeFab.setOnClickListener {
             cameraSwitch()
         }
+
+        binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.flashlight -> {
+                    true
+                }
+
+                R.id.about -> {
+                    // Get app version and githash from BuildConfig
+                    val toast:Toast = Toast.makeText(
+                        this,
+                        "CvCamera-Mobile - Version $VERSION_NAME-$GIT_HASH",
+                        Toast.LENGTH_SHORT
+                    )
+                    toast.show();
+
+                    true
+                }
+
+                else -> {
+                    false
+                }
+            }
+        }
+
     }
+
 
     private fun cameraSwitch() {
         mCameraId = if (mCameraId == CAMERA_ID_BACK) {
@@ -78,6 +129,38 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         Timber.d("OpenCV Camera Loaded")
     }
 
+    private fun enableFlashLight() {
+        mTorchState = true
+        mCameraManager.setTorchMode(mTorchCameraId, true)
+        Timber.d("Torch is on")
+    }
+
+    private fun findFlashLight() {
+
+        for (cameraId in mCameraManager.cameraIdList) {
+            try {
+                // Check if the camera has a torchlight
+                val hasTorch = mCameraManager.getCameraCharacteristics(cameraId)
+                    .get(CameraCharacteristics.FLASH_INFO_AVAILABLE) ?: false
+
+                if (hasTorch) {
+                    // Find the ID of the camera that has a torchlight and store it in mTorchCameraId
+                    Timber.d("Torch is available")
+                    Timber.d("Camera Id: $cameraId")
+                    mTorchCameraId = cameraId
+                    mTorchState = false
+                    break
+
+                } else {
+                    Timber.d("Torch is not available")
+                }
+            } catch (e: CameraAccessException) {
+                // Handle any errors that occur while trying to access the camera
+                Timber.e("CameraAccessException ${e.message}")
+            }
+        }
+    }
+
 
     override fun onCameraViewStarted(width: Int, height: Int) {
         mRGBA = Mat(height, width, CvType.CV_8UC4)
@@ -91,32 +174,18 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     override fun onCameraFrame(inputFrame: CvCameraViewFrame?): Mat {
         return if (inputFrame != null) {
-
-            // Frame information
-            val rgba = inputFrame.rgba()
-            val sizeRgba: Size = rgba.size()
-
-            val rows = sizeRgba.height.toInt()
-            val cols = sizeRgba.width.toInt()
-
-            val left = cols / 8
-            val top = rows / 8
-
-            val width = cols * 3 / 4
-            val height = rows * 3 / 4
-
             if (mCameraId == CAMERA_ID_BACK) {
                 inputFrame.rgba()
             } else {
                 mRGBA = inputFrame.rgba()
-                // flipping to show portrait mode properly
+                // Flipping to show portrait mode properly
                 Core.flip(mRGBA, mRGBAT, 1)
-                // release the matrix to avoid memory leaks
+                // Release the matrix to avoid memory leaks
                 mRGBA.release()
                 mRGBAT
             }
         } else {
-            // return mRGBA
+            // return last or empty frame
             mRGBA
         }
     }
