@@ -12,7 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/opencvsdk470/sdk" />
+            <option value="$PROJECT_DIR$/opencvsdk480/sdk" />
           </set>
         </option>
       </GradleProjectSettings>
