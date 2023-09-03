@@ -6,13 +6,13 @@
      
 -    compileSdkVersion 26
 +    namespace 'org.opencv'
-+    compileSdk 33
++    compileSdk 34
  
      defaultConfig {
 -        minSdkVersion 21
 -        targetSdkVersion 26
 +        minSdkVersion 24
-+        targetSdkVersion 33
++        targetSdkVersion 34
  
          versionCode openCVersionCode
          versionName openCVersionName

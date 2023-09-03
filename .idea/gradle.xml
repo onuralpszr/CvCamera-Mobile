@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/opencvsdk480/sdk" />
           </set>
         </option>
+        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
