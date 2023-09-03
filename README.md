@@ -10,7 +10,11 @@
     <a href="https://conventionalcommits.org"><img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white"></a>
     <a href="https://developer.android.com/studio"><img alt="android-studio" src="https://img.shields.io/badge/android studio-Giraffe-3DDC84?logo=androidstudio&logoColor=white"></a>
     <a href="https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml"><img alt="GithubCI" src="https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml/badge.svg?branch=main"></a>
+    <a href="https://results.pre-commit.ci/latest/github/onuralpszr/CvCamera-Mobile/main"><img alt="pre-commit.ci status" src="https://results.pre-commit.ci/badge/github/onuralpszr/CvCamera-Mobile/main.svg"></a>
 </p>
+
+
+
 
 
  <p align="center">
