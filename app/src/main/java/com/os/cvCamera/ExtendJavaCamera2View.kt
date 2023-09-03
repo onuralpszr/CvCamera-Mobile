@@ -18,14 +18,11 @@ import timber.log.Timber
 class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
     JavaCamera2View(context, attrs) {
 
-
     private val mMatrix: Matrix = Matrix()
     private var mCacheBitmap: Bitmap? = null
     private var mListener: CvCameraViewListener2? = null
 
-
     private fun updateMatrix() {
-
         val mw: Float = this.width.toFloat()
         val mh: Float = this.height.toFloat()
         val hw: Float = this.width.toFloat() / 2.0f
@@ -95,9 +92,9 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
                             ((canvas.width - mScale * mCacheBitmap!!.width) / 2).toInt(),
                             ((canvas.height - mScale * mCacheBitmap!!.height) / 2).toInt(),
                             ((canvas.width - mScale * mCacheBitmap!!.width) / 2 + mScale * mCacheBitmap!!.width).toInt(),
-                            ((canvas.height - mScale * mCacheBitmap!!.height) / 2 + mScale * mCacheBitmap!!.height).toInt()
+                            ((canvas.height - mScale * mCacheBitmap!!.height) / 2 + mScale * mCacheBitmap!!.height).toInt(),
                         ),
-                        null
+                        null,
                     )
                 } else {
                     canvas.drawBitmap(
@@ -107,13 +104,13 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
                             (canvas.width - mCacheBitmap!!.width) / 2,
                             (canvas.height - mCacheBitmap!!.height) / 2,
                             (canvas.width - mCacheBitmap!!.width) / 2 + mCacheBitmap!!.width,
-                            (canvas.height - mCacheBitmap!!.height) / 2 + mCacheBitmap!!.height
+                            (canvas.height - mCacheBitmap!!.height) / 2 + mCacheBitmap!!.height,
                         ),
-                        null
+                        null,
                     )
                 }
 
-                //Restore canvas after draw bitmap
+                // Restore canvas after draw bitmap
                 canvas.restoreToCount(saveCount)
                 if (mFpsMeter != null) {
                     mFpsMeter.measure()
@@ -153,8 +150,7 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
     override fun setCvCameraViewListener(listener: CvCameraViewListener2?) {
         super.setCvCameraViewListener(listener)
         mListener = listener
-       }
-
+    }
 
     fun getCameraDevice(): CameraDevice? {
         return mCameraDevice
@@ -162,9 +158,7 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
 
     fun turnOnFlashlight() {
         val captureRequestBuilder = mCameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-        captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH);
-        mCaptureSession!!.setRepeatingRequest(mPreviewRequestBuilder.build(), null, mBackgroundHandler);
+        captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH)
+        mCaptureSession!!.setRepeatingRequest(mPreviewRequestBuilder.build(), null, mBackgroundHandler)
     }
-
-
 }

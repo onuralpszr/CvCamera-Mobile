@@ -22,7 +22,6 @@ import org.opencv.core.CvType
 import org.opencv.core.Mat
 import timber.log.Timber
 
-
 class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     private lateinit var binding: ActivityMainBinding
@@ -71,13 +70,9 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
         // Load buttonConfigs
         configButtons()
-
-
     }
 
-
     private fun configButtons() {
-
         binding.cvCameraChangeFab.setOnClickListener {
             cameraSwitch()
         }
@@ -90,12 +85,12 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
                 R.id.about -> {
                     // Get app version and githash from BuildConfig
-                    val toast:Toast = Toast.makeText(
+                    val toast: Toast = Toast.makeText(
                         this,
                         "CvCamera-Mobile - Version $VERSION_NAME-$GIT_HASH",
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     )
-                    toast.show();
+                    toast.show()
 
                     true
                 }
@@ -105,9 +100,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                 }
             }
         }
-
     }
-
 
     private fun cameraSwitch() {
         mCameraId = if (mCameraId == CAMERA_ID_BACK) {
@@ -119,7 +112,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         binding.CvCamera.disableView()
         binding.CvCamera.setCameraIndex(mCameraId)
         binding.CvCamera.enableView()
-
     }
 
     private fun loadOpenCVConfigs() {
@@ -136,7 +128,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     }
 
     private fun findFlashLight() {
-
         for (cameraId in mCameraManager.cameraIdList) {
             try {
                 // Check if the camera has a torchlight
@@ -150,7 +141,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                     mTorchCameraId = cameraId
                     mTorchState = false
                     break
-
                 } else {
                     Timber.d("Torch is not available")
                 }
@@ -160,7 +150,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
             }
         }
     }
-
 
     override fun onCameraViewStarted(width: Int, height: Int) {
         mRGBA = Mat(height, width, CvType.CV_8UC4)

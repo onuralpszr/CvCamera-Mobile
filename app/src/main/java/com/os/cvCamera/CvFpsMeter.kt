@@ -45,9 +45,13 @@ class CvFpsMeter : FpsMeter() {
                 val fps = STEP * mFrequency / (time - mprevFrameTime)
                 mprevFrameTime = time
                 mStrfps =
-                    if (mWidth != 0 && mHeight != 0) FPS_FORMAT.format(fps) + " FPS@" + Integer.valueOf(
-                        mWidth
-                    ) + "x" + Integer.valueOf(mHeight) else FPS_FORMAT.format(fps) + " FPS"
+                    if (mWidth != 0 && mHeight != 0) {
+                        FPS_FORMAT.format(fps) + " FPS@" + Integer.valueOf(
+                            mWidth,
+                        ) + "x" + Integer.valueOf(mHeight)
+                    } else {
+                        FPS_FORMAT.format(fps) + " FPS"
+                    }
                 Timber.d(mStrfps!!)
             }
         }

@@ -1,27 +1,35 @@
-
 ci:
   autofix_prs: true
   autoupdate_schedule: weekly
-  autofix_commit_msg: "fix(pre_commit): 🎨 auto format pre-commit hooks"
-  autoupdate_commit_msg: "chore(pre_commit): ⬆ pre_commit autoupdate"
+  autofix_commit_msg: 'fix(pre_commit): 🎨 auto format pre-commit hooks'
+  autoupdate_commit_msg: 'chore(pre_commit): ⬆ pre_commit autoupdate'
 
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
-    hooks:
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
-      - id: check-yaml
-      - id: check-docstring-first
-      - id: check-executables-have-shebangs
-      - id: check-toml
-      - id: check-case-conflict
-      - id: check-added-large-files
-        args: ['--maxkb=2048']
-        exclude: ^logo/
-      - id: detect-private-key
-      - id: forbid-new-submodules
-      - id: pretty-format-json
-        args: ['--autofix', '--no-sort-keys', '--indent=4']
-      - id: end-of-file-fixer
-      - id: mixed-line-ending
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.4.0
+  hooks:
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+  - id: check-yaml
+  - id: check-docstring-first
+  - id: check-executables-have-shebangs
+  - id: check-toml
+  - id: check-case-conflict
+  - id: check-added-large-files
+    args: [--maxkb=2048]
+    exclude: ^logo/
+  - id: detect-private-key
+  - id: forbid-new-submodules
+  - id: pretty-format-json
+    args: [--autofix, --no-sort-keys, --indent=4]
+  - id: end-of-file-fixer
+  - id: mixed-line-ending
+- repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+  rev: v2.10.0
+  hooks:
+  - id: pretty-format-java
+    args: [--autofix]
+  - id: pretty-format-kotlin
+    args: [--autofix]
+  - id: pretty-format-yaml
+    args: [--autofix, --indent, '2']
