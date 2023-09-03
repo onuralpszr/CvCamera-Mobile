@@ -63,7 +63,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         setContentView(binding.root)
         mCameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
 
-        // 
+        //
         loadOpenCVConfigs()
 
         // Find the flashlight

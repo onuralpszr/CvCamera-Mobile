@@ -22,7 +22,7 @@
 This android project is barebone setting up OpenCV 4.8.0 (and other 4.x.y versions) for Android in [Android Studio](https://developer.android.com/studio) with Native Development Kit (NDK) support.
 [Android NDK](https://developer.android.com/ndk) enables you to implement your [OpenCV](https://opencv.org) image processing pipeline in C++ and call that C++ code from Android Kotlin/Java code through JNI ([Java Native Interface](https://en.wikipedia.org/wiki/Java_Native_Interface)).
 
-This sample Android application displays a live camera feed only and camera switch in runtime. 
+This sample Android application displays a live camera feed only and camera switch in runtime.
 
 
 ## How to use this repository
@@ -37,9 +37,9 @@ This sample Android application displays a live camera feed only and camera swit
 
 4. Install *OpenCV Android release* :
     * Download [OpenCV 4.8.0 Android release](https://github.com/opencv/opencv/releases/download/4.8.0/opencv-4.8.0-android-sdk.zip) or download latest available Android release on [OpenCV website](https://opencv.org/releases/).
-    * Unzip downloaded file and put **OpenCV-android-sdk** directory next your project and rename folder `opencvsdk480`. If you want to place somewhere else please change path in `settings.gradle` 
+    * Unzip downloaded file and put **OpenCV-android-sdk** directory next your project and rename folder `opencvsdk480`. If you want to place somewhere else please change path in `settings.gradle`
 
-    * Optional(For linux) you can run setupOpenCV.sh for automatic download and setup gradle file for opencv 
+    * Optional(For linux) you can run setupOpenCV.sh for automatic download and setup gradle file for opencv
 
 
 5. Sync Gradle and run the application on your Android Device!

@@ -168,7 +168,3 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
 
 
 }
-
-
-
-
