@@ -26,7 +26,7 @@
 This android project is barebone setting up OpenCV 4.8.0 (and other 4.x.y versions) for Android in [Android Studio](https://developer.android.com/studio) with Native Development Kit (NDK) support.
 [Android NDK](https://developer.android.com/ndk) enables you to implement your [OpenCV](https://opencv.org) image processing pipeline in C++ and call that C++ code from Android Kotlin/Java code through JNI ([Java Native Interface](https://en.wikipedia.org/wiki/Java_Native_Interface)).
 
-This sample Android application displays a live camera feed only and camera switch in runtime.
+This sample Android application displays a live camera feed only and camera switch to back and front in runtime.
 
 
 ## How to use this repository
