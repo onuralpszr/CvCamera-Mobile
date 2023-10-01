@@ -1,11 +1,15 @@
 package com.os.cvCamera
 
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.view.get
 import com.os.cvCamera.BuildConfig.GIT_HASH
 import com.os.cvCamera.BuildConfig.VERSION_NAME
 import com.os.cvCamera.databinding.ActivityMainBinding
@@ -70,6 +74,18 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
         // Load buttonConfigs
         configButtons()
+
+        // Load button colors
+        setButtonColors()
+    }
+
+    private fun setButtonColors() {
+        for (i in 0..< binding.bottomAppBar.menu.size()) {
+            val item = binding.bottomAppBar.menu[i]
+            val typedValue = TypedValue()
+            theme.resolveAttribute(android.R.attr.colorAccent, typedValue, true)
+            item.icon?.colorFilter = PorterDuffColorFilter(typedValue.data, PorterDuff.Mode.SRC_ATOP)
+        }
     }
 
     private fun configButtons() {
