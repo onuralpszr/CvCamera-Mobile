@@ -39,8 +39,11 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     companion object {
         init {
             System.loadLibrary("opencv_java4")
+            System.loadLibrary("cvcamera")
         }
     }
+
+    private external fun openCVVersion(): String?
 
     private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
         override fun onManagerConnected(status: Int) {
@@ -77,6 +80,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
         // Load button colors
         setButtonColors()
+
     }
 
     private fun setButtonColors() {
@@ -101,9 +105,10 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
                 R.id.about -> {
                     // Get app version and githash from BuildConfig
+                    val cvVer = openCVVersion() // Get OpenCV version from native code
                     val toast: Toast = Toast.makeText(
                         this,
-                        "CvCamera-Mobile - Version $VERSION_NAME-$GIT_HASH",
+                        "CvCamera-Mobile - Version $VERSION_NAME-$GIT_HASH - OpenCV $cvVer ",
                         Toast.LENGTH_SHORT,
                     )
                     toast.show()
