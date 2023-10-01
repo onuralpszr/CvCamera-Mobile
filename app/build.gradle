@@ -5,6 +5,9 @@ plugins {
 
 android {
 
+    namespace 'com.os.cvCamera'
+    ndkVersion '25.2.9519653'
+
     // https://stackoverflow.com/questions/28498688/gradle-script-to-autoversion-and-include-the-commit-hash-in-android
     def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
 
@@ -31,10 +34,12 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -42,6 +47,7 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
+    
     externalNativeBuild {
         cmake {
             path file('src/main/cpp/CMakeLists.txt')
@@ -51,8 +57,14 @@ android {
     buildFeatures {
         viewBinding true
     }
-    namespace 'com.os.cvCamera'
-    ndkVersion '25.2.9519653'
+
+
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+
 }
 
 dependencies {

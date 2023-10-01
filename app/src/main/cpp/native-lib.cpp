@@ -1,10 +1,13 @@
 #include <jni.h>
 #include <string>
+#include <opencv2/opencv.hpp>
+#include "ndklogger.h"
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_al_cvcamera_MainActivity_stringFromJNI(
+Java_com_os_cvCamera_MainActivity_openCVVersion(
         JNIEnv* env,
-        jobject /* this */) {
-    std::string hello = "Hello from C++";
-    return env->NewStringUTF(hello.c_str());
+        jobject thiz /* this */) {
+    std::string opencvVersion = cv::getVersionString();
+    LOGI("OpenCV version: %s", opencvVersion.c_str());
+    return env->NewStringUTF(opencvVersion.c_str());
 }
