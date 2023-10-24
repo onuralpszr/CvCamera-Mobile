@@ -14,6 +14,7 @@
 /captures
 .externalNativeBuild
 .cxx
+app/sign
 local.properties
 
 # Ignore OpenCV folder and zip files for reduce git repository size
