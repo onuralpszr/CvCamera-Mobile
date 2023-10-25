@@ -6,7 +6,9 @@ on:
     tags:
       - v*
 
-  release_build:
+jobs:
+  apk:
+    name: Generate APK
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
 
