@@ -38,8 +38,14 @@ jobs:
         distribution: temurin
         java-version: 17.X
 
-    - name: Build the app
+    - name: Android Lint
+      run: ./gradlew lint
+
+    - name: Debug Build the app
       run: ./gradlew assembleDebug
+
+    - name: Release Build the app
+      run: ./gradlew build --no-daemon --console=plain
 
     - name: Upload apk
       uses: actions/upload-artifact@v3
