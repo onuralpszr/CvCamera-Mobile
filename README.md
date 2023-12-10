@@ -12,6 +12,7 @@
     <a href="https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml"><img alt="GithubCI" src="https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml/badge.svg?branch=main"></a>
     <a href="https://results.pre-commit.ci/latest/github/onuralpszr/CvCamera-Mobile/main"><img alt="pre-commit.ci status" src="https://results.pre-commit.ci/badge/github/onuralpszr/CvCamera-Mobile/main.svg"></a>
     <a href="https://snyk.io/test/github/onuralpszr/CvCamera-Mobile"><img alt="snyk-security" src="https://snyk.io/test/github/onuralpszr/CvCamera-Mobile/badge.svg"></a>
+    <a href="https://www.codefactor.io/repository/github/onuralpszr/cvcamera-mobile/overview/main"><img src="https://www.codefactor.io/repository/github/onuralpszr/cvcamera-mobile/badge/main" alt="CodeFactor" /></a>
 </p>
 
 
