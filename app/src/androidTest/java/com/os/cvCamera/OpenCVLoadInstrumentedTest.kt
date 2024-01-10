@@ -67,7 +67,7 @@ class OpenCVLoadInstrumentedTest {
 
         // get the toast message
         // get activity from the view
-        
+
         assertEquals(toastMessage, toastMessage)
     }
 
