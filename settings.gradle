@@ -14,5 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "cvCamera"
 include ':app'
-include ':opencvsdk481'
-project(":opencvsdk481").projectDir = file("opencvsdk481/sdk")
+include ':opencvsdk490'
+project(":opencvsdk490").projectDir = file("opencvsdk490/sdk")

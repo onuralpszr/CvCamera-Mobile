@@ -13,7 +13,6 @@ import androidx.core.view.get
 import com.os.cvCamera.BuildConfig.GIT_HASH
 import com.os.cvCamera.BuildConfig.VERSION_NAME
 import com.os.cvCamera.databinding.ActivityMainBinding
-import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.CameraActivity
 import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_BACK
 import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_FRONT
@@ -45,25 +44,11 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     private external fun openCVVersion(): String?
 
-    private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
-        override fun onManagerConnected(status: Int) {
-            when (status) {
-                SUCCESS -> {
-                    Timber.d("OpenCV loaded successfully")
-                    Timber.d("OpenCV Version: $OPENCV_VERSION")
-                    binding.CvCamera.enableView()
-                    binding.CvCamera.getCameraDevice()
-                }
-
-                else -> {
-                    super.onManagerConnected(status)
-                }
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.d("OpenCV Version: $OPENCV_VERSION")
+
+
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -140,6 +125,8 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         binding.CvCamera.setCvCameraViewListener(this)
         binding.CvCamera.setCameraPermissionGranted()
         Timber.d("OpenCV Camera Loaded")
+        binding.CvCamera.enableView()
+        binding.CvCamera.getCameraDevice()
     }
 
     private fun enableFlashLight() {
@@ -215,12 +202,5 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     override fun onResume() {
         Timber.d("onResume")
         super.onResume()
-        if (OpenCVLoader.initDebug()) {
-            Timber.d("OpenCV loaded")
-            mLoaderCallback.onManagerConnected(BaseLoaderCallback.SUCCESS)
-        } else {
-            Timber.d("OpenCV didn't load")
-            OpenCVLoader.initAsync(OPENCV_VERSION, this, mLoaderCallback)
-        }
     }
 }
