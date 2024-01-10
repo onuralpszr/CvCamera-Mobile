@@ -24,7 +24,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                arguments "-DOpenCV_DIR=" + file('../opencvsdk481').absolutePath + "/sdk/native/jni",
+                arguments "-DOpenCV_DIR=" + file('../opencvsdk490').absolutePath + "/sdk/native/jni",
                         "-DANDROID_TOOLCHAIN=clang",
                         "-DANDROID_STL=c++_shared"
                 cppFlags ''
@@ -81,8 +81,10 @@ dependencies {
     // Material
     implementation 'com.google.android.material:material:1.11.0'
 
-    //OpenCV-4
-    implementation project(path: ':opencvsdk481')
+    //Src - OpenCV-4
+    implementation project(path: ':opencvsdk490')
+    // Maven OpenCV-4
+    // implementation 'org.opencv:opencv:4.9.0'
 
     //Timber Log
     implementation 'com.jakewharton.timber:timber:5.0.1'

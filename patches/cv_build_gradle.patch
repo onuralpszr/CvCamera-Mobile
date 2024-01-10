@@ -1,7 +1,7 @@
-diff --git a/opencvsdk481/sdk/build.gradle b/opencvsdk481/sdk/build.gradle
+diff --git a/opencvsdk490/sdk/build.gradle b/opencvsdk490/sdk/build.gradle
 index 1ed73f5..ccafa93 100644
---- a/opencvsdk481/sdk/build.gradle
-+++ b/opencvsdk481/sdk/build.gradle
+--- a/opencvsdk490/sdk/build.gradle
++++ b/opencvsdk490/sdk/build.gradle
 @@ -98,11 +98,12 @@ println "OpenCV: " +openCVersionName + " " + project.buildscript.sourceFile
  
  android {
