@@ -4,4 +4,5 @@
     <string name="cameraSwitch">Change Camera</string>
     <string name="flashlight">Flashlight</string>
     <string name="about">About</string>
+    <string name="filters">Switch Filters</string>
 </resources>

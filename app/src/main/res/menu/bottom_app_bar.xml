@@ -13,4 +13,11 @@
         android:title="@string/about"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/grayscale"
+        android:icon="@drawable/baseline_autorenew_24"
+        android:title="@string/filters"
+        app:showAsAction="ifRoom"/>
+
+
 </menu>

@@ -157,8 +157,13 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
     }
 
     fun turnOnFlashlight() {
-        val captureRequestBuilder = mCameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
+        val captureRequestBuilder =
+            mCameraDevice!!.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
         captureRequestBuilder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH)
-        mCaptureSession!!.setRepeatingRequest(mPreviewRequestBuilder.build(), null, mBackgroundHandler)
+        mCaptureSession!!.setRepeatingRequest(
+            mPreviewRequestBuilder.build(),
+            null,
+            mBackgroundHandler
+        )
     }
 }

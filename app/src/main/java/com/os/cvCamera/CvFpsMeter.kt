@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import org.opencv.android.FpsMeter
 import org.opencv.core.Core
-import timber.log.Timber
 import java.text.DecimalFormat
 
 class CvFpsMeter : FpsMeter() {
@@ -52,7 +51,6 @@ class CvFpsMeter : FpsMeter() {
                     } else {
                         FPS_FORMAT.format(fps) + " FPS"
                     }
-                Timber.d(mStrfps!!)
             }
         }
     }
@@ -63,7 +61,7 @@ class CvFpsMeter : FpsMeter() {
     }
 
     override fun draw(canvas: Canvas, offsetx: Float, offsety: Float) {
-        Timber.d(mStrfps!!)
+        //Timber.d(mStrfps!!)
         canvas.drawText(mStrfps!!, offsetx + mExtraOffsetX, offsety + mExtraOffsetY, mPaint!!)
     }
 }

@@ -1,5 +1,6 @@
 package com.os.cvCamera
 
+
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.hardware.camera2.CameraAccessException
@@ -18,7 +19,6 @@ import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_BACK
 import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_FRONT
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2
-import org.opencv.android.OpenCVLoader
 import org.opencv.android.OpenCVLoader.OPENCV_VERSION
 import org.opencv.core.Core
 import org.opencv.core.CvType
@@ -34,6 +34,10 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     private var mTorchCameraId: String = ""
     private var mTorchState = false
     private lateinit var mCameraManager: CameraManager
+
+    // Filters id
+    private var mFilterId = -1
+
 
     companion object {
         init {
@@ -69,11 +73,12 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     }
 
     private fun setButtonColors() {
-        for (i in 0..< binding.bottomAppBar.menu.size()) {
+        for (i in 0..<binding.bottomAppBar.menu.size()) {
             val item = binding.bottomAppBar.menu[i]
             val typedValue = TypedValue()
             theme.resolveAttribute(android.R.attr.colorAccent, typedValue, true)
-            item.icon?.colorFilter = PorterDuffColorFilter(typedValue.data, PorterDuff.Mode.SRC_ATOP)
+            item.icon?.colorFilter =
+                PorterDuffColorFilter(typedValue.data, PorterDuff.Mode.SRC_ATOP)
         }
     }
 
@@ -101,6 +106,38 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                     true
                 }
 
+                R.id.grayscale -> {
+                    // Toggle between grayscale,toSepia,toPencilSketch,toSobel,toCanny
+                    mFilterId = when (mFilterId) {
+                        -1 -> {
+                            0
+                        }
+
+                        0 -> {
+                            1
+                        }
+
+                        1 -> {
+                            2
+                        }
+
+                        2 -> {
+                            3
+                        }
+
+                        3 -> {
+                            -1
+                        }
+
+                        else -> {
+                            -1
+                        }
+                    }
+
+
+                    true
+                }
+
                 else -> {
                     false
                 }
@@ -120,6 +157,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         binding.CvCamera.enableView()
     }
 
+
     private fun loadOpenCVConfigs() {
         binding.CvCamera.setCameraIndex(mCameraId)
         binding.CvCamera.setCvCameraViewListener(this)
@@ -128,6 +166,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         binding.CvCamera.enableView()
         binding.CvCamera.getCameraDevice()
     }
+
 
     private fun enableFlashLight() {
         mTorchState = true
@@ -171,20 +210,52 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     override fun onCameraFrame(inputFrame: CvCameraViewFrame?): Mat {
         return if (inputFrame != null) {
+
             if (mCameraId == CAMERA_ID_BACK) {
-                inputFrame.rgba()
+                mRGBA = inputFrame.rgba()
+                cvFilters(mRGBA)
             } else {
                 mRGBA = inputFrame.rgba()
                 // Flipping to show portrait mode properly
                 Core.flip(mRGBA, mRGBAT, 1)
                 // Release the matrix to avoid memory leaks
                 mRGBA.release()
-                mRGBAT
+                // Check if grayscale is enabled
+                cvFilters(mRGBAT)
             }
+
         } else {
             // return last or empty frame
             mRGBA
         }
+    }
+
+    private fun cvFilters(frame: Mat): Mat {
+        when (mFilterId) {
+            0 -> {
+                Toast.makeText(this, "Grayscale 0", Toast.LENGTH_SHORT).show()
+                frame.toGray()
+            }
+
+            1 -> {
+                Toast.makeText(this, "Sepia 1", Toast.LENGTH_SHORT).show()
+                frame.toSepia()
+            }
+
+            2 -> {
+                frame.toSobel()
+            }
+
+            3 -> {
+                frame.toCanny()
+            }
+
+            else -> {
+                frame
+            }
+        }
+
+        return frame
     }
 
     override fun onDestroy() {
