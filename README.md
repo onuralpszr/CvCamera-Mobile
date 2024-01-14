@@ -1,11 +1,12 @@
 
 # CvCamera-Mobile
 
-OpenCV's Android Camera2 with OpenCV4 (JavaCamera2View)
+Utilizing OpenCV4 with Android's Camera2 API through JavaCamera2View
 
 [![MIT](https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white)](https://opensource.org/license/mit/)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.8.22-%23E34F26?logo=Kotlin&logoColor=white)](https://kotlinlang.org/)
-[![Gradle](https://img.shields.io/badge/Gradle-8.1.1-02303A?logo=Gradle&logoColor=white)](https://gradle.org/releases/)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-%23E34F26?logo=Kotlin&logoColor=white)](https://kotlinlang.org/)
+[![Gradle](https://img.shields.io/badge/Gradle-8.5.0-02303A?logo=Gradle&logoColor=white)](https://gradle.org/releases/)
+[![Android-Gradle-Plugin](https://img.shields.io/badge/AGP-8.2.1-02303A?logo=Gradle&logoColor=white)](https://developer.android.com/build/releases/gradle-plugin)
 [![OpenCV](https://img.shields.io/badge/OpenCV-4.9.0-5C3EE8?logo=OpenCV&logoColor=white)](https://opencv.org/)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 [![android-studio](https://img.shields.io/badge/android%20studio-Giraffe-3DDC84?logo=androidstudio&logoColor=white)](https://developer.android.com/studio)
@@ -22,7 +23,7 @@ OpenCV's Android Camera2 with OpenCV4 (JavaCamera2View)
 This android project is barebone setting up OpenCV 4.9.0 (and other 4.x.y versions) for Android in [Android Studio](https://developer.android.com/studio) with Native Development Kit (NDK) support.
 [Android NDK](https://developer.android.com/ndk) enables you to implement your [OpenCV](https://opencv.org) image processing pipeline in C++ and call that C++ code from Android Kotlin/Java code through JNI ([Java Native Interface](https://en.wikipedia.org/wiki/Java_Native_Interface)).
 
-This sample Android application displays a live camera feed only and camera switch to back and front in runtime.
+This Android application, provides a live camera feed with the ability to dynamically switch between front and back cameras. It includes a custom cvFpsMeter for enhanced text visibility. Also features a basic setup for Android NDK and OpenCV, as well as a CV filter with a toggle button for camera switching.
 
 ## How to use this repository
 
