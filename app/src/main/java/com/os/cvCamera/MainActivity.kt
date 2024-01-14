@@ -250,9 +250,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                 frame.toCanny()
             }
 
-            else -> {
-                frame
-            }
         }
 
         return frame

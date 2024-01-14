@@ -1,35 +1,28 @@
 
-<h1 align="center">CvCamera-Mobile</h1>
-<h3 align="center">OpenCV's Android Camera2 with OpenCV4 (JavaCamera2View)</h3>
+# CvCamera-Mobile
 
-<p align="center">
-    <a href="https://opensource.org/license/mit/"><img alt="MIT" src="https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white"></a>
-    <a href="https://kotlinlang.org/"><img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-1.8.22-%23E34F26?logo=Kotlin&logoColor=white"></a>
-    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-8.1.1-02303A?logo=Gradle&logoColor=white"></a>
-    <a href="https://opencv.org/"><img alt="OpenCV" src="https://img.shields.io/badge/OpenCV-4.9.0-5C3EE8?logo=OpenCV&logoColor=white"></a>
-    <a href="https://conventionalcommits.org"><img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white"></a>
-    <a href="https://developer.android.com/studio"><img alt="android-studio" src="https://img.shields.io/badge/android studio-Giraffe-3DDC84?logo=androidstudio&logoColor=white"></a>
-    <a href="https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml"><img alt="GithubCI" src="https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml/badge.svg?branch=main"></a>
-    <a href="https://results.pre-commit.ci/latest/github/onuralpszr/CvCamera-Mobile/main"><img alt="pre-commit.ci status" src="https://results.pre-commit.ci/badge/github/onuralpszr/CvCamera-Mobile/main.svg"></a>
-    <a href="https://snyk.io/test/github/onuralpszr/CvCamera-Mobile"><img alt="snyk-security" src="https://snyk.io/test/github/onuralpszr/CvCamera-Mobile/badge.svg"></a>
-    <a href="https://www.codefactor.io/repository/github/onuralpszr/cvcamera-mobile/overview/main"><img src="https://www.codefactor.io/repository/github/onuralpszr/cvcamera-mobile/badge/main" alt="CodeFactor" /></a>
-</p>
+OpenCV's Android Camera2 with OpenCV4 (JavaCamera2View)
 
-
-
-
+[![MIT](https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white)](https://opensource.org/license/mit/)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.8.22-%23E34F26?logo=Kotlin&logoColor=white)](https://kotlinlang.org/)
+[![Gradle](https://img.shields.io/badge/Gradle-8.1.1-02303A?logo=Gradle&logoColor=white)](https://gradle.org/releases/)
+[![OpenCV](https://img.shields.io/badge/OpenCV-4.9.0-5C3EE8?logo=OpenCV&logoColor=white)](https://opencv.org/)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
+[![android-studio](https://img.shields.io/badge/android%20studio-Giraffe-3DDC84?logo=androidstudio&logoColor=white)](https://developer.android.com/studio)
+[![GithubCI](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml/badge.svg?branch=main)](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci.yml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/onuralpszr/CvCamera-Mobile/main.svg)](https://results.pre-commit.ci/latest/github/onuralpszr/CvCamera-Mobile/main)
+[![snyk-security](https://snyk.io/test/github/onuralpszr/CvCamera-Mobile/badge.svg)](https://snyk.io/test/github/onuralpszr/CvCamera-Mobile)
+[![CodeFactor](https://www.codefactor.io/repository/github/onuralpszr/cvcamera-mobile/badge/main)](https://www.codefactor.io/repository/github/onuralpszr/cvcamera-mobile/overview/main)
 
  <p align="center">
     <img src="appPreview/appOverview.png" width="200" max-height="%20"/>
     <img src="appPreview/appOverview2.png" width="200" max-height="%20"/>
 </p>
 
-
 This android project is barebone setting up OpenCV 4.9.0 (and other 4.x.y versions) for Android in [Android Studio](https://developer.android.com/studio) with Native Development Kit (NDK) support.
 [Android NDK](https://developer.android.com/ndk) enables you to implement your [OpenCV](https://opencv.org) image processing pipeline in C++ and call that C++ code from Android Kotlin/Java code through JNI ([Java Native Interface](https://en.wikipedia.org/wiki/Java_Native_Interface)).
 
 This sample Android application displays a live camera feed only and camera switch to back and front in runtime.
-
 
 ## How to use this repository
 
@@ -47,9 +40,20 @@ This sample Android application displays a live camera feed only and camera swit
 
     * Optional(For linux) you can run setupOpenCV.sh for automatic download and setup gradle file for opencv
 
-
 5. Sync Gradle and run the application on your Android Device!
 
-## Keywords
+# Features
+
+* **OpenCV Version Update**: The OpenCV version was updated multiple times, with the latest being 4.9.0.
+* **Camera Switch**: Added the ability to switch between the front and back camera.
+* **SetupOpenCV Script**: Introduced a script for setting up OpenCV.
+* **Custom cvFpsMeter**: Implemented a custom cvFpsMeter for bigger text and different color choice.
+* **Material3 Theme**: Added configurations for the Material3 theme.
+* **UI Overhaul**: The user interface was significantly updated, and strings were added.
+* **Timber Logging**: Added Timber logging for fpsMeter and ExtendedJavaCamera2View.
+* **Android NDK - OpenCV Basic Setup**: Implemented a basic setup for Android NDK and OpenCV.
+* **CV Filter with Toggle Button**: Added a basic CV filter with a toggle button to switch between the front and back camera.
+
+# Keywords
 
 Kotlin, OpenCV 4, Android, Android Studio, Native, NDK, Native Development Kit, JNI, C++,
