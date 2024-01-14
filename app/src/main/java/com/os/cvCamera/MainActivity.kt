@@ -89,9 +89,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.flashlight -> {
-                    true
-                }
 
                 R.id.about -> {
                     // Get app version and githash from BuildConfig
@@ -106,22 +103,26 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                     true
                 }
 
-                R.id.grayscale -> {
+                R.id.filters -> {
                     // Toggle between grayscale,toSepia,toPencilSketch,toSobel,toCanny
                     mFilterId = when (mFilterId) {
                         -1 -> {
+                            Toast.makeText(this, getString(R.string.grayscale_filter), Toast.LENGTH_SHORT).show()
                             0
                         }
 
                         0 -> {
+                            Toast.makeText(this, getString(R.string.sepia_filter), Toast.LENGTH_SHORT).show()
                             1
                         }
 
                         1 -> {
+                            Toast.makeText(this, getString(R.string.sobel_filter), Toast.LENGTH_SHORT).show()
                             2
                         }
 
                         2 -> {
+                            Toast.makeText(this, getString(R.string.canny_filter), Toast.LENGTH_SHORT).show()
                             3
                         }
 
@@ -138,10 +139,18 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                     true
                 }
 
+                R.id.resizeCanvas -> {
+                    binding.CvCamera.disableView()
+                    binding.CvCamera.setFitToCanvas(!binding.CvCamera.getFitToCanvas())
+                    binding.CvCamera.enableView()
+                    true
+                }
+
                 else -> {
                     false
                 }
             }
+
         }
     }
 
@@ -231,14 +240,12 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     }
 
     private fun cvFilters(frame: Mat): Mat {
-        when (mFilterId) {
+        return when (mFilterId) {
             0 -> {
-                Toast.makeText(this, "Grayscale 0", Toast.LENGTH_SHORT).show()
                 frame.toGray()
             }
 
             1 -> {
-                Toast.makeText(this, "Sepia 1", Toast.LENGTH_SHORT).show()
                 frame.toSepia()
             }
 
@@ -250,9 +257,9 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                 frame.toCanny()
             }
 
+            else -> frame
         }
 
-        return frame
     }
 
     override fun onDestroy() {

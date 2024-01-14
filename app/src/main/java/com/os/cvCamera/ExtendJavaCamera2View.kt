@@ -21,6 +21,7 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
     private val mMatrix: Matrix = Matrix()
     private var mCacheBitmap: Bitmap? = null
     private var mListener: CvCameraViewListener2? = null
+    private var mFitToCanvas : Boolean = true
 
     private fun updateMatrix() {
         val mw: Float = this.width.toFloat()
@@ -51,18 +52,25 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
 
     override fun layout(l: Int, t: Int, r: Int, b: Int) {
         super.layout(l, t, r, b)
-        updateMatrix()
+        if (mFitToCanvas) updateMatrix()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        updateMatrix()
+        if (mFitToCanvas) updateMatrix()
     }
 
     override fun deliverAndDrawFrame(frame: CvCameraViewFrame?) {
-        val modified: Mat? = if (mListener != null) {
-            mListener?.onCameraFrame(frame)
-        } else {
+
+        if (!mFitToCanvas)
+            super.deliverAndDrawFrame(frame)
+        else
+            deliverAndDrawFrame2(frame)
+    }
+
+    private fun deliverAndDrawFrame2(frame:CvCameraViewFrame?)
+    {
+        val modified: Mat? = if (mListener != null) mListener?.onCameraFrame(frame) else {
             frame!!.rgba()
         }
 
@@ -121,7 +129,21 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
+
+    fun setFitToCanvas(fitToCanvas: Boolean) {
+        mFitToCanvas = fitToCanvas
+    }
+
+    fun getFitToCanvas(): Boolean {
+        return mFitToCanvas
+    }
+
+
     override fun AllocateCache() {
+        if (!mFitToCanvas) {
+            super.AllocateCache()
+            return
+        }
         mCacheBitmap = Bitmap.createBitmap(mFrameWidth, mFrameHeight, Bitmap.Config.ARGB_8888)
     }
 
