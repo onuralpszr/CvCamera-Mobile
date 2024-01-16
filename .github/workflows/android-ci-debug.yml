@@ -39,7 +39,7 @@ jobs:
         java-version: 17.X
 
     - name: 🧹 Run Android Lint
-      run: ./gradlew lint
+      run: ./gradlew lint -Pandroid.lintOptions.xmlOutput=true
 
     - name: 📝 Post Lint Results
       uses: actions/github-script@v5
