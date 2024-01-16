@@ -8,6 +8,10 @@
 .externalNativeBuild
 .cxx
 app/sign
+app/build
+app/.cxx
+app/.externalNativeBuild
+app/release
 local.properties
 
 # Keystore files
