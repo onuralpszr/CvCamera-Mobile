@@ -1,4 +1,4 @@
-name: Build and Release
+name: 🚀 Build and Release
 
 on:
   push:
@@ -8,55 +8,61 @@ on:
       - "v*"
 
 jobs:
-  apk:
-    name: Generate APK
+  apk-release:
+    name: 📦 Generate APK
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.4.0
-      - name: Setup JDK
-        uses: actions/setup-java@v2.5.0
+      - name: 🔄 Checkout Code
+        uses: actions/checkout@v4
+      - name: 🛠️ Setup JDK
+        uses: actions/setup-java@v4.0.0
         with:
           distribution: temurin
           java-version: "17"
 
-      - name: Android-OpenCV-SDK Setup
+      - name: 📚 Android-OpenCV-SDK Setup
         run: ./setupOpenCV.sh
 
-      - name: Set execution flag for gradlew
+      - name: 🚀 Set execution flag for gradlew
         run: chmod +x gradlew
-      - name: Build APK
-        run: bash ./gradlew assembleDebug --stacktrace
-      - name: Upload APK
-        uses: actions/upload-artifact@v1
-        with:
-          name: apk
-          path: app/build/outputs/apk/debug/app-debug.apk
 
-  release:
-    name: Release APK
-    needs: apk
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download APK from build
-        uses: actions/download-artifact@v1
+      - name: 🗝️ Decode the Keystore
+        run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.jks
+
+      - name: 📁 Move Keystore
+        run: mv keystore.jks app/
+
+      - name: 🏗️ Build Signed APK
+        run: |
+          bash ./gradlew assembleRelease --stacktrace \
+            -Pandroid.injected.signing.store.file=keystore.jks \
+            -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
+            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
+            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+
+      - name: 📤 Upload APK
+        uses: actions/upload-artifact@v4
         with:
           name: apk
-      - name: Create Release
+          path: app/build/outputs/apk/release/app-release.apk
+
+      - name: 🏷️ Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.run_number }}
-          release_name: ${{ github.event.repository.name }} v${{ github.run_number }}
-      - name: Upload Release APK
-        id: upload_release_asset
-        uses: actions/upload-release-asset@v1.0.1
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: false
+
+      - name: 📤 Upload APK to Release
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: apk/app-debug.apk
-          asset_name: ${{ github.event.repository.name }}.apk
-          asset_content_type: application/zip
+          asset_path: ./app/build/outputs/apk/release/app-release.apk
+          asset_name: app-release.apk
+          asset_content_type: application/vnd.android.package-archive
