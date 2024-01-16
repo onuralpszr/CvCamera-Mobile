@@ -7,7 +7,12 @@
 /captures
 .externalNativeBuild
 .cxx
+app/sign
 local.properties
+
+# Keystore files
+*.jks
+*.keystore
 
 # Ignore OpenCV folder and zip files for reduce git repository size
 opencvsdk460/
