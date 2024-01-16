@@ -42,7 +42,7 @@ jobs:
       run: ./gradlew lint
 
     - name: 📝 Post Lint Results
-      uses: actions/github-script@v5
+      uses: actions/github-script@v7
       if: always()
       with:
         script: |
