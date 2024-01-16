@@ -31,7 +31,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                arguments "-DOpenCV_DIR=" + file('../opencvsdk480').absolutePath + "/sdk/native/jni",
+                arguments "-DOpenCV_DIR=" + file('../opencvsdk490').absolutePath + "/sdk/native/jni",
                         "-DANDROID_TOOLCHAIN=clang",
                         "-DANDROID_STL=c++_shared"
                 cppFlags ''
@@ -46,6 +46,10 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    lint {
+        baseline = file("lint-baseline.xml")
     }
 
     compileOptions {
@@ -64,6 +68,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 
 
@@ -82,19 +87,25 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     // Material
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'com.google.android.material:material:1.11.0'
 
-    //OpenCV
-    implementation project(path: ':opencvsdk480')
+    //Src - OpenCV-4
+    implementation project(path: ':opencvsdk490')
+    // Maven OpenCV-4
+    // implementation 'org.opencv:opencv:4.9.0'
 
     //Timber Log
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
     // AndroidX Startup
     implementation 'androidx.startup:startup-runtime:1.1.1'
-
-    // Test
+    implementation 'androidx.test.ext:junit-ktx:1.1.5'
+    // AndroidX Test - JVM testing
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    testImplementation 'androidx.test.ext:junit:1.1.5'
+    // Espresso UI Testing
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+
+
 }

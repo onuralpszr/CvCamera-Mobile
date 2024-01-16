@@ -1,5 +1,6 @@
 package com.os.cvCamera
 
+
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.hardware.camera2.CameraAccessException
@@ -13,13 +14,11 @@ import androidx.core.view.get
 import com.os.cvCamera.BuildConfig.GIT_HASH
 import com.os.cvCamera.BuildConfig.VERSION_NAME
 import com.os.cvCamera.databinding.ActivityMainBinding
-import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.CameraActivity
 import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_BACK
 import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_FRONT
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2
-import org.opencv.android.OpenCVLoader
 import org.opencv.android.OpenCVLoader.OPENCV_VERSION
 import org.opencv.core.Core
 import org.opencv.core.CvType
@@ -36,6 +35,10 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     private var mTorchState = false
     private lateinit var mCameraManager: CameraManager
 
+    // Filters id
+    private var mFilterId = -1
+
+
     companion object {
         init {
             System.loadLibrary("opencv_java4")
@@ -45,25 +48,11 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     private external fun openCVVersion(): String?
 
-    private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
-        override fun onManagerConnected(status: Int) {
-            when (status) {
-                SUCCESS -> {
-                    Timber.d("OpenCV loaded successfully")
-                    Timber.d("OpenCV Version: $OPENCV_VERSION")
-                    binding.CvCamera.enableView()
-                    binding.CvCamera.getCameraDevice()
-                }
-
-                else -> {
-                    super.onManagerConnected(status)
-                }
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.d("OpenCV Version: $OPENCV_VERSION")
+
+
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -84,11 +73,12 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     }
 
     private fun setButtonColors() {
-        for (i in 0..< binding.bottomAppBar.menu.size()) {
+        for (i in 0..<binding.bottomAppBar.menu.size()) {
             val item = binding.bottomAppBar.menu[i]
             val typedValue = TypedValue()
             theme.resolveAttribute(android.R.attr.colorAccent, typedValue, true)
-            item.icon?.colorFilter = PorterDuffColorFilter(typedValue.data, PorterDuff.Mode.SRC_ATOP)
+            item.icon?.colorFilter =
+                PorterDuffColorFilter(typedValue.data, PorterDuff.Mode.SRC_ATOP)
         }
     }
 
@@ -99,9 +89,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.flashlight -> {
-                    true
-                }
 
                 R.id.about -> {
                     // Get app version and githash from BuildConfig
@@ -116,10 +103,54 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                     true
                 }
 
+                R.id.filters -> {
+                    // Toggle between grayscale,toSepia,toPencilSketch,toSobel,toCanny
+                    mFilterId = when (mFilterId) {
+                        -1 -> {
+                            Toast.makeText(this, getString(R.string.grayscale_filter), Toast.LENGTH_SHORT).show()
+                            0
+                        }
+
+                        0 -> {
+                            Toast.makeText(this, getString(R.string.sepia_filter), Toast.LENGTH_SHORT).show()
+                            1
+                        }
+
+                        1 -> {
+                            Toast.makeText(this, getString(R.string.sobel_filter), Toast.LENGTH_SHORT).show()
+                            2
+                        }
+
+                        2 -> {
+                            Toast.makeText(this, getString(R.string.canny_filter), Toast.LENGTH_SHORT).show()
+                            3
+                        }
+
+                        3 -> {
+                            -1
+                        }
+
+                        else -> {
+                            -1
+                        }
+                    }
+
+
+                    true
+                }
+
+                R.id.resizeCanvas -> {
+                    binding.CvCamera.disableView()
+                    binding.CvCamera.setFitToCanvas(!binding.CvCamera.getFitToCanvas())
+                    binding.CvCamera.enableView()
+                    true
+                }
+
                 else -> {
                     false
                 }
             }
+
         }
     }
 
@@ -135,12 +166,16 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         binding.CvCamera.enableView()
     }
 
+
     private fun loadOpenCVConfigs() {
         binding.CvCamera.setCameraIndex(mCameraId)
         binding.CvCamera.setCvCameraViewListener(this)
         binding.CvCamera.setCameraPermissionGranted()
         Timber.d("OpenCV Camera Loaded")
+        binding.CvCamera.enableView()
+        binding.CvCamera.getCameraDevice()
     }
+
 
     private fun enableFlashLight() {
         mTorchState = true
@@ -184,20 +219,47 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     override fun onCameraFrame(inputFrame: CvCameraViewFrame?): Mat {
         return if (inputFrame != null) {
+
             if (mCameraId == CAMERA_ID_BACK) {
-                inputFrame.rgba()
+                mRGBA = inputFrame.rgba()
+                cvFilters(mRGBA)
             } else {
                 mRGBA = inputFrame.rgba()
                 // Flipping to show portrait mode properly
                 Core.flip(mRGBA, mRGBAT, 1)
                 // Release the matrix to avoid memory leaks
                 mRGBA.release()
-                mRGBAT
+                // Check if grayscale is enabled
+                cvFilters(mRGBAT)
             }
+
         } else {
             // return last or empty frame
             mRGBA
         }
+    }
+
+    private fun cvFilters(frame: Mat): Mat {
+        return when (mFilterId) {
+            0 -> {
+                frame.toGray()
+            }
+
+            1 -> {
+                frame.toSepia()
+            }
+
+            2 -> {
+                frame.toSobel()
+            }
+
+            3 -> {
+                frame.toCanny()
+            }
+
+            else -> frame
+        }
+
     }
 
     override fun onDestroy() {
@@ -215,12 +277,5 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     override fun onResume() {
         Timber.d("onResume")
         super.onResume()
-        if (OpenCVLoader.initDebug()) {
-            Timber.d("OpenCV loaded")
-            mLoaderCallback.onManagerConnected(BaseLoaderCallback.SUCCESS)
-        } else {
-            Timber.d("OpenCV didn't load")
-            OpenCVLoader.initAsync(OPENCV_VERSION, this, mLoaderCallback)
-        }
     }
 }

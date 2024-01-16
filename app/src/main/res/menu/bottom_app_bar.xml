@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
+    <!--<item
         android:id="@+id/flashlight"
         android:icon="@drawable/baseline_flashlight_on_24"
         android:title="@string/flashlight"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"/>-->
 
     <item
         android:id="@+id/about"
         android:icon="@drawable/baseline_info_24"
         android:title="@string/about"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/filters"
+        android:icon="@drawable/baseline_contrast_24"
+        android:title="@string/filters"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/resizeCanvas"
+        android:icon="@drawable/baseline_camera_enhance_24"
+        android:title="@string/resizeCanvas"
         app:showAsAction="ifRoom"/>
 
 </menu>

@@ -12,6 +12,6 @@ import org.opencv.android.OpenCVLoader.OPENCV_VERSION
 class CvCheckUnitTest {
     @Test
     fun opencv_version_isCorrect() {
-        assertEquals("4.7.0", OPENCV_VERSION)
+        assertEquals("4.9.0", OPENCV_VERSION)
     }
 }

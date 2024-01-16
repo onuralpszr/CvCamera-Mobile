@@ -4,4 +4,10 @@
     <string name="cameraSwitch">Change Camera</string>
     <string name="flashlight">Flashlight</string>
     <string name="about">About</string>
+    <string name="filters">Switch Filters</string>
+    <string name="resizeCanvas">Resize Canvas</string>
+    <string name="grayscale_filter">Grayscale Filter</string>
+    <string name="sepia_filter">Sepia Filter</string>
+    <string name="sobel_filter">Sobel Filter</string>
+    <string name="canny_filter">Canny Filter</string>
 </resources>

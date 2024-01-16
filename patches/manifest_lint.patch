@@ -1,0 +1,11 @@
+diff --git a/opencvsdk490/sdk/java/AndroidManifest.xml b/opencvsdk490-patched/sdk/java/AndroidManifest.xml
+index e971f76..2a6e130 100644
+--- a/opencvsdk490/sdk/java/AndroidManifest.xml
++++ b/opencvsdk490-patched/sdk/java/AndroidManifest.xml
+@@ -1,4 +1,4 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+-      package="org.opencv" >
++<manifest xmlns:android="http://schemas.android.com/apk/res/android">
++     <uses-permission android:name="android.permission.CAMERA" />
+ </manifest>

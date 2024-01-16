@@ -1,14 +1,7 @@
 *.iml
 .gradle
 /local.properties
-/.idea/.name
-/.idea/deploymentTargetDropDown.xml
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+/.idea
 .DS_Store
 /build
 /captures
@@ -21,11 +14,15 @@ local.properties
 opencvsdk460/
 opencvsdk470/
 opencvsdk480/
+opencvsdk481/
+opencvsdk490/
 
 OpenCV-android-sdk/
 opencv-4.6.0-android-sdk.zip
 opencv-4.7.0-android-sdk.zip
 opencv-4.8.0-android-sdk.zip
+opencv-4.8.1-android-sdk.zip
+opencv-4.9.0-android-sdk.zip
 OpenCV4Android.zip
 # Ignore zip files, because setupOpenCV.sh will download a zip file
 *.zip
