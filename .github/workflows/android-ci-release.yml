@@ -54,7 +54,6 @@ jobs:
           echo "opencv_version=$(awk -F'= ' '/def openCVersionName/ { print $2 }' opencvsdk490/sdk/build.gradle | tr -d '\"')" >> "$GITHUB_ENV"
           echo "version_name=$(grep -oP 'versionName "\K[^"]+' app/build.gradle)" >> "$GITHUB_ENV"
           echo "git_hash=$(git rev-parse --verify --short HEAD)" >> "$GITHUB_ENV"
-          echo "git_tags=$(git ls-remote --tags --sort=committerdate | grep -o 'v.*' | sort -r | head -1)" >> "$GITHUB_ENV"
 
       - name: 🏷️ Create Release
         id: create_release
@@ -62,7 +61,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.git_tags }}
+          tag_name: ${{ github.ref }}
           release_name: Release CvCameraMobile - OpenCV ${{ env.opencv_version }} - Version ${{ env.version_name }} - Git Hash ${{ env.git_hash }}
           draft: true
           prerelease: false
