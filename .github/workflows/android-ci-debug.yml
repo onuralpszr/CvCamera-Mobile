@@ -39,22 +39,22 @@ jobs:
         java-version: 17.X
 
     - name: 🧹 Run Android Lint
-      run: ./gradlew lint -Pandroid.lintOptions.xmlOutput=true
+      run: ./gradlew lint
 
     - name: 📝 Post Lint Results
       uses: actions/github-script@v5
-      if: always()
+      if: github.event_name == 'pull_request'
       with:
         script: |
           const fs = require('fs');
-          const lintResult = fs.readFileSync('./app/build/reports/lint-results.xml', 'utf8');
+          const lintResult = fs.readFileSync('./app/lint-results.xml', 'utf8');
           const issueComment = `
             ## Lint Results 🧹
             \`\`\`
             ${lintResult}
             \`\`\`
           `;
-          github.issues.createComment({
+          github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,

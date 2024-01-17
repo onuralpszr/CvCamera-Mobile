@@ -29,10 +29,16 @@ jobs:
       - name: 🗝️ Decode the Keystore
         run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.jks
 
+        # list files and show pwd for debugging
+      - name: 📂 List files
+        run: |
+          ls -la
+          pwd
+
       - name: 🏗️ Build Signed APK
         run: |
           bash ./gradlew assembleRelease --stacktrace \
-            -Pandroid.injected.signing.store.file=keystore.jks \
+          -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/keystore.jks \
             -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
             -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
             -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
@@ -43,14 +49,21 @@ jobs:
           name: apk
           path: app/build/outputs/apk/release/app-release.apk
 
+      - name: Get OpenCV version and versionName
+        run: |
+          echo "opencv_version=$(awk -F'= ' '/def openCVersionName/ { print $2 }' opencvsdk490/sdk/build.gradle | tr -d '\"')" >> "$GITHUB_ENV"
+          echo "version_name=$(grep -oP 'versionName "\K[^"]+' app/build.gradle)" >> "$GITHUB_ENV"
+          echo "git_hash=$(git rev-parse --verify --short HEAD)" >> "$GITHUB_ENV"
+          echo "git_tags=$(git ls-remote --tags --sort=committerdate | grep -o 'v.*' | sort -r | head -1)" >> "$GITHUB_ENV"
+
       - name: 🏷️ Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ env.git_tags }}
+          release_name: Release CvCameraMobile - OpenCV ${{ env.opencv_version }} - Version ${{ env.version_name }} - Git Hash ${{ env.git_hash }}
           draft: true
           prerelease: false
 
