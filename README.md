@@ -6,7 +6,7 @@ Utilizing OpenCV4 with Android's Camera2 API through JavaCamera2View
 [![MIT](https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white)](https://opensource.org/license/mit/)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-%23E34F26?logo=Kotlin&logoColor=white)](https://kotlinlang.org/)
 [![Gradle](https://img.shields.io/badge/Gradle-8.5.0-02303A?logo=Gradle&logoColor=white)](https://gradle.org/releases/)
-[![Android-Gradle-Plugin](https://img.shields.io/badge/AGP-8.2.1-02303A?logo=Gradle&logoColor=white)](https://developer.android.com/build/releases/gradle-plugin)
+[![Android-Gradle-Plugin](https://img.shields.io/badge/AGP-8.2.2-02303A?logo=Gradle&logoColor=white)](https://developer.android.com/build/releases/gradle-plugin)
 [![OpenCV](https://img.shields.io/badge/OpenCV-4.9.0-5C3EE8?logo=OpenCV&logoColor=white)](https://opencv.org/)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 [![android-studio](https://img.shields.io/badge/android%20studio-Giraffe-3DDC84?logo=androidstudio&logoColor=white)](https://developer.android.com/studio)
