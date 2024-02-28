@@ -88,7 +88,7 @@ All notable changes to this project will be documented in this file.
 - ✨ basic cv filter with toggle button to switch between for front and back camera
 - 💄 change old icons with new icons and disable flash light button
 - ✨ switch between original Cv Frame to Fit to Canvas Mode logic added
-- ✨ switch between original Cv Frame to Fit to Canvas Mode logic added  - PR #92 
+- ✨ switch between original Cv Frame to Fit to Canvas Mode logic added  - PR #92
 
 ### Miscellaneous Tasks
 
