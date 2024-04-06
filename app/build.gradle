@@ -50,11 +50,9 @@ android {
 
     lint {
         baseline = file("lint-baseline.xml")
+        xmlOutput file('lint-results.xml')
     }
 
-    lintOptions {
-        xmlOutput file("lint-results.xml")
-    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
