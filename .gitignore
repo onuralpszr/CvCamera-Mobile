@@ -13,6 +13,8 @@ app/.cxx
 app/.externalNativeBuild
 app/release
 local.properties
+.kotlin/
+*.log
 
 # Keystore files
 *.jks
@@ -24,6 +26,7 @@ opencvsdk470/
 opencvsdk480/
 opencvsdk481/
 opencvsdk490/
+opencvsdk4100/
 
 OpenCV-android-sdk/
 opencv-4.6.0-android-sdk.zip
@@ -31,6 +34,7 @@ opencv-4.7.0-android-sdk.zip
 opencv-4.8.0-android-sdk.zip
 opencv-4.8.1-android-sdk.zip
 opencv-4.9.0-android-sdk.zip
+opencv-4.10.0-android-sdk.zip
 OpenCV4Android.zip
 # Ignore zip files, because setupOpenCV.sh will download a zip file
 *.zip

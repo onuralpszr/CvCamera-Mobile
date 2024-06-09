@@ -59,7 +59,7 @@ class OpenCVLoadInstrumentedTest {
     // Check for toast message context on button click
     @Test
     fun toast_message() {
-        var context =  getInstrumentation().targetContext
+        getInstrumentation().targetContext
         onView(withId(R.id.about)).perform(ViewActions.click());
         val toastMessage = "CvCamera-Mobile - " +
                 "Version ${BuildConfig.VERSION_NAME}-${BuildConfig.GIT_HASH}" +
