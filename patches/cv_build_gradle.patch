@@ -1,22 +1,23 @@
-diff --git a/build.gradle b/build.gradle.patched
-index 10e8450..f48ed78 100644
---- a/build.gradle
-+++ b/build.gradle.patched
+diff --git a/build.gradle.orig b/build.gradle
+index fab4e7c..e5ffe52 100644
+--- a/build.gradle.orig
++++ b/build.gradle
 @@ -99,11 +99,11 @@ println "OpenCV: " +openCVersionName + " " + project.buildscript.sourceFile
  
  android {
      namespace 'org.opencv'
 -    compileSdkVersion 31
-+    compileSdkVersion 34
++    compileSdk 34
  
      defaultConfig {
-         minSdkVersion 21
+-        minSdkVersion 21
 -        targetSdkVersion 31
-+        targetSdkVersion 34
++        minSdk 24
++        targetSdk 34
  
          versionCode openCVersionCode
          versionName openCVersionName
-@@ -117,8 +117,8 @@ android {
+@@ -117,8 +117,12 @@ android {
      }
  
      compileOptions {
@@ -24,6 +25,19 @@ index 10e8450..f48ed78 100644
 -        targetCompatibility JavaVersion.VERSION_1_8
 +        sourceCompatibility JavaVersion.VERSION_17
 +        targetCompatibility JavaVersion.VERSION_17
++    }
++
++    lintOptions {
++        disable "MissingPermission"
      }
  
-     
+     buildTypes {
+@@ -184,7 +188,7 @@ publishing {
+     repositories {
+         maven {
+             name = 'myrepo'
+-            url = "${project.buildDir}/repo"
++            url = "${rootProject.layout.buildDirectory}/repo"
+         }
+     }
+ }
