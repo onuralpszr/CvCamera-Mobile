@@ -107,22 +107,38 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                     // Toggle between grayscale,toSepia,toPencilSketch,toSobel,toCanny
                     mFilterId = when (mFilterId) {
                         -1 -> {
-                            Toast.makeText(this, getString(R.string.grayscale_filter), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                getString(R.string.grayscale_filter),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             0
                         }
 
                         0 -> {
-                            Toast.makeText(this, getString(R.string.sepia_filter), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                getString(R.string.sepia_filter),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             1
                         }
 
                         1 -> {
-                            Toast.makeText(this, getString(R.string.sobel_filter), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                getString(R.string.sobel_filter),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             2
                         }
 
                         2 -> {
-                            Toast.makeText(this, getString(R.string.canny_filter), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                getString(R.string.canny_filter),
+                                Toast.LENGTH_SHORT
+                            ).show()
                             3
                         }
 
