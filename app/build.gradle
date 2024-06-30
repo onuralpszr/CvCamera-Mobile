@@ -104,7 +104,7 @@ dependencies {
 
     // AndroidX Startup
     implementation 'androidx.startup:startup-runtime:1.1.1'
-    implementation 'androidx.test.ext:junit-ktx:1.1.5'
+    implementation 'androidx.test.ext:junit-ktx:1.2.1'
     // AndroidX Test - JVM testing
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'androidx.test.ext:junit:1.2.1'
