@@ -17,8 +17,8 @@ Utilizing OpenCV4 with Android's Camera2 API through JavaCamera2View
 [![CodeFactor](https://www.codefactor.io/repository/github/onuralpszr/cvcamera-mobile/badge/main)](https://www.codefactor.io/repository/github/onuralpszr/cvcamera-mobile/overview/main)
 
  <p align="center">
-    <img src="appPreview/appOverview.png" width="200" max-height="%20"/>
-    <img src="appPreview/appOverview2.png" width="200" max-height="%20"/>
+    <img src="appPreview/appOverview.png" width="200" max-height="%20" alt="appOverview.png"/>
+    <img src="appPreview/appOverview2.png" width="200" max-height="%20" alt="appOverview2.png"/>
 </p>
 
 This android project is barebone setting up OpenCV 4.10.0 (and other 4.x.y versions) for Android in [Android Studio](https://developer.android.com/studio) with Native Development Kit (NDK) support.
