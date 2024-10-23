@@ -11,9 +11,11 @@ if [ -n "$GITHUB_ACTIONS" ]; then
     echo "Patching OpenCV Build.gradle and Manifest"
     sudo patch opencvsdk4100/sdk/build.gradle patches/cv_build_gradle.patch
     sudo patch opencvsdk4100/sdk/java/AndroidManifest.xml patches/manifest_lint.patch
+    sudo patch opencvsdk4100/sdk/java/src/org/opencv/core/MatAt.kt patches/cv_matat_kt.patch
 else
     echo "GITHUB_ACTIONS is not set"
     echo "Patching OpenCV Build.gradle and Manifest"
     patch opencvsdk4100/sdk/build.gradle patches/cv_build_gradle.patch
     patch opencvsdk4100/sdk/java/AndroidManifest.xml patches/manifest_lint.patch
+    patch opencvsdk4100/sdk/java/src/org/opencv/core/MatAt.kt patches/cv_matat_kt.patch
 fi
