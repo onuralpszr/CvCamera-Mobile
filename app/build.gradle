@@ -18,12 +18,12 @@ android {
     // https://stackoverflow.com/questions/28498688/gradle-script-to-autoversion-and-include-the-commit-hash-in-android
     def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
 
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.os.cvCamera"
         minSdk 24
-        targetSdk 34
+        targetSdk 35
         versionCode 1
         versionName "1.0.1"
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
@@ -87,9 +87,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
 
     // Material
     implementation 'com.google.android.material:material:1.12.0'

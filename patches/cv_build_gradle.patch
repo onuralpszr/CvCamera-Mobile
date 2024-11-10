@@ -7,13 +7,13 @@ index fab4e7c..e5ffe52 100644
  android {
      namespace 'org.opencv'
 -    compileSdkVersion 31
-+    compileSdk 34
++    compileSdk 35
  
      defaultConfig {
 -        minSdkVersion 21
 -        targetSdkVersion 31
 +        minSdk 24
-+        targetSdk 34
++        targetSdk 35
  
          versionCode openCVersionCode
          versionName openCVersionName
