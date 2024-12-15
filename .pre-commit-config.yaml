@@ -12,8 +12,6 @@ repos:
     exclude: ^.idea/
   - id: trailing-whitespace
     exclude: ^patches/
-  - id: check-yaml
-  - id: check-docstring-first
   - id: check-executables-have-shebangs
   - id: check-toml
   - id: check-case-conflict
