@@ -55,7 +55,7 @@ This Android application, provides a live camera feed with the ability to dynami
 * **Timber Logging**: Added Timber logging for fpsMeter and ExtendedJavaCamera2View.
 * **Android NDK - OpenCV Basic Setup**: Implemented a basic setup for Android NDK and OpenCV.
 * **CV Filter with Toggle Button**: Added a basic CV filter with a toggle button to switch between the front and back camera.
-* **NDK Version only**: TBD
+* **NDK Second App - Version only**: TBD
 
 # Keywords
 
