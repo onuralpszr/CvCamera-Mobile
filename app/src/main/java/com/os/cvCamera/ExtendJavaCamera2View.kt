@@ -80,8 +80,8 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
                 Utils.matToBitmap(modified, mCacheBitmap)
             } catch (e: Exception) {
                 Timber.e("Mat type: $modified")
-                Timber.e("Bitmap type: " + mCacheBitmap!!.width + "*" + mCacheBitmap!!.height)
-                Timber.e("Utils.matToBitmap() throws an exception: " + e.message)
+                Timber.e("%s%s", "Bitmap type: " + mCacheBitmap!!.width + "*", mCacheBitmap!!.height)
+                Timber.e("Utils.matToBitmap() throws an exception: %s", e.message)
                 bmpValid = false
             }
         }

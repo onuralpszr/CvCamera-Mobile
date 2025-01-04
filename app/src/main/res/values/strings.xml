@@ -10,4 +10,7 @@
     <string name="sepia_filter">Sepia Filter</string>
     <string name="sobel_filter">Sobel Filter</string>
     <string name="canny_filter">Canny Filter</string>
+    <string name="blur_filter">Blur Filter</string>
+    <string name="hsv_filter">HSV Filter</string>
+    <string name="edge_filter">Edge Detection Filter</string>
 </resources>

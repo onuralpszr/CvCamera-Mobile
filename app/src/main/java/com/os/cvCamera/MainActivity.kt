@@ -104,54 +104,38 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                 }
 
                 R.id.filters -> {
-                    // Toggle between grayscale,toSepia,toPencilSketch,toSobel,toCanny
                     mFilterId = when (mFilterId) {
                         -1 -> {
-                            Toast.makeText(
-                                this,
-                                getString(R.string.grayscale_filter),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(this, getString(R.string.grayscale_filter), Toast.LENGTH_SHORT).show()
                             0
                         }
-
                         0 -> {
-                            Toast.makeText(
-                                this,
-                                getString(R.string.sepia_filter),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(this, getString(R.string.sepia_filter), Toast.LENGTH_SHORT).show()
                             1
                         }
-
                         1 -> {
-                            Toast.makeText(
-                                this,
-                                getString(R.string.sobel_filter),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(this, getString(R.string.blur_filter), Toast.LENGTH_SHORT).show()
                             2
                         }
-
                         2 -> {
-                            Toast.makeText(
-                                this,
-                                getString(R.string.canny_filter),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(this, getString(R.string.hsv_filter), Toast.LENGTH_SHORT).show()
                             3
                         }
-
                         3 -> {
-                            -1
+                            Toast.makeText(this, getString(R.string.edge_filter), Toast.LENGTH_SHORT).show()
+                            4
                         }
-
-                        else -> {
-                            -1
+                        4 -> {
+                            Toast.makeText(this, getString(R.string.sobel_filter), Toast.LENGTH_SHORT).show()
+                            5
                         }
+                        5 -> {
+                            Toast.makeText(this, getString(R.string.canny_filter), Toast.LENGTH_SHORT).show()
+                            6
+                        }
+                        6 -> -1
+                        else -> -1
                     }
-
-
                     true
                 }
 
@@ -257,22 +241,13 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     private fun cvFilters(frame: Mat): Mat {
         return when (mFilterId) {
-            0 -> {
-                frame.toGray()
-            }
-
-            1 -> {
-                frame.toSepia()
-            }
-
-            2 -> {
-                frame.toSobel()
-            }
-
-            3 -> {
-                frame.toCanny()
-            }
-
+            0 -> frame.toGray()
+            1 -> frame.toSepia()
+            2 -> frame.toBlur()
+            3 -> frame.toHSV()
+            4 -> frame.toEdgeDetection()
+            5 -> frame.toSobel()
+            6 -> frame.toCanny()
             else -> frame
         }
 
