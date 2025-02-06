@@ -7,7 +7,7 @@ Utilizing OpenCV4 with Android's Camera2 API through JavaCamera2View
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9.24-%23E34F26?logo=Kotlin&logoColor=white)](https://kotlinlang.org/)
 [![Gradle](https://img.shields.io/badge/Gradle-8.8.0-02303A?logo=Gradle&logoColor=white)](https://gradle.org/releases/)
 [![Android-Gradle-Plugin](https://img.shields.io/badge/AGP-8.4.1-02303A?logo=Gradle&logoColor=white)](https://developer.android.com/build/releases/gradle-plugin)
-[![OpenCV](https://img.shields.io/badge/OpenCV-4.10.0-5C3EE8?logo=OpenCV&logoColor=white)](https://opencv.org/)
+[![OpenCV](https://img.shields.io/badge/OpenCV-4.11.0-5C3EE8?logo=OpenCV&logoColor=white)](https://opencv.org/)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 [![android-studio](https://img.shields.io/badge/android%20studio-Jellfish-3DDC84?logo=androidstudio&logoColor=white)](https://developer.android.com/studio)
 [![🚀 Android CI](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-debug.yml/badge.svg)](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-debug.yml)
@@ -21,7 +21,7 @@ Utilizing OpenCV4 with Android's Camera2 API through JavaCamera2View
     <img src="appPreview/appOverview2.png" width="200" max-height="%20" alt="appOverview2.png"/>
 </p>
 
-This android project is barebone setting up OpenCV 4.10.0 (and other 4.x.y versions) for Android in [Android Studio](https://developer.android.com/studio) with Native Development Kit (NDK) support.
+This android project is barebone setting up OpenCV 4.11.0 (and other 4.x.y versions) for Android in [Android Studio](https://developer.android.com/studio) with Native Development Kit (NDK) support.
 [Android NDK](https://developer.android.com/ndk) enables you to implement your [OpenCV](https://opencv.org) image processing pipeline in C++ and call that C++ code from Android Kotlin/Java code through JNI ([Java Native Interface](https://en.wikipedia.org/wiki/Java_Native_Interface)).
 
 This Android application, provides a live camera feed with the ability to dynamically switch between front and back cameras. It includes a custom cvFpsMeter for enhanced text visibility. Also features a basic setup for Android NDK and OpenCV, as well as a CV filter with a toggle button for camera switching.
@@ -37,7 +37,7 @@ This Android application, provides a live camera feed with the ability to dynami
      * Paste this repository *Github URL*, choose a *project directory* and click next.
 
 4. Install *OpenCV Android release* :
-    * Download [OpenCV 4.10.0 Android release](https://github.com/opencv/opencv/releases/download/4.10.0/opencv-4.10.0-android-sdk.zip) or download latest available Android release on [OpenCV website](https://opencv.org/releases/).
+    * Download [OpenCV 4.11.0 Android release](https://github.com/opencv/opencv/releases/download/4.11.0/opencv-4.11.0-android-sdk.zip) or download latest available Android release on [OpenCV website](https://opencv.org/releases/).
     * Unzip downloaded file and put **OpenCV-android-sdk** directory next your project and rename folder `opencvsdk4100`. If you want to place somewhere else please change path in `settings.gradle`
 
     * Optional(For linux) you can run setupOpenCV.sh for automatic download and setup gradle file for opencv
@@ -46,7 +46,7 @@ This Android application, provides a live camera feed with the ability to dynami
 
 # Features
 
-* **OpenCV Version Update**: The OpenCV version was updated multiple times, with the latest being 4.10.0.
+* **OpenCV Version Update**: The OpenCV version was updated multiple times, with the latest being 4.11.0.
 * **Camera Switch**: Added the ability to switch between the front and back camera.
 * **SetupOpenCV Script**: Introduced a script for setting up OpenCV.
 * **Custom cvFpsMeter**: Implemented a custom cvFpsMeter for bigger text and different color choice.
