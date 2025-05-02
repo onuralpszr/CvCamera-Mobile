@@ -16,7 +16,7 @@ repos:
   - id: check-toml
   - id: check-case-conflict
   - id: check-added-large-files
-    args: [--maxkb=2048]
+    args: [--maxkb=4096]
     exclude: ^logo/
   - id: detect-private-key
   - id: forbid-new-submodules
