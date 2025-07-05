@@ -13,7 +13,7 @@ android {
         }
     }
     namespace 'com.os.cvCamera'
-    ndkVersion '28.1.13356709'
+    ndkVersion '27.0.12077973'
 
     // https://stackoverflow.com/questions/28498688/gradl   e-script-to-autoversion-and-include-the-commit-hash-in-android
     def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
