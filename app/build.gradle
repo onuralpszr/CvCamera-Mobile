@@ -15,7 +15,7 @@ android {
     namespace 'com.os.cvCamera'
     ndkVersion '27.0.12077973'
 
-    // https://stackoverflow.com/questions/28498688/gradl   e-script-to-autoversion-and-include-the-commit-hash-in-android
+    // https://stackoverflow.com/questions/28498688/gradle-script-to-autoversion-and-include-the-commit-hash-in-android
     def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
 
     compileSdk 36
@@ -26,7 +26,7 @@ android {
         targetSdk 36
 
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.1.0"
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

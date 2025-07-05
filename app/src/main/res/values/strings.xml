@@ -13,4 +13,5 @@
     <string name="blur_filter">Blur Filter</string>
     <string name="hsv_filter">HSV Filter</string>
     <string name="edge_filter">Edge Detection Filter</string>
+    <string name="cameraResolution">Camera Resolution\n</string>
 </resources>

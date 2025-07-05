@@ -1,6 +1,4 @@
 package com.os.cvCamera
-
-
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.hardware.camera2.CameraManager
@@ -55,7 +53,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         setContentView(binding.root)
         mCameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
 
-        //
+        // Get the camera ID string for the back camera
         loadOpenCVConfigs()
 
         // Load buttonConfigs
@@ -138,6 +136,25 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                     //binding.CvCamera.setFitToCanvas(!binding.CvCamera.getFitToCanvas())
                     binding.CvCamera.fitsSystemWindows = !binding.CvCamera.fitsSystemWindows
                     binding.CvCamera.enableView()
+                    true
+                }
+
+                R.id.cameraResolution -> {
+                    val sizes = binding.CvCamera.getSupportedPreviewSizes()
+                    if (sizes.isEmpty()) {
+                        Toast.makeText(this, "No sizes available", Toast.LENGTH_SHORT).show()
+                        false
+                    }
+                    val sizeStrings = sizes.map { "${it.width} x ${it.height}" }.toTypedArray()
+                    com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                        .setTitle("Select Resolution")
+                        .setItems(sizeStrings) { dialog, which ->
+                            val selectedSize = sizes[which]
+                            binding.CvCamera.disableView()
+                            binding.CvCamera.setCameraResolution(selectedSize.width, selectedSize.height)
+                            binding.CvCamera.enableView()
+                        }
+                        .show()
                     true
                 }
 

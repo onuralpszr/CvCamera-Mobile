@@ -1,8 +1,14 @@
 package com.os.cvCamera
 import android.content.Context
+import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraDevice
+import android.hardware.camera2.CameraManager
+import android.os.Build
 import android.util.AttributeSet
+import android.util.Size
+import androidx.annotation.RequiresApi
 import org.opencv.android.JavaCamera2View
+import timber.log.Timber
 
 class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
     JavaCamera2View(context, attrs) {
@@ -24,6 +30,73 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
 
     fun getCameraDevice(): CameraDevice? {
         return mCameraDevice
+
     }
+
+    fun setCameraResolution(width: Int, height: Int) {
+        setMaxFrameSize(width, height)
+        Timber.d("Camera resolution set to: $width x $height")
+    }
+
+    override fun calculateCameraFrameSize(supportedSizes: MutableList<*>, accessor: ListItemAccessor, surfaceWidth: Int, surfaceHeight: Int): org.opencv.core.Size {
+        Timber.d("calculateCameraFrameSize: supportedSizes=$supportedSizes, surfaceWidth=$surfaceWidth, surfaceHeight=$surfaceHeight")
+
+        // Use the user-specified max resolution if available, otherwise use the surface size.
+        // This allows setting a resolution higher than the view's size.
+        val maxAllowedWidth = if (mMaxWidth != MAX_UNSPECIFIED) mMaxWidth else surfaceWidth
+        val maxAllowedHeight = if (mMaxHeight != MAX_UNSPECIFIED) mMaxHeight else surfaceHeight
+
+        var bestSize: org.opencv.core.Size? = null
+        var bestArea = 0
+
+        for (size in supportedSizes) {
+            val currentWidth = accessor.getWidth(size)
+            val currentHeight = accessor.getHeight(size)
+            val currentArea = currentWidth * currentHeight
+
+            if (currentWidth <= maxAllowedWidth && currentHeight <= maxAllowedHeight) {
+                if (currentArea > bestArea) {
+                    bestArea = currentArea
+                    bestSize = org.opencv.core.Size(currentWidth.toDouble(), currentHeight.toDouble())
+                }
+            }
+        }
+
+        if (bestSize != null) {
+            Timber.d("Selected camera frame size: ${bestSize.width}x${bestSize.height}")
+            return bestSize
+        }
+
+        // Fallback to the first supported size if no suitable size is found
+        if (supportedSizes.isNotEmpty()) {
+            val firstSize = supportedSizes.first()
+            val firstWidth = accessor.getWidth(firstSize)
+            val firstHeight = accessor.getHeight(firstSize)
+            Timber.d("Fallback to first supported size: ${firstWidth}x${firstHeight}")
+            return org.opencv.core.Size(firstWidth.toDouble(), firstHeight.toDouble())
+        }
+
+        // Default fallback
+        return org.opencv.core.Size(maxAllowedWidth.toDouble(), maxAllowedHeight.toDouble())
+    }
+
+    fun getSupportedPreviewSizes(): List<android.util.Size> {
+        val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val sizes = mutableListOf<android.util.Size>()
+        try {
+            val cameraId = mCameraID ?: return emptyList()
+            val characteristics = cameraManager.getCameraCharacteristics(cameraId)
+            val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+            // Use SurfaceTexture for preview sizes
+            val outputSizes = map?.getOutputSizes(android.graphics.SurfaceTexture::class.java)
+            if (outputSizes != null) {
+                sizes.addAll(outputSizes)
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to get supported preview sizes")
+        }
+        return sizes
+    }
+
 
 }
