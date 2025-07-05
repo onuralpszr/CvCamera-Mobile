@@ -1,13 +1,12 @@
-
 # CvCamera-Mobile
 
 Utilizing OpenCV4 with Android's Camera2 API through JavaCamera2View
 
 [![MIT](https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white)](https://opensource.org/license/mit/)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.24-%23E34F26?logo=Kotlin&logoColor=white)](https://kotlinlang.org/)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-%23E34F26?logo=Kotlin&logoColor=white)](https://kotlinlang.org/)
 [![Gradle](https://img.shields.io/badge/Gradle-8.8.0-02303A?logo=Gradle&logoColor=white)](https://gradle.org/releases/)
-[![Android-Gradle-Plugin](https://img.shields.io/badge/AGP-8.4.1-02303A?logo=Gradle&logoColor=white)](https://developer.android.com/build/releases/gradle-plugin)
-[![OpenCV](https://img.shields.io/badge/OpenCV-4.11.0-5C3EE8?logo=OpenCV&logoColor=white)](https://opencv.org/)
+[![Android-Gradle-Plugin](https://img.shields.io/badge/AGP-8.11.0-02303A?logo=Gradle&logoColor=white)](https://developer.android.com/build/releases/gradle-plugin)
+[![OpenCV](https://img.shields.io/badge/OpenCV-4.12.0-5C3EE8?logo=OpenCV&logoColor=white)](https://opencv.org/)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 [![android-studio](https://img.shields.io/badge/android%20studio-Jellfish-3DDC84?logo=androidstudio&logoColor=white)](https://developer.android.com/studio)
 [![🚀 Android CI](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-debug.yml/badge.svg)](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-debug.yml)
@@ -59,4 +58,4 @@ This Android application, provides a live camera feed with the ability to dynami
 
 ## Keywords
 
-Kotlin, OpenCV 4, Android, Android Studio, Native, NDK, Native Development Kit, JNI, C++,
+Kotlin, OpenCV 4, Android, Android Studio, Native, NDK, Native Development Kit, JNI, C++
