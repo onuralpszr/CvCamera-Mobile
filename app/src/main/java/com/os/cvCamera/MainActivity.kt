@@ -3,8 +3,6 @@ package com.os.cvCamera
 
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import android.hardware.camera2.CameraAccessException
-import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.util.TypedValue
@@ -24,6 +22,7 @@ import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat
 import timber.log.Timber
+import androidx.core.view.size
 
 class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
@@ -31,8 +30,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     private lateinit var mRGBA: Mat
     private lateinit var mRGBAT: Mat
     private var mCameraId: Int = CAMERA_ID_BACK
-    private var mTorchCameraId: String = ""
-    private var mTorchState = false
     private lateinit var mCameraManager: CameraManager
 
     // Filters id
@@ -61,9 +58,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         //
         loadOpenCVConfigs()
 
-        // Find the flashlight
-        findFlashLight()
-
         // Load buttonConfigs
         configButtons()
 
@@ -73,7 +67,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     }
 
     private fun setButtonColors() {
-        for (i in 0..<binding.bottomAppBar.menu.size()) {
+        for (i in 0..<binding.bottomAppBar.menu.size) {
             val item = binding.bottomAppBar.menu[i]
             val typedValue = TypedValue()
             theme.resolveAttribute(android.R.attr.colorAccent, typedValue, true)
@@ -141,7 +135,8 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
                 R.id.resizeCanvas -> {
                     binding.CvCamera.disableView()
-                    binding.CvCamera.setFitToCanvas(!binding.CvCamera.getFitToCanvas())
+                    //binding.CvCamera.setFitToCanvas(!binding.CvCamera.getFitToCanvas())
+                    binding.CvCamera.fitsSystemWindows = !binding.CvCamera.fitsSystemWindows
                     binding.CvCamera.enableView()
                     true
                 }
@@ -177,35 +172,31 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     }
 
 
-    private fun enableFlashLight() {
-        mTorchState = true
-        mCameraManager.setTorchMode(mTorchCameraId, true)
-        Timber.d("Torch is on")
-    }
 
-    private fun findFlashLight() {
-        for (cameraId in mCameraManager.cameraIdList) {
-            try {
-                // Check if the camera has a torchlight
-                val hasTorch = mCameraManager.getCameraCharacteristics(cameraId)
-                    .get(CameraCharacteristics.FLASH_INFO_AVAILABLE) ?: false
-
-                if (hasTorch) {
-                    // Find the ID of the camera that has a torchlight and store it in mTorchCameraId
-                    Timber.d("Torch is available")
-                    Timber.d("Camera Id: $cameraId")
-                    mTorchCameraId = cameraId
-                    mTorchState = false
-                    break
-                } else {
-                    Timber.d("Torch is not available")
-                }
-            } catch (e: CameraAccessException) {
-                // Handle any errors that occur while trying to access the camera
-                Timber.e("CameraAccessException ${e.message}")
-            }
-        }
-    }
+    // WIP Flashlight Support
+//    private fun findFlashLight() {
+//        for (cameraId in mCameraManager.cameraIdList) {
+//            try {
+//                // Check if the camera has a torchlight
+//                val hasTorch = mCameraManager.getCameraCharacteristics(cameraId)
+//                    .get(CameraCharacteristics.FLASH_INFO_AVAILABLE) ?: false
+//
+//                if (hasTorch) {
+//                    // Find the ID of the camera that has a torchlight and store it in mTorchCameraId
+//                    Timber.d("Torch is available")
+//                    Timber.d("Camera Id: $cameraId")
+//                    mTorchCameraId = cameraId
+//                    mTorchState = false
+//                    break
+//                } else {
+//                    Timber.d("Torch is not available")
+//                }
+//            } catch (e: CameraAccessException) {
+//                // Handle any errors that occur while trying to access the camera
+//                Timber.e("CameraAccessException ${e.message}")
+//            }
+//        }
+//    }
 
     override fun onCameraViewStarted(width: Int, height: Int) {
         mRGBA = Mat(height, width, CvType.CV_8UC4)
