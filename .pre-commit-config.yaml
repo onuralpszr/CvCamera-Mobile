@@ -9,7 +9,12 @@ repos:
   rev: v5.0.0
   hooks:
   - id: end-of-file-fixer
-    exclude: ^.idea/
+    exclude: |
+      (?x)^(
+        (\.idea/.*)|
+        (.+/\.idea/.*)|
+        patches/.*
+      )$
   - id: trailing-whitespace
     exclude: ^patches/
   - id: check-executables-have-shebangs
