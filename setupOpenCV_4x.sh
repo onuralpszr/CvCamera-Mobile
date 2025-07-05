@@ -11,6 +11,7 @@ if [ -n "$GITHUB_ACTIONS" ]; then
     echo "Patching OpenCV Build.gradle and Manifest"
     sudo patch opencvsdk4120/sdk/build.gradle patches/cv_build_gradle_4x.diff
     sudo patch opencvsdk4120/sdk/java/AndroidManifest.xml patches/manifest_lint.diff
+    echo "Copying OpenCV Lint Baseline"
     sudo cp patches/opencv-lint-baseline.xml opencvsdk4120/sdk/opencv-lint-baseline.xml
     # sudo patch opencvsdk4120/sdk/java/src/org/opencv/core/MatAt.kt patches/cv_matat_kt.diff
 else
@@ -18,6 +19,7 @@ else
     echo "Patching OpenCV Build.gradle and Manifest"
     patch opencvsdk4120/sdk/build.gradle patches/cv_build_gradle_4x.diff
     patch opencvsdk4120/sdk/java/AndroidManifest.xml patches/manifest_lint.diff
+    echo "Copying OpenCV Lint Baseline"
     sudo cp patches/opencv-lint-baseline.xml opencvsdk4120/sdk/opencv-lint-baseline.xml
     # patch opencvsdk4120/sdk/java/src/org/opencv/core/MatAt.kt patches/cv_matat_kt.diff
 fi
