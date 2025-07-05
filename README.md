@@ -8,7 +8,7 @@ Utilizing OpenCV4 with Android's Camera2 API through JavaCamera2View
 [![Android-Gradle-Plugin](https://img.shields.io/badge/AGP-8.11.0-02303A?logo=Gradle&logoColor=white)](https://developer.android.com/build/releases/gradle-plugin)
 [![OpenCV](https://img.shields.io/badge/OpenCV-4.12.0-5C3EE8?logo=OpenCV&logoColor=white)](https://opencv.org/)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
-[![android-studio](https://img.shields.io/badge/android%20studio-Jellfish-3DDC84?logo=androidstudio&logoColor=white)](https://developer.android.com/studio)
+[![android-studio](https://img.shields.io/badge/android%20studio-Narwhal-3DDC84?logo=androidstudio&logoColor=white)](https://developer.android.com/studio)
 [![🚀 Android CI](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-debug.yml/badge.svg)](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-debug.yml)
 [![🚀 Build and Release](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-release.yml/badge.svg)](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-release.yml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/onuralpszr/CvCamera-Mobile/main.svg)](https://results.pre-commit.ci/latest/github/onuralpszr/CvCamera-Mobile/main)
