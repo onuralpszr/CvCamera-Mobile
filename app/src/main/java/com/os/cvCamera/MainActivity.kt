@@ -171,7 +171,9 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         binding.CvCamera.getCameraDevice()
     }
 
-    // TODO: WIP Flashlight Support
+
+
+    // WIP Flashlight Support
 //    private fun findFlashLight() {
 //        for (cameraId in mCameraManager.cameraIdList) {
 //            try {
