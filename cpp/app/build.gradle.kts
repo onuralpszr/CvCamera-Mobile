@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.os.cvcamera_mobile_cpp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.os.cvcamera_mobile_cpp"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
