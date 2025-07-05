@@ -44,7 +44,7 @@ This Android application, provides a live camera feed with the ability to dynami
 
 5. Sync Gradle and run the application on your Android Device!
 
-# Features
+## Features
 
 * **OpenCV Version Update**: The OpenCV version was updated multiple times, with the latest being 4.11.0.
 * **Camera Switch**: Added the ability to switch between the front and back camera.
@@ -57,6 +57,6 @@ This Android application, provides a live camera feed with the ability to dynami
 * **CV Filter with Toggle Button**: Added a basic CV filter with a toggle button to switch between the front and back camera.
 * **NDK Second App - Version only**: TBD
 
-# Keywords
+## Keywords
 
 Kotlin, OpenCV 4, Android, Android Studio, Native, NDK, Native Development Kit, JNI, C++,
