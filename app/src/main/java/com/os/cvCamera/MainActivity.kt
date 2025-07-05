@@ -1,9 +1,6 @@
 package com.os.cvCamera
-
-
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.util.TypedValue
