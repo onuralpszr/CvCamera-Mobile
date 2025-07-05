@@ -51,7 +51,7 @@ jobs:
 
       - name: Get OpenCV version and versionName
         run: |
-          echo "opencv_version=$(awk -F'= ' '/def openCVersionName/ { print $2 }' opencvsdk4100/sdk/build.gradle | tr -d '\"')" >> "$GITHUB_ENV"
+          echo "opencv_version=$(awk -F'= ' '/def openCVersionName/ { print $2 }' opencvsdk4120/sdk/build.gradle | tr -d '\"')" >> "$GITHUB_ENV"
           echo "version_name=$(grep -oP 'versionName "\K[^"]+' app/build.gradle)" >> "$GITHUB_ENV"
           echo "git_hash=$(git rev-parse --verify --short HEAD)" >> "$GITHUB_ENV"
 

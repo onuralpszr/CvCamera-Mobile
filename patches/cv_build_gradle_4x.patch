@@ -1,0 +1,27 @@
+diff --git a/build.gradle b/build_patched.gradle
+index 5d176b4..6644d57 100644
+--- a/build.gradle
++++ b/build_patched.gradle
+@@ -104,11 +104,11 @@ println "OpenCV: " +openCVersionName + " " + project.buildscript.sourceFile
+ 
+ android {
+     namespace 'org.opencv'
+-    compileSdkVersion 34
++    compileSdkVersion 36
+ 
+     defaultConfig {
+         minSdkVersion 21
+-        targetSdkVersion 34
++        targetSdkVersion 36
+ 
+         versionCode openCVersionCode
+         versionName openCVersionName
+@@ -196,7 +196,7 @@ publishing {
+     repositories {
+         maven {
+             name = 'myrepo'
+-            url = "${project.buildDir}/repo"
++            url = "${rootProject.layout.buildDirectory}/repo"
+         }
+     }
+ }

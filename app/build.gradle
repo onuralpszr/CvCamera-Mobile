@@ -13,17 +13,18 @@ android {
         }
     }
     namespace 'com.os.cvCamera'
-    ndkVersion '25.2.9519653'
+    ndkVersion '28.1.13356709'
 
-    // https://stackoverflow.com/questions/28498688/gradle-script-to-autoversion-and-include-the-commit-hash-in-android
+    // https://stackoverflow.com/questions/28498688/gradl   e-script-to-autoversion-and-include-the-commit-hash-in-android
     def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
 
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "com.os.cvCamera"
         minSdk 24
-        targetSdk 35
+        targetSdk 36
+
         versionCode 1
         versionName "1.0.1"
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
@@ -31,7 +32,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                arguments "-DOpenCV_DIR=" + file('../opencvsdk4100').absolutePath + "/sdk/native/jni",
+                arguments "-DOpenCV_DIR=" + file('../opencvsdk4120').absolutePath + "/sdk/native/jni",
                         "-DANDROID_TOOLCHAIN=clang",
                         "-DANDROID_STL=c++_shared"
                 cppFlags ''
@@ -78,6 +79,7 @@ android {
 
 
     packagingOptions {
+        pickFirsts += ['**/libc++_shared.so']
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
@@ -86,7 +88,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include:['*.jar', '*.aar'])
     implementation 'androidx.core:core-ktx:1.16.0'
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
@@ -95,7 +97,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.12.0'
 
     // Source - OpenCV-4 - Patched
-    implementation project(path: ':opencvsdk4100')
+    implementation project(path: ':opencvsdk4120')
     // Maven OpenCV-4
     // implementation 'org.opencv:opencv:4.10.0'
 
