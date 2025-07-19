@@ -39,7 +39,7 @@ This Android application, provides a live camera feed with the ability to dynami
     * Download [OpenCV 4.12.0 Android release](https://github.com/opencv/opencv/releases/download/4.12.0/opencv-4.12.0-android-sdk.zip) or download latest available Android release on [OpenCV website](https://opencv.org/releases/).
     * Unzip downloaded file and put **OpenCV-android-sdk** directory next your project and rename folder `opencvsdk4120`. If you want to place somewhere else please change path in `settings.gradle`
 
-    * Optional(For linux) you can run setupOpenCV.sh for automatic download and setup gradle file for opencv
+    * Optional(For linux) you can run setupOpenCV_4x.sh for automatic download and setup gradle file for opencv
 
 5. Sync Gradle and run the application on your Android Device!
 
