@@ -1,6 +1,6 @@
 # CvCamera-Mobile
 
-Utilizing OpenCV4 with Android's Camera2 API through JavaCamera2View
+Utilizing OpenCV with Android's Camera2 API through JavaCamera2View
 
 [![MIT](https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white)](https://opensource.org/license/mit/)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-%23E34F26?logo=Kotlin&logoColor=white)](https://kotlinlang.org/)
