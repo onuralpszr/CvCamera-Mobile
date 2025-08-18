@@ -55,6 +55,7 @@ This Android application, provides a live camera feed with the ability to dynami
 * **Android NDK - OpenCV Basic Setup**: Implemented a basic setup for Android NDK and OpenCV.
 * **CV Filter with Toggle Button**: Added a basic CV filter with a toggle button to switch between the front and back camera.
 * **NDK Second App - Version only**: TBD
+* **Groovy DSL to Kotlin DSL migration for Gradle build scripts**: Migrated Gradle build scripts from Groovy DSL to Kotlin DSL.
 
 ## Keywords
 
