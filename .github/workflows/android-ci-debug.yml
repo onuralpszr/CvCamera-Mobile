@@ -22,7 +22,7 @@ jobs:
     - name: 📥 Checkout Source Code
       uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-    - uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.3
+    - uses: actions/cache@638ed79f9dc94c1de1baef91bcab5edaa19451f4 # v4.2.3
       with:
         path: |
           ~/.gradle/caches
