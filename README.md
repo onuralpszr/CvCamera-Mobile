@@ -21,9 +21,7 @@ Utilizing OpenCV with Android's Camera2 API through JavaCamera2View
 </p>
 
 This android project is barebone setting up OpenCV 4.12.0 (and other 4.x.y versions) for Android in [Android Studio](https://developer.android.com/studio) with Native Development Kit (NDK) support.
-[Android NDK](https://developer.android.com/ndk) enables you to implement your [OpenCV](https://opencv.org) image processing pipeline in C++ and call that C++ code from Android Kotlin/Java code through JNI ([Java Native Interface](https://en.wikipedia.org/wiki/Java_Native_Interface)).
-
-This Android application, provides a live camera feed with the ability to dynamically switch between front and back cameras. It includes a custom cvFpsMeter for enhanced text visibility. Also features a basic setup for Android NDK and OpenCV, as well as a CV filter with a toggle button for camera switching.
+[Android NDK](https://developer.android.com/ndk) enables you to implement your [OpenCV](https://opencv.org) image processing pipeline in C++ and call that C++ code from Android Kotlin/Java code through JNI ([Java Native Interface](https://en.wikipedia.org/wiki/Java_Native_Interface)). This provides a live camera feed with the ability to dynamically switch between front and back cameras. It includes a custom cvFpsMeter for enhanced text visibility. Also features a basic setup for Android NDK and OpenCV, as well as a CV filter with a toggle button for camera switching.
 
 ## How to use this repository
 
