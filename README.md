@@ -3,6 +3,7 @@
 Utilizing OpenCV with Android's Camera2 API through JavaCamera2View
 
 [![MIT](https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white)](https://opensource.org/license/mit/)
+[![JDK](https://img.shields.io/badge/JDK-17-007396?logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-%23E34F26?logo=Kotlin&logoColor=white)](https://kotlinlang.org/)
 [![Gradle](https://img.shields.io/badge/Gradle-8.14.3-02303A?logo=Gradle&logoColor=white)](https://gradle.org/releases/)
 [![Android-Gradle-Plugin](https://img.shields.io/badge/AGP-8.11.0-02303A?logo=Gradle&logoColor=white)](https://developer.android.com/build/releases/gradle-plugin)
@@ -29,17 +30,19 @@ This android project is barebone setting up OpenCV 4.12.0 (and other 4.x.y versi
 
 2. [Install NDK and CMake](https://developer.android.com/studio/projects/install-ndk.md)
 
-3. Clone this repository as an Android Studio project :
+3. Ensure you have **JDK 17** installed (required for this project)
+
+4. Clone this repository as an Android Studio project :
      * In Android Studio, click on `File -> New -> Project from Version Control -> Git`
      * Paste this repository *Github URL*, choose a *project directory* and click next.
 
-4. Install *OpenCV Android release* :
+5. Install *OpenCV Android release* :
     * Download [OpenCV 4.12.0 Android release](https://github.com/opencv/opencv/releases/download/4.12.0/opencv-4.12.0-android-sdk.zip) or download latest available Android release on [OpenCV website](https://opencv.org/releases/).
     * Unzip downloaded file and put **OpenCV-android-sdk** directory next your project and rename folder `opencvsdk4120`. If you want to place somewhere else please change path in `settings.gradle`
 
     * Optional(For linux) you can run setupOpenCV_4x.sh for automatic download and setup gradle file for opencv
 
-5. Sync Gradle and run the application on your Android Device!
+6. Sync Gradle and run the application on your Android Device!
 
 ## Features
 
