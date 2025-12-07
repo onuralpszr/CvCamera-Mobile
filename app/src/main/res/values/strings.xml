@@ -14,4 +14,23 @@
     <string name="hsv_filter">HSV Filter</string>
     <string name="edge_filter">Edge Detection Filter</string>
     <string name="cameraResolution">Camera Resolution\n</string>
+    <string name="negative_filter">Negative Filter</string>
+    <string name="sharpen_filter">Sharpen Filter</string>
+    <string name="emboss_filter">Emboss Filter</string>
+    <string name="cartoon_filter">Cartoon Filter</string>
+    <string name="binary_filter">Binary Threshold Filter</string>
+    <string name="sketch_filter">Sketch Filter</string>
+    <string name="contours_filter">Contours Detection</string>
+    <string name="no_filter">No Filter</string>
+
+    <!-- Face detection -->
+    <string name="face_detection">Face Detection</string>
+    <string name="face_detection_on">Face Detection: ON</string>
+    <string name="face_detection_off">Face Detection: OFF</string>
+
+    <!-- Photo capture -->
+    <string name="capture_photo">Capture Photo</string>
+    <string name="capturing_photo">Capturing photo…</string>
+    <string name="photo_saved">Photo saved: %1$s</string>
+    <string name="photo_save_error">Error saving photo</string>
 </resources>

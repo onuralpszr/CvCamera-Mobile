@@ -8,6 +8,18 @@
         app:showAsAction="ifRoom"/>-->
 
     <item
+        android:id="@+id/capturePhoto"
+        android:icon="@drawable/baseline_photo_camera_24"
+        android:title="@string/capture_photo"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/faceDetection"
+        android:icon="@drawable/baseline_face_24"
+        android:title="@string/face_detection"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/about"
         android:icon="@drawable/baseline_info_24"
         android:title="@string/about"
