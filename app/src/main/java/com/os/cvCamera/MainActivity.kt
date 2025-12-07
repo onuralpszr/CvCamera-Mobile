@@ -1,8 +1,13 @@
 package com.os.cvCamera
+
+import android.content.ContentValues
+import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.TypedValue
 import android.view.WindowManager
 import android.widget.Toast
@@ -16,11 +21,18 @@ import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_FRONT
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2
 import org.opencv.android.OpenCVLoader.OPENCV_VERSION
+import org.opencv.android.Utils
 import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat
+import org.opencv.objdetect.CascadeClassifier
 import timber.log.Timber
 import androidx.core.view.size
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
@@ -33,12 +45,37 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     // Filters id
     private var mFilterId = -1
 
+    // Face detection
+    private var mFaceCascade: CascadeClassifier? = null
+    private var mFaceDetectionEnabled = false
+
+    // Photo capture
+    private var mCaptureNextFrame = false
+
 
     companion object {
         init {
             System.loadLibrary("opencv_java4")
             System.loadLibrary("cvcamera")
         }
+
+        // Filter constants
+        const val FILTER_NONE = -1
+        const val FILTER_GRAY = 0
+        const val FILTER_SEPIA = 1
+        const val FILTER_BLUR = 2
+        const val FILTER_HSV = 3
+        const val FILTER_EDGE = 4
+        const val FILTER_SOBEL = 5
+        const val FILTER_CANNY = 6
+        const val FILTER_NEGATIVE = 7
+        const val FILTER_SHARPEN = 8
+        const val FILTER_EMBOSS = 9
+        const val FILTER_CARTOON = 10
+        const val FILTER_BINARY = 11
+        const val FILTER_SKETCH = 12
+        const val FILTER_CONTOURS = 13
+        const val FILTER_MAX = 13
     }
 
     private external fun openCVVersion(): String?
@@ -56,12 +93,45 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         // Get the camera ID string for the back camera
         loadOpenCVConfigs()
 
+        // Initialize face detection
+        initFaceDetection()
+
         // Load buttonConfigs
         configButtons()
 
         // Load button colors
         setButtonColors()
 
+    }
+
+    private fun initFaceDetection() {
+        try {
+            val inputStream = resources.openRawResource(R.raw.haarcascade_frontalface_default)
+            val cascadeDir = getDir("cascade", MODE_PRIVATE)
+            val cascadeFile = File(cascadeDir, "haarcascade_frontalface_default.xml")
+
+            val outputStream = FileOutputStream(cascadeFile)
+            val buffer = ByteArray(4096)
+            var bytesRead: Int
+            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                outputStream.write(buffer, 0, bytesRead)
+            }
+            inputStream.close()
+            outputStream.close()
+
+            mFaceCascade = CascadeClassifier(cascadeFile.absolutePath)
+            if (mFaceCascade?.empty() == true) {
+                Timber.e("Failed to load cascade classifier")
+                mFaceCascade = null
+            } else {
+                Timber.d("Face cascade loaded successfully")
+            }
+
+            cascadeDir.delete()
+        } catch (e: Exception) {
+            Timber.e("Error loading cascade: ${e.message}")
+            mFaceCascade = null
+        }
     }
 
     private fun setButtonColors() {
@@ -97,37 +167,85 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
                 R.id.filters -> {
                     mFilterId = when (mFilterId) {
-                        -1 -> {
+                        FILTER_NONE -> {
                             Toast.makeText(this, getString(R.string.grayscale_filter), Toast.LENGTH_SHORT).show()
-                            0
+                            FILTER_GRAY
                         }
-                        0 -> {
+                        FILTER_GRAY -> {
                             Toast.makeText(this, getString(R.string.sepia_filter), Toast.LENGTH_SHORT).show()
-                            1
+                            FILTER_SEPIA
                         }
-                        1 -> {
+                        FILTER_SEPIA -> {
                             Toast.makeText(this, getString(R.string.blur_filter), Toast.LENGTH_SHORT).show()
-                            2
+                            FILTER_BLUR
                         }
-                        2 -> {
+                        FILTER_BLUR -> {
                             Toast.makeText(this, getString(R.string.hsv_filter), Toast.LENGTH_SHORT).show()
-                            3
+                            FILTER_HSV
                         }
-                        3 -> {
+                        FILTER_HSV -> {
                             Toast.makeText(this, getString(R.string.edge_filter), Toast.LENGTH_SHORT).show()
-                            4
+                            FILTER_EDGE
                         }
-                        4 -> {
+                        FILTER_EDGE -> {
                             Toast.makeText(this, getString(R.string.sobel_filter), Toast.LENGTH_SHORT).show()
-                            5
+                            FILTER_SOBEL
                         }
-                        5 -> {
+                        FILTER_SOBEL -> {
                             Toast.makeText(this, getString(R.string.canny_filter), Toast.LENGTH_SHORT).show()
-                            6
+                            FILTER_CANNY
                         }
-                        6 -> -1
-                        else -> -1
+                        FILTER_CANNY -> {
+                            Toast.makeText(this, getString(R.string.negative_filter), Toast.LENGTH_SHORT).show()
+                            FILTER_NEGATIVE
+                        }
+                        FILTER_NEGATIVE -> {
+                            Toast.makeText(this, getString(R.string.sharpen_filter), Toast.LENGTH_SHORT).show()
+                            FILTER_SHARPEN
+                        }
+                        FILTER_SHARPEN -> {
+                            Toast.makeText(this, getString(R.string.emboss_filter), Toast.LENGTH_SHORT).show()
+                            FILTER_EMBOSS
+                        }
+                        FILTER_EMBOSS -> {
+                            Toast.makeText(this, getString(R.string.cartoon_filter), Toast.LENGTH_SHORT).show()
+                            FILTER_CARTOON
+                        }
+                        FILTER_CARTOON -> {
+                            Toast.makeText(this, getString(R.string.binary_filter), Toast.LENGTH_SHORT).show()
+                            FILTER_BINARY
+                        }
+                        FILTER_BINARY -> {
+                            Toast.makeText(this, getString(R.string.sketch_filter), Toast.LENGTH_SHORT).show()
+                            FILTER_SKETCH
+                        }
+                        FILTER_SKETCH -> {
+                            Toast.makeText(this, getString(R.string.contours_filter), Toast.LENGTH_SHORT).show()
+                            FILTER_CONTOURS
+                        }
+                        FILTER_CONTOURS -> {
+                            Toast.makeText(this, getString(R.string.no_filter), Toast.LENGTH_SHORT).show()
+                            FILTER_NONE
+                        }
+                        else -> FILTER_NONE
                     }
+                    true
+                }
+
+                R.id.faceDetection -> {
+                    mFaceDetectionEnabled = !mFaceDetectionEnabled
+                    val message = if (mFaceDetectionEnabled) {
+                        getString(R.string.face_detection_on)
+                    } else {
+                        getString(R.string.face_detection_off)
+                    }
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                    true
+                }
+
+                R.id.capturePhoto -> {
+                    mCaptureNextFrame = true
+                    Toast.makeText(this, getString(R.string.capturing_photo), Toast.LENGTH_SHORT).show()
                     true
                 }
 
@@ -227,8 +345,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
     override fun onCameraFrame(inputFrame: CvCameraViewFrame?): Mat {
         return if (inputFrame != null) {
-
-            if (mCameraId == CAMERA_ID_BACK) {
+            val processedFrame = if (mCameraId == CAMERA_ID_BACK) {
                 mRGBA = inputFrame.rgba()
                 cvFilters(mRGBA)
             } else {
@@ -241,24 +358,76 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                 cvFilters(mRGBAT)
             }
 
+            // Apply face detection if enabled
+            val finalFrame = if (mFaceDetectionEnabled) {
+                processedFrame.detectFaces(mFaceCascade)
+            } else {
+                processedFrame
+            }
+
+            // Capture photo if requested
+            if (mCaptureNextFrame) {
+                mCaptureNextFrame = false
+                captureFrame(finalFrame)
+            }
+
+            finalFrame
         } else {
             // return last or empty frame
             mRGBA
         }
     }
 
+    private fun captureFrame(frame: Mat) {
+        try {
+            val bitmap = Bitmap.createBitmap(frame.cols(), frame.rows(), Bitmap.Config.ARGB_8888)
+            Utils.matToBitmap(frame, bitmap)
+
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val filename = "CvCamera_$timestamp.jpg"
+
+            val contentValues = ContentValues().apply {
+                put(MediaStore.Images.Media.DISPLAY_NAME, filename)
+                put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/CvCamera")
+            }
+
+            val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+            uri?.let {
+                contentResolver.openOutputStream(it)?.use { outputStream ->
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)
+                }
+                runOnUiThread {
+                    Toast.makeText(this, getString(R.string.photo_saved, filename), Toast.LENGTH_SHORT).show()
+                }
+                Timber.d("Photo saved: $filename")
+            }
+        } catch (e: Exception) {
+            Timber.e("Error saving photo: ${e.message}")
+            runOnUiThread {
+                Toast.makeText(this, getString(R.string.photo_save_error), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun cvFilters(frame: Mat): Mat {
         return when (mFilterId) {
-            0 -> frame.toGray()
-            1 -> frame.toSepia()
-            2 -> frame.toBlur()
-            3 -> frame.toHSV()
-            4 -> frame.toEdgeDetection()
-            5 -> frame.toSobel()
-            6 -> frame.toCanny()
+            FILTER_GRAY -> frame.toGray()
+            FILTER_SEPIA -> frame.toSepia()
+            FILTER_BLUR -> frame.toBlur()
+            FILTER_HSV -> frame.toHSV()
+            FILTER_EDGE -> frame.toEdgeDetection()
+            FILTER_SOBEL -> frame.toSobel()
+            FILTER_CANNY -> frame.toCanny()
+            FILTER_NEGATIVE -> frame.toNegative()
+            FILTER_SHARPEN -> frame.toSharpen()
+            FILTER_EMBOSS -> frame.toEmboss()
+            FILTER_CARTOON -> frame.toCartoon()
+            FILTER_BINARY -> frame.toBinary()
+            FILTER_SKETCH -> frame.toSketch()
+            FILTER_CONTOURS -> frame.toContours()
             else -> frame
         }
-
     }
 
     override fun onDestroy() {
