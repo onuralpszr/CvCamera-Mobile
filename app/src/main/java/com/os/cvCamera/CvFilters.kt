@@ -4,6 +4,7 @@ import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.CvType.CV_8UC1
 import org.opencv.core.Mat
+import org.opencv.core.MatOfPoint
 import org.opencv.core.MatOfRect
 import org.opencv.core.Point
 import org.opencv.core.Scalar
@@ -305,7 +306,7 @@ fun Mat.toContours(): Mat {
     val contours = mutableListOf<MatOfRect>()
     Imgproc.findContours(
         edges,
-        contours as List<Mat>,
+        contours as List<MatOfPoint>,
         hierarchy,
         Imgproc.RETR_TREE,
         Imgproc.CHAIN_APPROX_SIMPLE
@@ -314,7 +315,7 @@ fun Mat.toContours(): Mat {
     // Draw contours
     Imgproc.drawContours(
         this,
-        contours as List<Mat>,
+        contours as List<MatOfPoint>,
         -1,
         Scalar(0.0, 255.0, 0.0, 255.0),
         2
