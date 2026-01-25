@@ -45,7 +45,7 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
              Timber.d("OpenCV version is 4.11.0 or higher, using super.calculateCameraFrameSize")
              return super.calculateCameraFrameSize(supportedSizes, accessor, surfaceWidth, surfaceHeight)
         }
-        
+
         Timber.d("calculateCameraFrameSize: supportedSizes=$supportedSizes, surfaceWidth=$surfaceWidth, surfaceHeight=$surfaceHeight")
 
         // Use the user-specified max resolution if available, otherwise use the surface size.
