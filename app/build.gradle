@@ -18,7 +18,7 @@ android {
     // https://stackoverflow.com/questions/28498688/gradle-script-to-autoversion-and-include-the-commit-hash-in-android
     def gitCommitHash = 'git rev-parse --verify --short HEAD'.execute().text.trim()
 
-    compileSdk 36
+    compileSdkVersion 36
 
     defaultConfig {
         applicationId "com.os.cvCamera"
@@ -60,11 +60,10 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    kotlin {
-        jvmToolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
-        }
+    kotlinOptions {
+        jvmTarget = "17"
     }
+
 
     externalNativeBuild {
         cmake {
@@ -79,9 +78,11 @@ android {
 
 
     packagingOptions {
-        pickFirsts += ['**/libc++_shared.so']
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+        jniLibs {
+            pickFirsts += ['**/libc++_shared.so']
         }
     }
 
@@ -100,6 +101,9 @@ dependencies {
     implementation project(path: ':opencvsdk4130')
     // Maven OpenCV-4
     // implementation 'org.opencv:opencv:4.10.0'
+    // implementation 'org.opencv:opencv:4.11.0'
+    // implementation 'org.opencv:opencv:4.12.0'
+    // implementation 'org.opencv:opencv:4.13.0'
 
     //Timber Log
     implementation 'com.jakewharton.timber:timber:5.0.1'
