@@ -38,47 +38,7 @@ class ExtendJavaCamera2View(context: Context, attrs: AttributeSet? = null) :
         Timber.d("Camera resolution set to: $width x $height")
     }
 
-    override fun calculateCameraFrameSize(supportedSizes: MutableList<*>, accessor: ListItemAccessor, surfaceWidth: Int, surfaceHeight: Int): org.opencv.core.Size {
-        Timber.d("calculateCameraFrameSize: supportedSizes=$supportedSizes, surfaceWidth=$surfaceWidth, surfaceHeight=$surfaceHeight")
 
-        // Use the user-specified max resolution if available, otherwise use the surface size.
-        // This allows setting a resolution higher than the view's size.
-        val maxAllowedWidth = if (mMaxWidth != MAX_UNSPECIFIED) mMaxWidth else surfaceWidth
-        val maxAllowedHeight = if (mMaxHeight != MAX_UNSPECIFIED) mMaxHeight else surfaceHeight
-
-        var bestSize: org.opencv.core.Size? = null
-        var bestArea = 0
-
-        for (size in supportedSizes) {
-            val currentWidth = accessor.getWidth(size)
-            val currentHeight = accessor.getHeight(size)
-            val currentArea = currentWidth * currentHeight
-
-            if (currentWidth <= maxAllowedWidth && currentHeight <= maxAllowedHeight) {
-                if (currentArea > bestArea) {
-                    bestArea = currentArea
-                    bestSize = org.opencv.core.Size(currentWidth.toDouble(), currentHeight.toDouble())
-                }
-            }
-        }
-
-        if (bestSize != null) {
-            Timber.d("Selected camera frame size: ${bestSize.width}x${bestSize.height}")
-            return bestSize
-        }
-
-        // Fallback to the first supported size if no suitable size is found
-        if (supportedSizes.isNotEmpty()) {
-            val firstSize = supportedSizes.first()
-            val firstWidth = accessor.getWidth(firstSize)
-            val firstHeight = accessor.getHeight(firstSize)
-            Timber.d("Fallback to first supported size: ${firstWidth}x${firstHeight}")
-            return org.opencv.core.Size(firstWidth.toDouble(), firstHeight.toDouble())
-        }
-
-        // Default fallback
-        return org.opencv.core.Size(maxAllowedWidth.toDouble(), maxAllowedHeight.toDouble())
-    }
 
     fun getSupportedPreviewSizes(): List<android.util.Size> {
         val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
