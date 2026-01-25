@@ -32,7 +32,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                arguments "-DOpenCV_DIR=" + file('../opencvsdk4120').absolutePath + "/sdk/native/jni",
+                arguments "-DOpenCV_DIR=" + file('../opencvsdk4130').absolutePath + "/sdk/native/jni",
                         "-DANDROID_TOOLCHAIN=clang",
                         "-DANDROID_STL=c++_shared"
                 cppFlags ''
@@ -97,7 +97,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.13.0'
 
     // Source - OpenCV-4 - Patched
-    implementation project(path: ':opencvsdk4120')
+    implementation project(path: ':opencvsdk4130')
     // Maven OpenCV-4
     // implementation 'org.opencv:opencv:4.10.0'
 

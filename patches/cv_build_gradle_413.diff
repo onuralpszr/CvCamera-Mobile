@@ -1,0 +1,42 @@
+--- sdk/build.gradle
++++ sdk/build.gradle
+@@ -104,11 +104,11 @@
+ 
+ android {
+     namespace 'org.opencv'
+-    compileSdkVersion 34
++    compileSdkVersion 36
+ 
+     defaultConfig {
+         minSdkVersion 21
+-        targetSdkVersion 34
++        targetSdkVersion 36
+ 
+         versionCode openCVersionCode
+         versionName openCVersionName
+@@ -121,10 +121,12 @@
+         }
+     }
+     
+-    android {
+-        buildFeatures {
+-            buildConfig true
+-        }
++    lint {
++        baseline = file("opencv-lint-baseline.xml")
++    }
++
++    kotlinOptions {
++        jvmTarget = "17"
+     }
+     compileOptions {
+         sourceCompatibility JavaVersion.VERSION_17
+@@ -196,7 +198,7 @@
+     repositories {
+         maven {
+             name = 'myrepo'
+-            url = "${project.buildDir}/repo"
++            url = "${rootProject.layout.buildDirectory}/repo"
+         }
+     }
+ }
