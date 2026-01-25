@@ -27,6 +27,8 @@ opencvsdk480/
 opencvsdk481/
 opencvsdk490/
 opencvsdk4100/
+opencvsdk4110/
+opencvsdk4120/
 
 OpenCV-android-sdk/
 opencv-4.6.0-android-sdk.zip
@@ -35,6 +37,10 @@ opencv-4.8.0-android-sdk.zip
 opencv-4.8.1-android-sdk.zip
 opencv-4.9.0-android-sdk.zip
 opencv-4.10.0-android-sdk.zip
+opencv-4.11.0-android-sdk.zip
+opencv-4.12.0-android-sdk.zip
+
+
 OpenCV4Android.zip
 # Ignore zip files, because setupOpenCV.sh will download a zip file
 *.zip

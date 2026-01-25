@@ -6,17 +6,22 @@ ci:
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v5.0.0
+  rev: v6.0.0
   hooks:
   - id: end-of-file-fixer
-    exclude: ^.idea/
+    exclude: |
+      (?x)^(
+        (\.idea/.*)|
+        (.+/\.idea/.*)|
+        patches/.*
+      )$
   - id: trailing-whitespace
     exclude: ^patches/
   - id: check-executables-have-shebangs
   - id: check-toml
   - id: check-case-conflict
   - id: check-added-large-files
-    args: [--maxkb=2048]
+    args: [--maxkb=4096]
     exclude: ^logo/
   - id: detect-private-key
   - id: forbid-new-submodules

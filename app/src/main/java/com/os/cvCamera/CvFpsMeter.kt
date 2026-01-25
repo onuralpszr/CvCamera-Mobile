@@ -61,7 +61,6 @@ class CvFpsMeter : FpsMeter() {
     }
 
     override fun draw(canvas: Canvas, offsetx: Float, offsety: Float) {
-        //Timber.d(mStrfps!!)
         canvas.drawText(mStrfps!!, offsetx + mExtraOffsetX, offsety + mExtraOffsetY, mPaint!!)
     }
 }
