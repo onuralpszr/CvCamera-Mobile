@@ -21,7 +21,9 @@ import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_FRONT
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2
 import org.opencv.android.OpenCVLoader.OPENCV_VERSION
+import org.opencv.android.OpenCVLoader.OPENCV_VERSION
 import org.opencv.android.Utils
+import org.opencv.android.CameraBridgeViewBase
 import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat
@@ -91,7 +93,8 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         mCameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
 
         // Get the camera ID string for the back camera
-        loadOpenCVConfigs()
+        // Get the camera ID string for the back camera
+        initCameraConfigs()
 
         // Initialize face detection
         initFaceDetection()
@@ -297,13 +300,19 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     }
 
 
-    private fun loadOpenCVConfigs() {
+    private fun initCameraConfigs() {
         binding.CvCamera.setCameraIndex(mCameraId)
         binding.CvCamera.setCvCameraViewListener(this)
-        binding.CvCamera.setCameraPermissionGranted()
-        Timber.d("OpenCV Camera Loaded")
+        Timber.d("OpenCV Camera Configured")
+    }
+
+    override fun getCameraViewList(): List<CameraBridgeViewBase> {
+        return listOf(binding.CvCamera)
+    }
+
+    override fun onCameraPermissionGranted() {
+        super.onCameraPermissionGranted()
         binding.CvCamera.enableView()
-        binding.CvCamera.getCameraDevice()
     }
 
 
