@@ -4,6 +4,24 @@ plugins {
 }
 
 android {
+
+    abstract class GitVersionValueSource : ValueSource<String, ValueSourceParameters.None> {
+        @get:Inject
+        abstract val execOperations: ExecOperations
+
+        override fun obtain(): String {
+            val output = ByteArrayOutputStream()
+            return try {
+                execOperations.exec {
+                    commandLine("git", "rev-parse", "--verify", "--short", "HEAD")
+                    standardOutput = output
+                }
+                String(output.toByteArray()).trim()
+            } catch (e: Exception) {
+                "unknown"
+            }
+        }
+    }
     namespace = "com.os.cvCamera"
     compileSdk = 36
 
@@ -14,11 +32,7 @@ android {
         versionCode = 1
         versionName = "1.1.0"
 
-        val gitCommitHash = try {
-            Runtime.getRuntime().exec("git rev-parse --verify --short HEAD").inputStream.reader().readText().trim()
-        } catch (e: Exception) {
-            "unknown"
-        }
+        val gitCommitHash = providers.of(GitVersionValueSource::class) {}.get()
         buildConfigField("String", "GIT_HASH", "\"$gitCommitHash\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
