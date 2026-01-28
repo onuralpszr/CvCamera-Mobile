@@ -3,6 +3,12 @@ plugins {
     alias(libs.plugins.spotless)
 }
 
+import javax.inject.Inject
+import org.gradle.api.provider.ValueSource
+import org.gradle.api.provider.ValueSourceParameters
+import org.gradle.process.ExecOperations
+import java.io.ByteArrayOutputStream
+
 android {
 
     abstract class GitVersionValueSource : ValueSource<String, ValueSourceParameters.None> {
