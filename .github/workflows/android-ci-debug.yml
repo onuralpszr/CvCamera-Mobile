@@ -41,14 +41,8 @@ jobs:
     - name: 🎨 Check Code Style
       run: ./gradlew spotlessCheck
 
-    - name: 🧹 Run Android Lint
-      run: ./gradlew lint
-
-    - name: 🐞 Debug Build
-      run: ./gradlew assembleDebug
-
-    - name: 🚀 Release Build
-      run: ./gradlew build --no-daemon --console=plain
+      - name: ⚡ Build & Verify (Debug)
+        run: ./gradlew spotlessCheck assembleDebug lintDebug testDebugUnitTest
 
     - name: 📤 Upload Debug APK
       uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
