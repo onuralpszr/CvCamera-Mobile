@@ -38,6 +38,9 @@ jobs:
         distribution: temurin
         java-version: 21.X
 
+    - name: 🎨 Check Code Style
+      run: ./gradlew spotlessCheck
+
     - name: 🧹 Run Android Lint
       run: ./gradlew lint
 
