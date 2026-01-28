@@ -27,7 +27,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: 🗝️ Decode the Keystore
-        run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.jks
+        run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > app/keystore.jks
 
         # list files and show pwd for debugging
       - name: 📂 List files
@@ -36,12 +36,12 @@ jobs:
           pwd
 
       - name: 🏗️ Build Signed APK
+        env:
+          SIGNING_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          bash ./gradlew assembleRelease --stacktrace \
-          -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/keystore.jks \
-            -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
-            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
-            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+          bash ./gradlew assembleRelease --stacktrace
 
       - name: 📤 Upload APK
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
