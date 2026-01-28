@@ -9,7 +9,7 @@ mv OpenCV-android-sdk opencvsdk4130
 if [ -n "$GITHUB_ACTIONS" ]; then
     echo "GITHUB_ACTIONS is set"
     echo "Patching OpenCV Build.gradle and Manifest"
-    patch opencvsdk4130/sdk/build.gradle patches/cv_build_gradle_413.diff
+    patch opencvsdk4130/sdk/build.gradle patches/cv_build_gradle_4x.diff
     patch opencvsdk4130/sdk/java/AndroidManifest.xml patches/manifest_lint.diff
     echo "Copying OpenCV Lint Baseline"
     cp patches/opencv-lint-baseline.xml opencvsdk4130/sdk/opencv-lint-baseline.xml
@@ -17,7 +17,7 @@ if [ -n "$GITHUB_ACTIONS" ]; then
 else
     echo "GITHUB_ACTIONS is not set"
     echo "Patching OpenCV Build.gradle and Manifest"
-    patch opencvsdk4130/sdk/build.gradle patches/cv_build_gradle_413.diff
+    patch opencvsdk4130/sdk/build.gradle patches/cv_build_gradle_4x.diff
     patch opencvsdk4130/sdk/java/AndroidManifest.xml patches/manifest_lint.diff
     echo "Copying OpenCV Lint Baseline"
     cp patches/opencv-lint-baseline.xml opencvsdk4130/sdk/opencv-lint-baseline.xml
