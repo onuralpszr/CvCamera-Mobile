@@ -36,13 +36,21 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystorePath = if (project.hasProperty("keyStorePath")) {
-                project.property("keyStorePath") as String
+            val appKeystore = file("keystore.jks")
+            // Also check root for local convenience if not in app
+            val rootKeystore = rootProject.file("keystore.jks")
+
+            if (appKeystore.exists()) {
+                storeFile = appKeystore
+                println("Using app keystore: ${appKeystore.absolutePath}")
+            } else if (rootKeystore.exists()) {
+                storeFile = rootKeystore
+                println("Using root keystore: ${rootKeystore.absolutePath}")
             } else {
-                "keystore.jks"
+                // Default to app keystore so valid error message if missing
+                storeFile = appKeystore
+                println("Keystore not found, defaulting to: ${appKeystore.absolutePath}")
             }
-            storeFile = file(keystorePath)
-            println("Signing release with keystore at: ${file(keystorePath).absolutePath}")
 
             storePassword = System.getenv("SIGNING_STORE_PASSWORD")
             keyAlias = System.getenv("SIGNING_KEY_ALIAS")
