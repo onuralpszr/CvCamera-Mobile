@@ -8,9 +8,8 @@ import org.opencv.core.Core
 import java.text.DecimalFormat
 
 class CvFpsMeter : FpsMeter() {
-
-    private val STEP = 20
-    private val FPS_FORMAT = DecimalFormat("0.00")
+    private val step = 20
+    private val fpsFormat = DecimalFormat("0.00")
 
     private var mFramesCounter = 0
     private var mFrequency = 0.0
@@ -39,28 +38,36 @@ class CvFpsMeter : FpsMeter() {
             mIsInitialized = true
         } else {
             mFramesCounter++
-            if (mFramesCounter % STEP == 0) {
+            if (mFramesCounter % step == 0) {
                 val time = Core.getTickCount()
-                val fps = STEP * mFrequency / (time - mprevFrameTime)
+                val fps = step * mFrequency / (time - mprevFrameTime)
                 mprevFrameTime = time
                 mStrfps =
                     if (mWidth != 0 && mHeight != 0) {
-                        FPS_FORMAT.format(fps) + " FPS@" + Integer.valueOf(
-                            mWidth,
-                        ) + "x" + Integer.valueOf(mHeight)
+                        fpsFormat.format(fps) + " FPS@" +
+                            Integer.valueOf(
+                                mWidth,
+                            ) + "x" + Integer.valueOf(mHeight)
                     } else {
-                        FPS_FORMAT.format(fps) + " FPS"
+                        fpsFormat.format(fps) + " FPS"
                     }
             }
         }
     }
 
-    override fun setResolution(width: Int, height: Int) {
+    override fun setResolution(
+        width: Int,
+        height: Int,
+    ) {
         mWidth = width
         mHeight = height
     }
 
-    override fun draw(canvas: Canvas, offsetx: Float, offsety: Float) {
+    override fun draw(
+        canvas: Canvas,
+        offsetx: Float,
+        offsety: Float,
+    ) {
         canvas.drawText(mStrfps!!, offsetx + mExtraOffsetX, offsety + mExtraOffsetY, mPaint!!)
     }
 }
