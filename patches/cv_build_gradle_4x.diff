@@ -1,8 +1,20 @@
-diff --git a/build.gradle b/build.gradle.patched
-index 5d176b4..586f683 100644
---- a/build.gradle
-+++ b/build.gradle.patched
-@@ -104,11 +104,11 @@ println "OpenCV: " +openCVersionName + " " + project.buildscript.sourceFile
+--- build.orig.gradle	2026-01-28 23:49:08.683582330 +0300
++++ build.gradle	2026-01-28 23:42:59.121035993 +0300
+@@ -90,12 +90,7 @@
+ 
+ apply plugin: 'com.android.library'
+ apply plugin: 'maven-publish'
+-try {
+-    apply plugin: 'kotlin-android'
+-    println "Configure OpenCV with Kotlin"
+-} catch (Exception e) {
+-    println "Configure OpenCV without Kotlin"
+-}
++
+ 
+ def openCVersionName = "4.13.0"
+ def openCVersionCode = ((4 * 100 + 13) * 100 + 0) * 10 + 0
+@@ -104,11 +99,11 @@
  
  android {
      namespace 'org.opencv'
@@ -10,24 +22,42 @@ index 5d176b4..586f683 100644
 +    compileSdkVersion 36
  
      defaultConfig {
-         minSdkVersion 21
+-        minSdkVersion 21
 -        targetSdkVersion 34
++        minSdkVersion 24
 +        targetSdkVersion 36
  
          versionCode openCVersionCode
          versionName openCVersionName
-@@ -125,6 +125,10 @@ android {
-         buildFeatures {
+@@ -126,9 +121,16 @@
              buildConfig true
          }
-+
-+        lint {
-+            baseline = file("opencv-lint-baseline.xml")
-+        }
      }
++
++     lint {
++         baseline = file("opencv-lint-baseline.xml")
++    }
++ 
++
++    
      compileOptions {
-         sourceCompatibility JavaVersion.VERSION_17
-@@ -196,7 +200,7 @@ publishing {
+-        sourceCompatibility JavaVersion.VERSION_17
+-        targetCompatibility JavaVersion.VERSION_17
++        sourceCompatibility JavaVersion.VERSION_21
++        targetCompatibility JavaVersion.VERSION_21
+     }
+ 
+     buildTypes {
+@@ -142,7 +144,7 @@
+                 doNotStrip '**/*.so'  // controlled by OpenCV CMake scripts
+             }
+             minifyEnabled false
+-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
++            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.txt'
+         }
+     }
+ 
+@@ -196,7 +198,7 @@
      repositories {
          maven {
              name = 'myrepo'

@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "21"
 
       - name: 📚 Android-OpenCV-SDK Setup
         run: ./setupOpenCV_4x.sh
@@ -27,21 +27,20 @@ jobs:
         run: chmod +x gradlew
 
       - name: 🗝️ Decode the Keystore
-        run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./keystore.jks
+        run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > app/keystore.jks
 
-        # list files and show pwd for debugging
       - name: 📂 List files
         run: |
           ls -la
           pwd
 
       - name: 🏗️ Build Signed APK
+        env:
+          SIGNING_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          bash ./gradlew assembleRelease --stacktrace \
-          -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/keystore.jks \
-            -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
-            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
-            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+          bash ./gradlew assembleRelease --stacktrace
 
       - name: 📤 Upload APK
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
@@ -51,7 +50,7 @@ jobs:
 
       - name: Get OpenCV version and versionName
         run: |
-          echo "opencv_version=$(awk -F'= ' '/def openCVersionName/ { print $2 }' opencvsdk4120/sdk/build.gradle | tr -d '"')" >> "$GITHUB_ENV"
+          echo "opencv_version=$(awk -F'= ' '/def openCVersionName/ { print $2 }' opencvsdk4130/sdk/build.gradle | tr -d '"')" >> "$GITHUB_ENV"
           echo "version_name=$(grep -oP 'versionName "\K[^"]+' app/build.gradle)" >> "$GITHUB_ENV"
           echo "git_hash=$(git rev-parse --verify --short HEAD)" >> "$GITHUB_ENV"
 

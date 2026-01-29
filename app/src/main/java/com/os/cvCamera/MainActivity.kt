@@ -12,10 +12,12 @@ import android.util.TypedValue
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.view.get
+import androidx.core.view.size
 import com.os.cvCamera.BuildConfig.GIT_HASH
 import com.os.cvCamera.BuildConfig.VERSION_NAME
 import com.os.cvCamera.databinding.ActivityMainBinding
 import org.opencv.android.CameraActivity
+import org.opencv.android.CameraBridgeViewBase
 import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_BACK
 import org.opencv.android.CameraBridgeViewBase.CAMERA_ID_FRONT
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame
@@ -25,17 +27,14 @@ import org.opencv.android.Utils
 import org.opencv.core.Core
 import org.opencv.core.CvType
 import org.opencv.core.Mat
-import org.opencv.objdetect.CascadeClassifier
 import timber.log.Timber
-import androidx.core.view.size
-import java.io.File
-import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class MainActivity : CameraActivity(), CvCameraViewListener2 {
-
+class MainActivity :
+    CameraActivity(),
+    CvCameraViewListener2 {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mRGBA: Mat
     private lateinit var mRGBAT: Mat
@@ -46,12 +45,11 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
     private var mFilterId = -1
 
     // Face detection
-    private var mFaceCascade: CascadeClassifier? = null
+    private var mFaceDetector: FaceDetector? = null
     private var mFaceDetectionEnabled = false
 
     // Photo capture
     private var mCaptureNextFrame = false
-
 
     companion object {
         init {
@@ -84,54 +82,23 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         super.onCreate(savedInstanceState)
         Timber.d("OpenCV Version: $OPENCV_VERSION")
 
-
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         mCameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
 
         // Get the camera ID string for the back camera
-        loadOpenCVConfigs()
+        // Get the camera ID string for the back camera
+        initCameraConfigs()
 
         // Initialize face detection
-        initFaceDetection()
+        mFaceDetector = FaceDetector(this)
 
         // Load buttonConfigs
         configButtons()
 
         // Load button colors
         setButtonColors()
-
-    }
-
-    private fun initFaceDetection() {
-        try {
-            val inputStream = resources.openRawResource(R.raw.haarcascade_frontalface_default)
-            val cascadeDir = getDir("cascade", MODE_PRIVATE)
-            val cascadeFile = File(cascadeDir, "haarcascade_frontalface_default.xml")
-
-            val outputStream = FileOutputStream(cascadeFile)
-            val buffer = ByteArray(4096)
-            var bytesRead: Int
-            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                outputStream.write(buffer, 0, bytesRead)
-            }
-            inputStream.close()
-            outputStream.close()
-
-            mFaceCascade = CascadeClassifier(cascadeFile.absolutePath)
-            if (mFaceCascade?.empty() == true) {
-                Timber.e("Failed to load cascade classifier")
-                mFaceCascade = null
-            } else {
-                Timber.d("Face cascade loaded successfully")
-            }
-
-            cascadeDir.delete()
-        } catch (e: Exception) {
-            Timber.e("Error loading cascade: ${e.message}")
-            mFaceCascade = null
-        }
     }
 
     private fun setButtonColors() {
@@ -151,94 +118,113 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-
                 R.id.about -> {
                     // Get app version and githash from BuildConfig
                     val cvVer = openCVVersion() // Get OpenCV version from native code
-                    val toast: Toast = Toast.makeText(
-                        this,
-                        "CvCamera-Mobile - Version $VERSION_NAME-$GIT_HASH - OpenCV $cvVer ",
-                        Toast.LENGTH_SHORT,
-                    )
+                    val toast: Toast =
+                        Toast.makeText(
+                            this,
+                            "CvCamera-Mobile - Version $VERSION_NAME-$GIT_HASH - OpenCV $cvVer ",
+                            Toast.LENGTH_SHORT,
+                        )
                     toast.show()
 
                     true
                 }
 
                 R.id.filters -> {
-                    mFilterId = when (mFilterId) {
-                        FILTER_NONE -> {
-                            Toast.makeText(this, getString(R.string.grayscale_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_GRAY
+                    mFilterId =
+                        when (mFilterId) {
+                            FILTER_NONE -> {
+                                Toast.makeText(this, getString(R.string.grayscale_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_GRAY
+                            }
+
+                            FILTER_GRAY -> {
+                                Toast.makeText(this, getString(R.string.sepia_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_SEPIA
+                            }
+
+                            FILTER_SEPIA -> {
+                                Toast.makeText(this, getString(R.string.blur_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_BLUR
+                            }
+
+                            FILTER_BLUR -> {
+                                Toast.makeText(this, getString(R.string.hsv_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_HSV
+                            }
+
+                            FILTER_HSV -> {
+                                Toast.makeText(this, getString(R.string.edge_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_EDGE
+                            }
+
+                            FILTER_EDGE -> {
+                                Toast.makeText(this, getString(R.string.sobel_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_SOBEL
+                            }
+
+                            FILTER_SOBEL -> {
+                                Toast.makeText(this, getString(R.string.canny_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_CANNY
+                            }
+
+                            FILTER_CANNY -> {
+                                Toast.makeText(this, getString(R.string.negative_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_NEGATIVE
+                            }
+
+                            FILTER_NEGATIVE -> {
+                                Toast.makeText(this, getString(R.string.sharpen_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_SHARPEN
+                            }
+
+                            FILTER_SHARPEN -> {
+                                Toast.makeText(this, getString(R.string.emboss_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_EMBOSS
+                            }
+
+                            FILTER_EMBOSS -> {
+                                Toast.makeText(this, getString(R.string.cartoon_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_CARTOON
+                            }
+
+                            FILTER_CARTOON -> {
+                                Toast.makeText(this, getString(R.string.binary_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_BINARY
+                            }
+
+                            FILTER_BINARY -> {
+                                Toast.makeText(this, getString(R.string.sketch_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_SKETCH
+                            }
+
+                            FILTER_SKETCH -> {
+                                Toast.makeText(this, getString(R.string.contours_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_CONTOURS
+                            }
+
+                            FILTER_CONTOURS -> {
+                                Toast.makeText(this, getString(R.string.no_filter), Toast.LENGTH_SHORT).show()
+                                FILTER_NONE
+                            }
+
+                            else -> {
+                                FILTER_NONE
+                            }
                         }
-                        FILTER_GRAY -> {
-                            Toast.makeText(this, getString(R.string.sepia_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_SEPIA
-                        }
-                        FILTER_SEPIA -> {
-                            Toast.makeText(this, getString(R.string.blur_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_BLUR
-                        }
-                        FILTER_BLUR -> {
-                            Toast.makeText(this, getString(R.string.hsv_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_HSV
-                        }
-                        FILTER_HSV -> {
-                            Toast.makeText(this, getString(R.string.edge_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_EDGE
-                        }
-                        FILTER_EDGE -> {
-                            Toast.makeText(this, getString(R.string.sobel_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_SOBEL
-                        }
-                        FILTER_SOBEL -> {
-                            Toast.makeText(this, getString(R.string.canny_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_CANNY
-                        }
-                        FILTER_CANNY -> {
-                            Toast.makeText(this, getString(R.string.negative_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_NEGATIVE
-                        }
-                        FILTER_NEGATIVE -> {
-                            Toast.makeText(this, getString(R.string.sharpen_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_SHARPEN
-                        }
-                        FILTER_SHARPEN -> {
-                            Toast.makeText(this, getString(R.string.emboss_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_EMBOSS
-                        }
-                        FILTER_EMBOSS -> {
-                            Toast.makeText(this, getString(R.string.cartoon_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_CARTOON
-                        }
-                        FILTER_CARTOON -> {
-                            Toast.makeText(this, getString(R.string.binary_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_BINARY
-                        }
-                        FILTER_BINARY -> {
-                            Toast.makeText(this, getString(R.string.sketch_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_SKETCH
-                        }
-                        FILTER_SKETCH -> {
-                            Toast.makeText(this, getString(R.string.contours_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_CONTOURS
-                        }
-                        FILTER_CONTOURS -> {
-                            Toast.makeText(this, getString(R.string.no_filter), Toast.LENGTH_SHORT).show()
-                            FILTER_NONE
-                        }
-                        else -> FILTER_NONE
-                    }
                     true
                 }
 
                 R.id.faceDetection -> {
                     mFaceDetectionEnabled = !mFaceDetectionEnabled
-                    val message = if (mFaceDetectionEnabled) {
-                        getString(R.string.face_detection_on)
-                    } else {
-                        getString(R.string.face_detection_off)
-                    }
+                    val message =
+                        if (mFaceDetectionEnabled) {
+                            getString(R.string.face_detection_on)
+                        } else {
+                            getString(R.string.face_detection_off)
+                        }
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                     true
                 }
@@ -251,7 +237,7 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 
                 R.id.resizeCanvas -> {
                     binding.CvCamera.disableView()
-                    //binding.CvCamera.setFitToCanvas(!binding.CvCamera.getFitToCanvas())
+                    // binding.CvCamera.setFitToCanvas(!binding.CvCamera.getFitToCanvas())
                     binding.CvCamera.fitsSystemWindows = !binding.CvCamera.fitsSystemWindows
                     binding.CvCamera.enableView()
                     true
@@ -264,15 +250,15 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                         false
                     }
                     val sizeStrings = sizes.map { "${it.width} x ${it.height}" }.toTypedArray()
-                    com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                    com.google.android.material.dialog
+                        .MaterialAlertDialogBuilder(this)
                         .setTitle("Select Resolution")
                         .setItems(sizeStrings) { dialog, which ->
                             val selectedSize = sizes[which]
                             binding.CvCamera.disableView()
                             binding.CvCamera.setCameraResolution(selectedSize.width, selectedSize.height)
                             binding.CvCamera.enableView()
-                        }
-                        .show()
+                        }.show()
                     true
                 }
 
@@ -280,33 +266,34 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
                     false
                 }
             }
-
         }
     }
 
     private fun cameraSwitch() {
-        mCameraId = if (mCameraId == CAMERA_ID_BACK) {
-            CAMERA_ID_FRONT
-        } else {
-            CAMERA_ID_BACK
-        }
+        mCameraId =
+            if (mCameraId == CAMERA_ID_BACK) {
+                CAMERA_ID_FRONT
+            } else {
+                CAMERA_ID_BACK
+            }
 
         binding.CvCamera.disableView()
         binding.CvCamera.setCameraIndex(mCameraId)
         binding.CvCamera.enableView()
     }
 
-
-    private fun loadOpenCVConfigs() {
+    private fun initCameraConfigs() {
         binding.CvCamera.setCameraIndex(mCameraId)
         binding.CvCamera.setCvCameraViewListener(this)
-        binding.CvCamera.setCameraPermissionGranted()
-        Timber.d("OpenCV Camera Loaded")
-        binding.CvCamera.enableView()
-        binding.CvCamera.getCameraDevice()
+        Timber.d("OpenCV Camera Configured")
     }
 
+    override fun getCameraViewList(): List<CameraBridgeViewBase> = listOf(binding.CvCamera)
 
+    override fun onCameraPermissionGranted() {
+        super.onCameraPermissionGranted()
+        binding.CvCamera.enableView()
+    }
 
     // WIP Flashlight Support
 //    private fun findFlashLight() {
@@ -333,7 +320,10 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
 //        }
 //    }
 
-    override fun onCameraViewStarted(width: Int, height: Int) {
+    override fun onCameraViewStarted(
+        width: Int,
+        height: Int,
+    ) {
         mRGBA = Mat(height, width, CvType.CV_8UC4)
         mRGBAT = Mat()
     }
@@ -343,27 +333,29 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         mRGBAT.release()
     }
 
-    override fun onCameraFrame(inputFrame: CvCameraViewFrame?): Mat {
-        return if (inputFrame != null) {
-            val processedFrame = if (mCameraId == CAMERA_ID_BACK) {
-                mRGBA = inputFrame.rgba()
-                cvFilters(mRGBA)
-            } else {
-                mRGBA = inputFrame.rgba()
-                // Flipping to show portrait mode properly
-                Core.flip(mRGBA, mRGBAT, 1)
-                // Release the matrix to avoid memory leaks
-                mRGBA.release()
-                // Check if grayscale is enabled
-                cvFilters(mRGBAT)
-            }
+    override fun onCameraFrame(inputFrame: CvCameraViewFrame?): Mat =
+        if (inputFrame != null) {
+            val processedFrame =
+                if (mCameraId == CAMERA_ID_BACK) {
+                    mRGBA = inputFrame.rgba()
+                    cvFilters(mRGBA)
+                } else {
+                    mRGBA = inputFrame.rgba()
+                    // Flipping to show portrait mode properly
+                    Core.flip(mRGBA, mRGBAT, 1)
+                    // Release the matrix to avoid memory leaks
+                    mRGBA.release()
+                    // Check if grayscale is enabled
+                    cvFilters(mRGBAT)
+                }
 
             // Apply face detection if enabled
-            val finalFrame = if (mFaceDetectionEnabled) {
-                processedFrame.detectFaces(mFaceCascade)
-            } else {
-                processedFrame
-            }
+            val finalFrame =
+                if (mFaceDetectionEnabled) {
+                    mFaceDetector?.detect(processedFrame) ?: processedFrame
+                } else {
+                    processedFrame
+                }
 
             // Capture photo if requested
             if (mCaptureNextFrame) {
@@ -376,7 +368,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
             // return last or empty frame
             mRGBA
         }
-    }
 
     private fun captureFrame(frame: Mat) {
         try {
@@ -386,11 +377,12 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
             val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
             val filename = "CvCamera_$timestamp.jpg"
 
-            val contentValues = ContentValues().apply {
-                put(MediaStore.Images.Media.DISPLAY_NAME, filename)
-                put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/CvCamera")
-            }
+            val contentValues =
+                ContentValues().apply {
+                    put(MediaStore.Images.Media.DISPLAY_NAME, filename)
+                    put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                    put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/CvCamera")
+                }
 
             val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
             uri?.let {
@@ -410,8 +402,8 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
         }
     }
 
-    private fun cvFilters(frame: Mat): Mat {
-        return when (mFilterId) {
+    private fun cvFilters(frame: Mat): Mat =
+        when (mFilterId) {
             FILTER_GRAY -> frame.toGray()
             FILTER_SEPIA -> frame.toSepia()
             FILTER_BLUR -> frame.toBlur()
@@ -428,7 +420,6 @@ class MainActivity : CameraActivity(), CvCameraViewListener2 {
             FILTER_CONTOURS -> frame.toContours()
             else -> frame
         }
-    }
 
     override fun onDestroy() {
         Timber.d("onDestroy")

@@ -6,14 +6,12 @@ import org.opencv.core.CvType.CV_8UC1
 import org.opencv.core.Mat
 import org.opencv.core.MatOfPoint
 import org.opencv.core.MatOfRect
-import org.opencv.core.Point
 import org.opencv.core.Scalar
 import org.opencv.imgproc.Imgproc
 import org.opencv.imgproc.Imgproc.COLOR_BGR2GRAY
 import org.opencv.imgproc.Imgproc.Canny
 import org.opencv.imgproc.Imgproc.Sobel
 import org.opencv.imgproc.Imgproc.cvtColor
-import org.opencv.objdetect.CascadeClassifier
 
 fun Mat.toSobel(): Mat {
     Sobel(this, this, CV_8UC1, 1, 0)
@@ -25,10 +23,22 @@ fun Mat.toSepia(): Mat {
     sepiaKernel.put(
         0,
         0,
-        0.189, 0.769, 0.393, 0.0,
-        0.168, 0.686, 0.349, 0.0,
-        0.131, 0.534, 0.272, 0.0,
-        0.0, 0.0, 0.0, 1.0,
+        0.189,
+        0.769,
+        0.393,
+        0.0,
+        0.168,
+        0.686,
+        0.349,
+        0.0,
+        0.131,
+        0.534,
+        0.272,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
     )
     Core.transform(this, this, sepiaKernel)
     return this
@@ -77,10 +87,17 @@ fun Mat.toNegative(): Mat {
 fun Mat.toSharpen(): Mat {
     val kernel = Mat(3, 3, CvType.CV_32F)
     kernel.put(
-        0, 0,
-        0.0, -1.0, 0.0,
-        -1.0, 5.0, -1.0,
-        0.0, -1.0, 0.0
+        0,
+        0,
+        0.0,
+        -1.0,
+        0.0,
+        -1.0,
+        5.0,
+        -1.0,
+        0.0,
+        -1.0,
+        0.0,
     )
     Imgproc.filter2D(this, this, -1, kernel)
     kernel.release()
@@ -93,10 +110,17 @@ fun Mat.toSharpen(): Mat {
 fun Mat.toEmboss(): Mat {
     val kernel = Mat(3, 3, CvType.CV_32F)
     kernel.put(
-        0, 0,
-        -2.0, -1.0, 0.0,
-        -1.0, 1.0, 1.0,
-        0.0, 1.0, 2.0
+        0,
+        0,
+        -2.0,
+        -1.0,
+        0.0,
+        -1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        2.0,
     )
     Imgproc.filter2D(this, this, -1, kernel)
     kernel.release()
@@ -119,9 +143,13 @@ fun Mat.toCartoon(): Mat {
 
     // Detect edges using adaptive threshold
     Imgproc.adaptiveThreshold(
-        gray, edges, 255.0,
+        gray,
+        edges,
+        255.0,
         Imgproc.ADAPTIVE_THRESH_MEAN_C,
-        Imgproc.THRESH_BINARY, 9, 9.0
+        Imgproc.THRESH_BINARY,
+        9,
+        9.0,
     )
 
     // Apply bilateral filter for color smoothing
@@ -253,45 +281,6 @@ fun Mat.toVignette(): Mat {
 }
 
 /**
- * Detect faces in the image and draw rectangles around them
- */
-fun Mat.detectFaces(faceCascade: CascadeClassifier?): Mat {
-    if (faceCascade == null || faceCascade.empty()) {
-        return this
-    }
-
-    val gray = Mat()
-    cvtColor(this, gray, COLOR_BGR2GRAY)
-
-    val faces = MatOfRect()
-    faceCascade.detectMultiScale(
-        gray,
-        faces,
-        1.1,
-        3,
-        0,
-        org.opencv.core.Size(30.0, 30.0),
-        org.opencv.core.Size()
-    )
-
-    // Draw rectangles around detected faces
-    for (rect in faces.toArray()) {
-        Imgproc.rectangle(
-            this,
-            Point(rect.x.toDouble(), rect.y.toDouble()),
-            Point((rect.x + rect.width).toDouble(), (rect.y + rect.height).toDouble()),
-            Scalar(0.0, 255.0, 0.0, 255.0),
-            3
-        )
-    }
-
-    gray.release()
-    faces.release()
-
-    return this
-}
-
-/**
  * Detect contours and draw them
  */
 fun Mat.toContours(): Mat {
@@ -309,7 +298,7 @@ fun Mat.toContours(): Mat {
         contours as List<MatOfPoint>,
         hierarchy,
         Imgproc.RETR_TREE,
-        Imgproc.CHAIN_APPROX_SIMPLE
+        Imgproc.CHAIN_APPROX_SIMPLE,
     )
 
     // Draw contours
@@ -318,7 +307,7 @@ fun Mat.toContours(): Mat {
         contours as List<MatOfPoint>,
         -1,
         Scalar(0.0, 255.0, 0.0, 255.0),
-        2
+        2,
     )
 
     gray.release()

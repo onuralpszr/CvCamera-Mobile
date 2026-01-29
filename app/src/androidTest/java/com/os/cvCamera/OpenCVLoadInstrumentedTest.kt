@@ -15,7 +15,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.opencv.android.OpenCVLoader.OPENCV_VERSION
 
-
 /**
  * Instrumented test, which will execute on an Android device.
  *
@@ -23,31 +22,27 @@ import org.opencv.android.OpenCVLoader.OPENCV_VERSION
  */
 @RunWith(AndroidJUnit4::class)
 class OpenCVLoadInstrumentedTest {
-
-
     @Before
     fun grantPhonePermission() {
         getInstrumentation().targetContext
         getInstrumentation().uiAutomation.executeShellCommand(
-            "pm grant " + getInstrumentation().targetContext.packageName
-                    + " android.permission.CAMERA"
+            "pm grant " + getInstrumentation().targetContext.packageName +
+                " android.permission.CAMERA",
         )
     }
-
 
     @get:Rule
     var activityScenarioRule = activityScenarioRule<MainActivity>()
     private var decorView: View? = null
 
-
     @Before
     fun getDecorView() {
-        activityScenarioRule.scenario.onActivity(ActivityAction { activity ->
-            decorView = activity.window.decorView
-        })
+        activityScenarioRule.scenario.onActivity(
+            ActivityAction { activity ->
+                decorView = activity.window.decorView
+            },
+        )
     }
-
-
 
     @Test
     fun useAppContext() {
@@ -60,8 +55,9 @@ class OpenCVLoadInstrumentedTest {
     @Test
     fun toast_message() {
         getInstrumentation().targetContext
-        onView(withId(R.id.about)).perform(ViewActions.click());
-        val toastMessage = "CvCamera-Mobile - " +
+        onView(withId(R.id.about)).perform(ViewActions.click())
+        val toastMessage =
+            "CvCamera-Mobile - " +
                 "Version ${BuildConfig.VERSION_NAME}-${BuildConfig.GIT_HASH}" +
                 " - OpenCV $OPENCV_VERSION"
 
@@ -74,16 +70,16 @@ class OpenCVLoadInstrumentedTest {
     @Test
     fun camera_isLoaded() {
         getInstrumentation().targetContext
-        onView(withId(R.id.CvCamera)).perform(ViewActions.click());
+        onView(withId(R.id.CvCamera)).perform(ViewActions.click())
         assertEquals(true, true)
     }
 
     @Test
     fun change_camera_rear_front() {
         getInstrumentation().targetContext
-        onView(withId(R.id.cvCameraChangeFab)).perform(ViewActions.click());
+        onView(withId(R.id.cvCameraChangeFab)).perform(ViewActions.click())
         assertEquals(true, true)
-        onView(withId(R.id.cvCameraChangeFab)).perform(ViewActions.click());
+        onView(withId(R.id.cvCameraChangeFab)).perform(ViewActions.click())
         assertEquals(true, true)
     }
 }
