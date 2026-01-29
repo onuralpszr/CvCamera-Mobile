@@ -1,33 +1,15 @@
+import com.os.cvCamera.build.GitVersionValueSource
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.spotless)
 }
 
-import javax.inject.Inject
-import org.gradle.api.provider.ValueSource
-import org.gradle.api.provider.ValueSourceParameters
-import org.gradle.process.ExecOperations
-import java.io.ByteArrayOutputStream
+val gitCommitHash = providers.of(GitVersionValueSource::class) {}.get()
 
+@Suppress("UnstableApiUsage")
 android {
 
-    abstract class GitVersionValueSource : ValueSource<String, ValueSourceParameters.None> {
-        @get:Inject
-        abstract val execOperations: ExecOperations
-
-        override fun obtain(): String {
-            val output = ByteArrayOutputStream()
-            return try {
-                execOperations.exec {
-                    commandLine("git", "rev-parse", "--verify", "--short", "HEAD")
-                    standardOutput = output
-                }
-                String(output.toByteArray()).trim()
-            } catch (e: Exception) {
-                "unknown"
-            }
-        }
-    }
     namespace = "com.os.cvCamera"
     compileSdk = 36
 
@@ -38,7 +20,6 @@ android {
         versionCode = 1
         versionName = "1.1.0"
 
-        val gitCommitHash = providers.of(GitVersionValueSource::class) {}.get()
         buildConfigField("String", "GIT_HASH", "\"$gitCommitHash\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

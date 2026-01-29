@@ -29,7 +29,6 @@ jobs:
       - name: 🗝️ Decode the Keystore
         run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > app/keystore.jks
 
-        # list files and show pwd for debugging
       - name: 📂 List files
         run: |
           ls -la
