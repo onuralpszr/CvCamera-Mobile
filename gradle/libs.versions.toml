@@ -1,6 +1,6 @@
 [versions]
 # Android
-android-gradle-plugin = "9.0.0"
+android-gradle-plugin = "9.0.1"
 
 minSdk = "24"
 targetSdk = "36"
