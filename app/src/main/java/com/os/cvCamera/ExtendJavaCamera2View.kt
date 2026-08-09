@@ -15,14 +15,12 @@ import timber.log.Timber
 import kotlin.math.max
 import kotlin.math.min
 
-/**
- * How the camera frame is mapped onto the view.
- */
+/** Mapping of the camera frame onto the view bounds. */
 enum class CanvasScaleMode {
-    /** Whole frame visible, letterboxed with bars on the short axis (OpenCV's default). */
+    /** Whole frame visible, letterboxed on the short axis. This is OpenCV's default. */
     FIT,
 
-    /** Frame fills the view, overflow cropped. */
+    /** Frame fills the view; overflow is cropped. */
     FILL,
 }
 
@@ -31,19 +29,19 @@ class ExtendJavaCamera2View(
     attrs: AttributeSet? = null,
 ) : JavaCamera2View(context, attrs) {
     /**
-     * Frame size explicitly asked for via [setCameraResolution], in sensor orientation.
-     * [MAX_UNSPECIFIED] means "let OpenCV choose".
+     * Frame size requested through [setCameraResolution], in sensor orientation.
+     * [MAX_UNSPECIFIED] selects OpenCV's automatic choice.
      */
     private var requestedWidth = MAX_UNSPECIFIED
     private var requestedHeight = MAX_UNSPECIFIED
 
-    /** Surface size last handed to [connectCamera], needed to recompute the scale. */
+    /** Surface size most recently passed to [connectCamera], used to recompute the scale. */
     private var surfaceWidth = 0
     private var surfaceHeight = 0
 
     /**
-     * Height of the status bar / cutout in px. The view draws edge to edge, so the FPS chip
-     * needs this to avoid sitting under the system icons.
+     * Combined status bar and display cutout height in pixels. The view draws edge to edge, so
+     * overlays use this to stay clear of the system icons.
      */
     private var statusBarInset = 0f
 
@@ -56,13 +54,11 @@ class ExtendJavaCamera2View(
             Timber.d("Canvas scale mode: $value (mScale=$mScale)")
         }
 
-    /** True while the FPS/resolution chip is being drawn. */
+    /** Whether the FPS and resolution overlay is currently drawn. */
     val isFpsMeterEnabled: Boolean
         get() = mFpsMeter != null
 
-    /**
-     * Shows the FPS/resolution chip. Uses [CvFpsMeter] instead of OpenCV's plain white text.
-     */
+    /** Enables the overlay, using [CvFpsMeter] in place of OpenCV's default renderer. */
     override fun enableFpsMeter() {
         if (mFpsMeter == null) {
             mFpsMeter =
@@ -77,7 +73,7 @@ class ExtendJavaCamera2View(
         mFpsMeter = null
     }
 
-    /** Toggle the overlay. Applies on the next frame, so the camera keeps running. */
+    /** Toggles the overlay. Takes effect on the next frame; the camera is not restarted. */
     fun toggleFpsMeter(): Boolean {
         if (isFpsMeterEnabled) disableFpsMeter() else enableFpsMeter()
         return isFpsMeterEnabled
@@ -85,7 +81,7 @@ class ExtendJavaCamera2View(
 
     fun getCameraDevice(): CameraDevice? = mCameraDevice
 
-    /** True when the camera currently selected has a flash unit (front cameras usually do not). */
+    /** Whether the currently selected camera reports a flash unit. */
     fun hasFlash(): Boolean {
         val cameraId = mCameraID ?: return false
         return try {
@@ -103,10 +99,10 @@ class ExtendJavaCamera2View(
     }
 
     /**
-     * Torch (continuous flash). Setting this re-issues the preview request, and the state is
-     * re-applied automatically whenever the capture session is rebuilt.
+     * Continuous flash state. Assigning re-issues the preview request, and the value is
+     * re-applied whenever the capture session is rebuilt.
      *
-     * Ignored when the active camera has no flash.
+     * Assignment has no effect when the active camera reports no flash unit.
      */
     var torchEnabled: Boolean = false
         set(value) {
@@ -115,9 +111,11 @@ class ExtendJavaCamera2View(
         }
 
     /**
-     * OpenCV configures the preview with [CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH], and under
-     * that mode auto-exposure owns the flash and `FLASH_MODE` is ignored. Torch therefore requires
-     * switching AE to plain [CaptureRequest.CONTROL_AE_MODE_ON].
+     * Applies [torchEnabled] to the repeating preview request.
+     *
+     * OpenCV configures the preview with [CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH]. Under
+     * that mode auto-exposure controls the flash and `FLASH_MODE` is ignored, so torch also
+     * requires [CaptureRequest.CONTROL_AE_MODE_ON].
      */
     private fun applyTorch() {
         val session = mCaptureSession ?: return
@@ -141,7 +139,7 @@ class ExtendJavaCamera2View(
         }
     }
 
-    /** Re-apply the torch after every session rebuild (resolution change, camera switch, resume). */
+    /** Re-applies the torch state after each session rebuild, such as a resolution change. */
     override fun allocateSessionStateCallback(): CameraCaptureSession.StateCallback {
         val base = super.allocateSessionStateCallback()
         return object : CameraCaptureSession.StateCallback() {
@@ -161,8 +159,8 @@ class ExtendJavaCamera2View(
     fun getFrameSize(): android.util.Size = android.util.Size(mFrameWidth, mFrameHeight)
 
     /**
-     * Request a specific camera frame size. Sizes come from [getSupportedPreviewSizes] and are
-     * in sensor orientation. Takes effect on the next camera connect.
+     * Requests a specific frame size, in sensor orientation as returned by
+     * [getSupportedPreviewSizes]. Takes effect on the next camera connect.
      */
     fun setCameraResolution(
         width: Int,
@@ -174,7 +172,7 @@ class ExtendJavaCamera2View(
         Timber.d("Camera resolution requested: $width x $height")
     }
 
-    /** Drop an explicit request and go back to OpenCV's automatic size selection. */
+    /** Clears any explicit request, restoring OpenCV's automatic size selection. */
     fun clearCameraResolution() {
         requestedWidth = MAX_UNSPECIFIED
         requestedHeight = MAX_UNSPECIFIED
@@ -205,10 +203,10 @@ class ExtendJavaCamera2View(
     }
 
     /**
-     * Recompute [mScale] for the active [canvasScaleMode].
+     * Recomputes `mScale` for the active [canvasScaleMode].
      *
-     * OpenCV centres the frame and scales it by `mScale`; a scale larger than the "fit" factor
-     * simply overflows the canvas and is clipped, which is exactly a centre-crop.
+     * OpenCV centres the frame and scales it by `mScale`. A factor larger than the fit factor
+     * overflows the canvas and is clipped, which produces a centre-crop.
      */
     private fun applyCanvasScale() {
         if (mFrameWidth <= 0 || mFrameHeight <= 0) return
@@ -252,7 +250,7 @@ class ExtendJavaCamera2View(
         return super.calculateCameraFrameSize(supportedSizes, accessor, surfaceWidth, surfaceHeight)
     }
 
-    /** Exact match for the requested size, else the largest supported size that fits inside it. */
+    /** Returns an exact match for the requested size, or the largest supported size within it. */
     private fun pickRequestedSize(
         supportedSizes: MutableList<*>,
         accessor: ListItemAccessor,
@@ -288,8 +286,10 @@ class ExtendJavaCamera2View(
             val cameraId = mCameraID ?: return emptyList()
             val characteristics = cameraManager.getCameraCharacteristics(cameraId)
             val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-            // Use SurfaceTexture for preview sizes
-            val outputSizes = map?.getOutputSizes(android.graphics.SurfaceTexture::class.java)
+            // Must match what JavaCamera2View.calcPreviewSize() enumerates, which is
+            // getOutputSizes(ImageReader.class). The SurfaceTexture list can differ, and offering
+            // a size from it that the ImageReader cannot produce makes the request fall back.
+            val outputSizes = map?.getOutputSizes(android.media.ImageReader::class.java)
             if (outputSizes != null) {
                 sizes.addAll(outputSizes)
             }

@@ -1,66 +1,141 @@
+<div align="center">
+
 # CvCamera-Mobile
 
-Utilizing OpenCV with Android's Camera2 API through JavaCamera2View
+**A production-shaped OpenCV 4 camera template for Android — Camera2 preview, a native C++/JNI bridge, and every feature in its own pluggable file.**
 
 [![MIT](https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white)](https://opensource.org/license/mit/)
-[![JDK](https://img.shields.io/badge/JDK-21-007396?logo=openjdk&logoColor=white)](https://openjdk.org/)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.4.10-%23E34F26?logo=Kotlin&logoColor=white)](https://kotlinlang.org/)
-[![Gradle](https://img.shields.io/badge/Gradle-9.7.0-02303A?logo=Gradle&logoColor=white)](https://gradle.org/releases/)
-[![Android-Gradle-Plugin](https://img.shields.io/badge/AGP-9.3.1-02303A?logo=Gradle&logoColor=white)](https://developer.android.com/build/releases/gradle-plugin)
 [![OpenCV](https://img.shields.io/badge/OpenCV-4.14.0-5C3EE8?logo=OpenCV&logoColor=white)](https://opencv.org/)
-[![Spotless](https://img.shields.io/badge/Spotless-8.9.0-blue?logo=check&logoColor=white)](https://github.com/diffplug/spotless)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
-[![android-studio](https://img.shields.io/badge/android%20studio-Otter-3DDC84?logo=androidstudio&logoColor=white)](https://developer.android.com/studio)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.4.10-7F52FF?logo=Kotlin&logoColor=white)](https://kotlinlang.org/)
+[![JDK](https://img.shields.io/badge/JDK-21-007396?logo=openjdk&logoColor=white)](https://openjdk.org/)
+[![Gradle](https://img.shields.io/badge/Gradle-9.7.0-02303A?logo=Gradle&logoColor=white)](https://gradle.org/releases/)
+[![AGP](https://img.shields.io/badge/AGP-9.3.1-3DDC84?logo=Gradle&logoColor=white)](https://developer.android.com/build/releases/gradle-plugin)
+[![minSdk](https://img.shields.io/badge/minSdk-24-3DDC84?logo=android&logoColor=white)](https://developer.android.com/tools/releases/platforms)
+
 [![🚀 Android CI](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-debug.yml/badge.svg)](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-debug.yml)
 [![🚀 Build and Release](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-release.yml/badge.svg)](https://github.com/onuralpszr/CvCamera-Mobile/actions/workflows/android-ci-release.yml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/onuralpszr/CvCamera-Mobile/main.svg)](https://results.pre-commit.ci/latest/github/onuralpszr/CvCamera-Mobile/main)
-[![snyk-security](https://snyk.io/test/github/onuralpszr/CvCamera-Mobile/badge.svg)](https://snyk.io/test/github/onuralpszr/CvCamera-Mobile)
 [![CodeFactor](https://www.codefactor.io/repository/github/onuralpszr/cvcamera-mobile/badge/main)](https://www.codefactor.io/repository/github/onuralpszr/cvcamera-mobile/overview/main)
+[![snyk-security](https://snyk.io/test/github/onuralpszr/CvCamera-Mobile/badge.svg)](https://snyk.io/test/github/onuralpszr/CvCamera-Mobile)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
- <p align="center">
-    <img src="appPreview/appOverview.png" width="200" max-height="%20" alt="appOverview.png"/>
-    <img src="appPreview/appOverview2.png" width="200" max-height="%20" alt="appOverview2.png"/>
-</p>
+<img src="appPreview/appOverview.png" width="220" alt="Live preview with the FPS overlay"/>
+<img src="appPreview/appOverview2.png" width="220" alt="Effect applied to the live preview"/>
 
-This android project is barebone setting up OpenCV 4.14.0 (and other 4.x.y versions) for Android in [Android Studio](https://developer.android.com/studio) with Native Development Kit (NDK) support.
-[Android NDK](https://developer.android.com/ndk) enables you to implement your [OpenCV](https://opencv.org) image processing pipeline in C++ and call that C++ code from Android Kotlin/Java code through JNI ([Java Native Interface](https://en.wikipedia.org/wiki/Java_Native_Interface)). This provides a live camera feed with the ability to dynamically switch between front and back cameras. It includes a custom cvFpsMeter for enhanced text visibility. Also features a basic setup for Android NDK and OpenCV, as well as a CV filter with a toggle button for camera switching.
+</div>
 
-## How to use this repository
+---
 
-1. [Download and Install Android Studio](https://developer.android.com/studio)
+## What this is
 
-2. [Install NDK and CMake](https://developer.android.com/studio/projects/install-ndk.md)
+A barebones but complete starting point for OpenCV 4.x on Android. It wires up a live
+[Camera2](https://developer.android.com/media/camera/camera2) preview through OpenCV's
+`JavaCamera2View`, adds an [NDK](https://developer.android.com/ndk) bridge so the same frames can be
+processed in C++ via [JNI](https://en.wikipedia.org/wiki/Java_Native_Interface), and keeps every
+user-facing capability in its own file.
 
-3. Ensure you have **JDK 21** installed (required for this project)
+The last part is the point: the app doubles as a template. Each feature is a `CameraFeature`
+registered on one line, so the project can be reduced to a bare preview or extended without
+touching unrelated code.
 
-4. Clone this repository as an Android Studio project :
-     * In Android Studio, click on `File -> New -> Project from Version Control -> Git`
-     * Paste this repository *Github URL*, choose a *project directory* and click next.
+## Camera features
 
-5. Install *OpenCV Android release* :
-    * Download [OpenCV 4.14.0 Android release](https://github.com/opencv/opencv/releases/download/4.14.0/opencv-4.14.0-android-sdk.zip) or download latest available Android release on [OpenCV website](https://opencv.org/releases/).
-    * Unzip downloaded file and put **OpenCV-android-sdk** directory next your project and rename folder `opencvsdk4140`. If you want to place somewhere else please change path in `settings.gradle`
+| Feature | File | Notes |
+| --- | --- | --- |
+| Effect picker | `features/FilterPicker.kt` | 16 OpenCV effects, "No Effect" default, applied per frame |
+| Face detection | `features/FaceDetection.kt` | Haar cascade, boxes drawn on the frame |
+| Resolution picker | `features/ResolutionPicker.kt` | Every supported size, with aspect ratio and megapixels |
+| Canvas fit / fill | `features/CanvasScaleControl.kt` | Letterbox or centre-crop, no camera restart |
+| Flash torch | `features/TorchControl.kt` | Availability-checked per camera |
+| FPS overlay | `features/FpsOverlayControl.kt` | Tinted chip, toggleable |
+| Shutter flash | `features/ShutterEffect.kt` | Flash plus the system shutter sound |
+| Photo orientation | `features/PhotoOrientation.kt` | Writes the EXIF orientation tag |
+| Rotating controls | `features/ControlsRotator.kt` | Icons rotate, the bar stays at the bottom |
 
-    * Optional(For linux) you can run setupOpenCV_4x.sh for automatic download and setup gradle file for opencv
+Also included: front/back switching, capture to `MediaStore`, and a native
+`cv::getVersionString()` call proving the JNI path works end to end.
 
-6. Sync Gradle and run the application on your Android Device!
+## Adding or removing a feature
 
-## Features
+Features are registered in a single list in `MainActivity`:
 
-* **Version Catalog**: Dependencies are centrally managed in `gradle/libs.versions.toml`.
-* **Kotlin DSL**: Build scripts migrated to `.kts` for better type safety and IDE support.
-* **Spotless**: Enforced code formatting with ktlint. Run `./gradlew spotlessApply` to format code.
-* **OpenCV Version Update**: The OpenCV version was updated multiple times, with the latest being 4.14.0.
-* **Camera Switch**: Added the ability to switch between the front and back camera.
-* **SetupOpenCV Script**: Introduced a script for setting up OpenCV.
-* **Custom cvFpsMeter**: Implemented a custom cvFpsMeter for bigger text and different color choice.
-* **Material3 Theme**: Added configurations for the Material3 theme.
-* **UI Overhaul**: The user interface was significantly updated, and strings were added.
-* **Timber Logging**: Added Timber logging for fpsMeter and ExtendedJavaCamera2View.
-* **Android NDK - OpenCV Basic Setup**: Implemented a basic setup for Android NDK and OpenCV.
-* **CV Filter with Toggle Button**: Added a basic CV filter with a toggle button to switch between the front and back camera.
-* **Face Detection**: Refactored Face Detection logic into a dedicated `FaceDetector` class.
+```kotlin
+private val features: List<CameraFeature> by lazy {
+    listOf(
+        FilterPicker(this),
+        FaceDetection(this),
+        ResolutionPicker(this, binding.CvCamera),
+        // ...
+    )
+}
+```
+
+The list order is also the frame-processing order, so effects run before face boxes are drawn on
+top. A new capability means a new file implementing `CameraFeature` plus one line here. Dropping a
+capability means deleting its file and its line.
+
+`CameraFeature` provides `attach`/`detach`, `onResume`/`onPause`, `onMenuItemSelected`,
+`processFrame`, `onCameraSwitched`, `onPhotoCaptureStarted` and `onPhotoSaved` — all optional.
+
+## Getting started
+
+1. [Install Android Studio](https://developer.android.com/studio).
+2. [Install the NDK and CMake](https://developer.android.com/studio/projects/install-ndk).
+3. Install **JDK 21**.
+4. Clone the repository, then fetch the OpenCV SDK:
+
+   ```sh
+   ./setupOpenCV_4x.sh
+   ```
+
+   This downloads the OpenCV 4.14.0 Android SDK, verifies its SHA-256, extracts it to
+   `opencvsdk4140/`, and applies the patches in `patches/`. Re-running it on a prepared SDK is a
+   no-op.
+
+   To do it by hand instead: download the
+   [OpenCV 4.14.0 Android release](https://github.com/opencv/opencv/releases/download/4.14.0/opencv-4.14.0-android-sdk.zip),
+   unzip it beside the project, rename `OpenCV-android-sdk` to `opencvsdk4140`, and adjust the
+   path in `settings.gradle.kts` if you put it elsewhere.
+
+5. Sync Gradle and run on a device:
+
+   ```sh
+   ./gradlew installDebug
+   ```
+
+### Running without a device
+
+The Android emulator's `virtualscene` back camera renders a 3D room, which is enough to exercise
+the preview, effects and capture:
+
+```sh
+emulator -avd <name> -camera-back virtualscene -no-snapshot-load
+./gradlew installDebug
+adb shell pm grant com.os.cvCamera android.permission.CAMERA
+adb shell am start -n com.os.cvCamera/.MainActivity
+```
+
+`-no-snapshot-load` matters: loading a snapshot written by a different GPU backend crashes the
+emulator with "change of renderer detected".
+
+## Development
+
+```sh
+./gradlew spotlessApply                      # format (ktlint)
+./gradlew spotlessCheck assembleDebug \
+          :app:lintDebug :app:testDebugUnitTest   # what CI runs
+```
+
+* **Version catalog** — every dependency and SDK level lives in `gradle/libs.versions.toml`.
+* **Kotlin DSL** — all build scripts are `.kts`.
+* **Spotless + ktlint** — enforced in CI.
+* **Timber** — logging, debug builds only.
+* **Conventional commits** — enforced by convention; `cliff.toml` drives the changelog.
+
+`CvCheckUnitTest` asserts the linked OpenCV version, which is the guard that the SDK swap in
+`setupOpenCV_4x.sh` actually took effect.
 
 ## Keywords
 
-Kotlin, OpenCV 4, Android, Android Studio, Native, NDK, JNI, C++, Version Catalog, Kotlin DSL, Spotless
+Kotlin, OpenCV 4, Android, Android Studio, Camera2, NDK, JNI, C++, Version Catalog, Kotlin DSL,
+Spotless, Material 3

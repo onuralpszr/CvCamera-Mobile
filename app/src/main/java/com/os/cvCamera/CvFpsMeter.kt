@@ -10,11 +10,10 @@ import org.opencv.core.Core
 import java.text.DecimalFormat
 
 /**
- * FPS/resolution overlay drawn as a compact tinted chip in the top-right corner.
+ * FPS and resolution overlay, drawn as a tinted chip in the top-right corner in place of
+ * OpenCV's default text.
  *
- * Replaces OpenCV's plain oversized white text.
- *
- * @param density display density (px per dp) so the chip keeps its size across screens.
+ * @param density display density in pixels per dp, used to keep the chip a constant physical size.
  */
 class CvFpsMeter(
     private val density: Float = 1f,
@@ -44,7 +43,7 @@ class CvFpsMeter(
     private var mWidth = 0
     private var mHeight = 0
 
-    /** Extra top offset in px, so the chip clears the status bar / display cutout. */
+    /** Additional top offset in pixels, used to clear the status bar and display cutout. */
     var topInset: Float = 0f
 
     private fun dp(value: Float) = value * density
