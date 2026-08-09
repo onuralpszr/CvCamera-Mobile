@@ -116,6 +116,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.timber)
     implementation(libs.androidx.startup)
+    implementation(libs.androidx.exifinterface)
 
     // Source - OpenCV-4 - Patched
     implementation(project(":opencvsdk4140"))

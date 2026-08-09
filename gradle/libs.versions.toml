@@ -16,6 +16,7 @@ constraintlayout = "2.2.2"
 material = "1.14.0"
 timber = "5.0.1"
 startup = "1.2.0"
+exifinterface = "1.4.2"
 
 # Test
 junit = "4.13.2"
@@ -32,6 +33,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "startup" }
+androidx-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }

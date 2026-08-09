@@ -472,6 +472,9 @@ class MainActivity :
                 contentResolver.openOutputStream(it)?.use { outputStream ->
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 95, outputStream)
                 }
+                // The preview is locked to portrait, so record how the phone was held and let
+                // galleries rotate on display.
+                PhotoOrientation.apply(contentResolver, it, controlsRotator.deviceAngle)
                 runOnUiThread {
                     Toast.makeText(this, getString(R.string.photo_saved, filename), Toast.LENGTH_SHORT).show()
                 }

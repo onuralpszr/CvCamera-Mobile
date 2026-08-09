@@ -38,8 +38,12 @@ class ControlsRotator(
         const val SNAP_SLOP = 20
     }
 
-    /** Device angle snapped to a quadrant: 0, 90, 180 or 270. */
-    private var currentAngle = 0
+    /**
+     * Device angle snapped to a quadrant: 0, 90, 180 or 270, as reported by
+     * `OrientationEventListener`. Also used to tag saved photos, see [PhotoOrientation].
+     */
+    var deviceAngle: Int = 0
+        private set
 
     private val listener =
         object : OrientationEventListener(context) {
@@ -47,12 +51,12 @@ class ControlsRotator(
                 if (orientation == ORIENTATION_UNKNOWN) return
 
                 val snapped = snapToQuadrant(orientation)
-                if (snapped == currentAngle) return
+                if (snapped == deviceAngle) return
                 // Only commit once the device is clearly past the boundary, so icons do not
                 // flap back and forth when held near 45 degrees.
-                if (angularDistance(orientation, currentAngle) < 90 - SNAP_SLOP) return
+                if (angularDistance(orientation, deviceAngle) < 90 - SNAP_SLOP) return
 
-                currentAngle = snapped
+                deviceAngle = snapped
                 applyRotation(snapped)
             }
         }
@@ -78,9 +82,9 @@ class ControlsRotator(
         return if (diff > 180) 360 - diff else diff
     }
 
-    private fun applyRotation(deviceAngle: Int) {
+    private fun applyRotation(angle: Int) {
         // Counter-rotate so the icon stays upright with respect to the world.
-        val target = -deviceAngle.toFloat()
+        val target = -angle.toFloat()
         for (view in targets()) {
             // Animate along the shortest arc rather than spinning the long way round.
             var delta = (target - view.rotation) % 360f
