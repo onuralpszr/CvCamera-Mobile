@@ -43,5 +43,11 @@
         android:title="@string/cameraResolution"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/toggleFps"
+        android:icon="@drawable/baseline_speed_24"
+        android:title="@string/toggleFps"
+        app:showAsAction="ifRoom"/>
+
 
 </menu>
