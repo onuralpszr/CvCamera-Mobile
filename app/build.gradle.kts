@@ -11,7 +11,7 @@ val gitCommitHash = providers.of(GitVersionValueSource::class) {}.get()
 android {
 
     namespace = "com.os.cvCamera"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.os.cvCamera"
