@@ -67,7 +67,7 @@ class ControlsRotator(
 
     fun stop() = listener.disable()
 
-    private fun snapToQuadrant(orientation: Int) = ((orientation / 90.0).roundToInt() * 90) % 360
+    private fun snapToQuadrant(orientation: Int) = (orientation / 90.0).roundToInt() * 90 % 360
 
     /** Smallest absolute difference between two angles, accounting for wrap-around. */
     private fun angularDistance(
