@@ -27,9 +27,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/cvCameraTheme">
+        <!-- Locked to portrait so the controls stay at the physical bottom like a camera app;
+             ControlsRotator rotates just the icons when the device turns. This is deliberate
+             viewfinder behaviour, hence the suppressed orientation hints. -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

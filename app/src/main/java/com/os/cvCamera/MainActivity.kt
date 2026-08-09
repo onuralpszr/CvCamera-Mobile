@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.TypedValue
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.view.get
@@ -55,6 +56,9 @@ class MainActivity :
     // Shutter flash + sound. Self-contained: drop this line, the play() and release() calls,
     // and ShutterEffect.kt to remove the feature entirely.
     private val shutterEffect by lazy { ShutterEffect(binding.root) }
+
+    // Rotates only the control icons while the bar stays at the physical bottom.
+    private val controlsRotator by lazy { ControlsRotator(this) { rotatableControls() } }
 
     companion object {
         init {
@@ -481,10 +485,19 @@ class MainActivity :
         Timber.d("onPause")
         super.onPause()
         binding.CvCamera.disableView()
+        controlsRotator.stop()
     }
 
     override fun onResume() {
         Timber.d("onResume")
         super.onResume()
+        controlsRotator.start()
     }
+
+    /**
+     * Icons that should spin with the device: the bottom bar's action items (including the
+     * overflow button) and the camera-switch FAB. Resolved lazily on each rotation because menu
+     * item views are inflated after [onCreate].
+     */
+    private fun rotatableControls(): List<View> = binding.bottomAppBar.leafViews() + binding.cvCameraChangeFab
 }
