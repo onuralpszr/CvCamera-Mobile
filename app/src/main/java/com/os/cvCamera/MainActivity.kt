@@ -147,6 +147,19 @@ class MainActivity :
                     true
                 }
 
+                R.id.flashlight -> {
+                    if (!binding.CvCamera.hasFlash()) {
+                        Toast.makeText(this, getString(R.string.flashlight_unavailable), Toast.LENGTH_SHORT).show()
+                    } else {
+                        binding.CvCamera.torchEnabled = !binding.CvCamera.torchEnabled
+                        val on = binding.CvCamera.torchEnabled
+                        syncFlashIcon()
+                        val label = if (on) R.string.flashlight_on else R.string.flashlight_off
+                        Toast.makeText(this, getString(label), Toast.LENGTH_SHORT).show()
+                    }
+                    true
+                }
+
                 R.id.faceDetection -> {
                     mFaceDetectionEnabled = !mFaceDetectionEnabled
                     val message =
@@ -317,6 +330,21 @@ class MainActivity :
         b: Int,
     ): Int = if (b == 0) (if (a == 0) 1 else a) else gcd(b, a % b)
 
+    /** Reflect the torch state in the menu icon, keeping the themed tint applied. */
+    private fun syncFlashIcon() {
+        val item = binding.bottomAppBar.menu.findItem(R.id.flashlight) ?: return
+        item.setIcon(
+            if (binding.CvCamera.torchEnabled) {
+                R.drawable.baseline_flashlight_on_24
+            } else {
+                R.drawable.baseline_flashlight_off_24
+            },
+        )
+        val typedValue = TypedValue()
+        theme.resolveAttribute(android.R.attr.colorAccent, typedValue, true)
+        item.icon?.colorFilter = PorterDuffColorFilter(typedValue.data, PorterDuff.Mode.SRC_ATOP)
+    }
+
     private fun cameraSwitch() {
         mCameraId =
             if (mCameraId == CAMERA_ID_BACK) {
@@ -324,6 +352,10 @@ class MainActivity :
             } else {
                 CAMERA_ID_BACK
             }
+
+        // Front cameras normally have no flash.
+        binding.CvCamera.torchEnabled = false
+        syncFlashIcon()
 
         binding.CvCamera.disableView()
         binding.CvCamera.setCameraIndex(mCameraId)

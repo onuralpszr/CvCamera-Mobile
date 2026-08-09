@@ -3,6 +3,9 @@
     <string name="fab_Text">Configuration</string>
     <string name="cameraSwitch">Change Camera</string>
     <string name="flashlight">Flashlight</string>
+    <string name="flashlight_on">Flashlight: ON</string>
+    <string name="flashlight_off">Flashlight: OFF</string>
+    <string name="flashlight_unavailable">This camera has no flash</string>
     <string name="about">About</string>
     <string name="filters">Switch Filters</string>
     <string name="resizeCanvas">Resize Canvas</string>

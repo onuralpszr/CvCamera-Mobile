@@ -1,8 +1,11 @@
 package com.os.cvCamera
 import android.content.Context
+import android.hardware.camera2.CameraAccessException
+import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
+import android.hardware.camera2.CaptureRequest
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.view.WindowInsets
@@ -81,6 +84,78 @@ class ExtendJavaCamera2View(
     }
 
     fun getCameraDevice(): CameraDevice? = mCameraDevice
+
+    /** True when the camera currently selected has a flash unit (front cameras usually do not). */
+    fun hasFlash(): Boolean {
+        val cameraId = mCameraID ?: return false
+        return try {
+            val manager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            manager
+                .getCameraCharacteristics(cameraId)
+                .get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+        } catch (e: CameraAccessException) {
+            Timber.e(e, "Failed to query flash availability")
+            false
+        } catch (e: IllegalArgumentException) {
+            Timber.e(e, "Unknown camera id while querying flash")
+            false
+        }
+    }
+
+    /**
+     * Torch (continuous flash). Setting this re-issues the preview request, and the state is
+     * re-applied automatically whenever the capture session is rebuilt.
+     *
+     * Ignored when the active camera has no flash.
+     */
+    var torchEnabled: Boolean = false
+        set(value) {
+            field = value && hasFlash()
+            applyTorch()
+        }
+
+    /**
+     * OpenCV configures the preview with [CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH], and under
+     * that mode auto-exposure owns the flash and `FLASH_MODE` is ignored. Torch therefore requires
+     * switching AE to plain [CaptureRequest.CONTROL_AE_MODE_ON].
+     */
+    private fun applyTorch() {
+        val session = mCaptureSession ?: return
+        val builder = mPreviewRequestBuilder ?: return
+
+        try {
+            if (torchEnabled) {
+                builder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON)
+                builder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_TORCH)
+            } else {
+                builder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH)
+                builder.set(CaptureRequest.FLASH_MODE, CaptureRequest.FLASH_MODE_OFF)
+            }
+            session.setRepeatingRequest(builder.build(), null, mBackgroundHandler)
+            Timber.d("Torch ${if (torchEnabled) "on" else "off"}")
+        } catch (e: CameraAccessException) {
+            Timber.e(e, "Failed to apply torch state")
+        } catch (e: IllegalStateException) {
+            // Session closed underneath us, e.g. mid camera switch. Retried on reconnect.
+            Timber.w(e, "Capture session unavailable while applying torch")
+        }
+    }
+
+    /** Re-apply the torch after every session rebuild (resolution change, camera switch, resume). */
+    override fun allocateSessionStateCallback(): CameraCaptureSession.StateCallback {
+        val base = super.allocateSessionStateCallback()
+        return object : CameraCaptureSession.StateCallback() {
+            override fun onConfigured(session: CameraCaptureSession) {
+                base.onConfigured(session)
+                // A camera without flash must not keep a stale "on" state.
+                if (torchEnabled && !hasFlash()) torchEnabled = false else applyTorch()
+            }
+
+            override fun onConfigureFailed(session: CameraCaptureSession) = base.onConfigureFailed(session)
+
+            override fun onClosed(session: CameraCaptureSession) = base.onClosed(session)
+        }
+    }
 
     /** Frame size currently in use, in view orientation. */
     fun getFrameSize(): android.util.Size = android.util.Size(mFrameWidth, mFrameHeight)
