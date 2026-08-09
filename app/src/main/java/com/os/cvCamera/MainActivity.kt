@@ -13,6 +13,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.view.get
 import androidx.core.view.size
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.os.cvCamera.BuildConfig.GIT_HASH
 import com.os.cvCamera.BuildConfig.VERSION_NAME
 import com.os.cvCamera.databinding.ActivityMainBinding
@@ -51,6 +52,10 @@ class MainActivity :
     // Photo capture
     private var mCaptureNextFrame = false
 
+    // Shutter flash + sound. Self-contained: drop this line, the play() and release() calls,
+    // and ShutterEffect.kt to remove the feature entirely.
+    private val shutterEffect by lazy { ShutterEffect(binding.root) }
+
     companion object {
         init {
             System.loadLibrary("opencv_java4")
@@ -73,7 +78,8 @@ class MainActivity :
         const val FILTER_BINARY = 11
         const val FILTER_SKETCH = 12
         const val FILTER_CONTOURS = 13
-        const val FILTER_MAX = 13
+        const val FILTER_POSTERIZE = 14
+        const val FILTER_VIGNETTE = 15
     }
 
     private external fun openCVVersion(): String?
@@ -133,87 +139,7 @@ class MainActivity :
                 }
 
                 R.id.filters -> {
-                    mFilterId =
-                        when (mFilterId) {
-                            FILTER_NONE -> {
-                                Toast.makeText(this, getString(R.string.grayscale_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_GRAY
-                            }
-
-                            FILTER_GRAY -> {
-                                Toast.makeText(this, getString(R.string.sepia_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_SEPIA
-                            }
-
-                            FILTER_SEPIA -> {
-                                Toast.makeText(this, getString(R.string.blur_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_BLUR
-                            }
-
-                            FILTER_BLUR -> {
-                                Toast.makeText(this, getString(R.string.hsv_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_HSV
-                            }
-
-                            FILTER_HSV -> {
-                                Toast.makeText(this, getString(R.string.edge_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_EDGE
-                            }
-
-                            FILTER_EDGE -> {
-                                Toast.makeText(this, getString(R.string.sobel_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_SOBEL
-                            }
-
-                            FILTER_SOBEL -> {
-                                Toast.makeText(this, getString(R.string.canny_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_CANNY
-                            }
-
-                            FILTER_CANNY -> {
-                                Toast.makeText(this, getString(R.string.negative_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_NEGATIVE
-                            }
-
-                            FILTER_NEGATIVE -> {
-                                Toast.makeText(this, getString(R.string.sharpen_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_SHARPEN
-                            }
-
-                            FILTER_SHARPEN -> {
-                                Toast.makeText(this, getString(R.string.emboss_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_EMBOSS
-                            }
-
-                            FILTER_EMBOSS -> {
-                                Toast.makeText(this, getString(R.string.cartoon_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_CARTOON
-                            }
-
-                            FILTER_CARTOON -> {
-                                Toast.makeText(this, getString(R.string.binary_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_BINARY
-                            }
-
-                            FILTER_BINARY -> {
-                                Toast.makeText(this, getString(R.string.sketch_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_SKETCH
-                            }
-
-                            FILTER_SKETCH -> {
-                                Toast.makeText(this, getString(R.string.contours_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_CONTOURS
-                            }
-
-                            FILTER_CONTOURS -> {
-                                Toast.makeText(this, getString(R.string.no_filter), Toast.LENGTH_SHORT).show()
-                                FILTER_NONE
-                            }
-
-                            else -> {
-                                FILTER_NONE
-                            }
-                        }
+                    showFilterDialog()
                     true
                 }
 
@@ -230,35 +156,40 @@ class MainActivity :
                 }
 
                 R.id.capturePhoto -> {
+                    // The shutter flash and sound are the feedback here; the saved-photo toast
+                    // follows once the file is written.
                     mCaptureNextFrame = true
-                    Toast.makeText(this, getString(R.string.capturing_photo), Toast.LENGTH_SHORT).show()
                     true
                 }
 
                 R.id.resizeCanvas -> {
-                    binding.CvCamera.disableView()
-                    // binding.CvCamera.setFitToCanvas(!binding.CvCamera.getFitToCanvas())
-                    binding.CvCamera.fitsSystemWindows = !binding.CvCamera.fitsSystemWindows
-                    binding.CvCamera.enableView()
+                    // mScale is re-read for every drawn frame, so this needs no camera restart.
+                    val mode =
+                        if (binding.CvCamera.canvasScaleMode == CanvasScaleMode.FIT) {
+                            CanvasScaleMode.FILL
+                        } else {
+                            CanvasScaleMode.FIT
+                        }
+                    binding.CvCamera.canvasScaleMode = mode
+                    val label =
+                        if (mode == CanvasScaleMode.FILL) {
+                            getString(R.string.canvas_fill)
+                        } else {
+                            getString(R.string.canvas_fit)
+                        }
+                    Toast.makeText(this, label, Toast.LENGTH_SHORT).show()
+                    true
+                }
+
+                R.id.toggleFps -> {
+                    val shown = binding.CvCamera.toggleFpsMeter()
+                    val label = if (shown) R.string.fps_overlay_on else R.string.fps_overlay_off
+                    Toast.makeText(this, getString(label), Toast.LENGTH_SHORT).show()
                     true
                 }
 
                 R.id.cameraResolution -> {
-                    val sizes = binding.CvCamera.getSupportedPreviewSizes()
-                    if (sizes.isEmpty()) {
-                        Toast.makeText(this, "No sizes available", Toast.LENGTH_SHORT).show()
-                        false
-                    }
-                    val sizeStrings = sizes.map { "${it.width} x ${it.height}" }.toTypedArray()
-                    com.google.android.material.dialog
-                        .MaterialAlertDialogBuilder(this)
-                        .setTitle("Select Resolution")
-                        .setItems(sizeStrings) { dialog, which ->
-                            val selectedSize = sizes[which]
-                            binding.CvCamera.disableView()
-                            binding.CvCamera.setCameraResolution(selectedSize.width, selectedSize.height)
-                            binding.CvCamera.enableView()
-                        }.show()
+                    showResolutionDialog()
                     true
                 }
 
@@ -268,6 +199,119 @@ class MainActivity :
             }
         }
     }
+
+    /**
+     * Selectable effects, in the order shown. "No effect" is first so it is the obvious default.
+     */
+    private val filterEntries =
+        listOf(
+            FILTER_NONE to R.string.no_filter,
+            FILTER_GRAY to R.string.grayscale_filter,
+            FILTER_SEPIA to R.string.sepia_filter,
+            FILTER_BLUR to R.string.blur_filter,
+            FILTER_HSV to R.string.hsv_filter,
+            FILTER_EDGE to R.string.edge_filter,
+            FILTER_SOBEL to R.string.sobel_filter,
+            FILTER_CANNY to R.string.canny_filter,
+            FILTER_NEGATIVE to R.string.negative_filter,
+            FILTER_SHARPEN to R.string.sharpen_filter,
+            FILTER_EMBOSS to R.string.emboss_filter,
+            FILTER_CARTOON to R.string.cartoon_filter,
+            FILTER_BINARY to R.string.binary_filter,
+            FILTER_SKETCH to R.string.sketch_filter,
+            FILTER_CONTOURS to R.string.contours_filter,
+            FILTER_POSTERIZE to R.string.posterize_filter,
+            FILTER_VIGNETTE to R.string.vignette_filter,
+        )
+
+    /**
+     * Single-choice effect picker. Replaces cycling through every filter one tap at a time.
+     * Filters are applied per frame, so switching is instant and never restarts the camera.
+     */
+    private fun showFilterDialog() {
+        val labels = filterEntries.map { getString(it.second) }.toTypedArray()
+        val checked = filterEntries.indexOfFirst { it.first == mFilterId }.coerceAtLeast(0)
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.filters)
+            .setSingleChoiceItems(labels, checked) { dialog, which ->
+                dialog.dismiss()
+                mFilterId = filterEntries[which].first
+                Timber.d("Filter selected: ${getString(filterEntries[which].second)}")
+            }.setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    /**
+     * Single-choice resolution picker, largest first, with the size currently in use pre-selected.
+     * The camera is only restarted when the choice actually changes.
+     */
+    private fun showResolutionDialog() {
+        val sizes =
+            binding.CvCamera
+                .getSupportedPreviewSizes()
+                .distinct()
+                .sortedByDescending { it.width.toLong() * it.height }
+
+        if (sizes.isEmpty()) {
+            Toast.makeText(this, getString(R.string.no_resolutions), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val labels = sizes.map { describeSize(it) }.toTypedArray()
+        // The frame size is reported in view orientation, the sizes in sensor orientation.
+        val frame = binding.CvCamera.getFrameSize()
+        val checked =
+            sizes.indexOfFirst {
+                (it.width == frame.width && it.height == frame.height) ||
+                    (it.width == frame.height && it.height == frame.width)
+            }
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.cameraResolution)
+            .setSingleChoiceItems(labels, checked) { dialog, which ->
+                dialog.dismiss()
+                val selected = sizes[which]
+                if (which == checked) return@setSingleChoiceItems
+                Toast
+                    .makeText(
+                        this,
+                        getString(R.string.switching_resolution, selected.width, selected.height),
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                // Let the dialog finish dismissing before the camera restart so the
+                // reconnect does not stutter the dismiss animation.
+                binding.CvCamera.post {
+                    applyResolution(selected.width, selected.height)
+                }
+            }.setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    private fun applyResolution(
+        width: Int,
+        height: Int,
+    ) {
+        binding.CvCamera.disableView()
+        binding.CvCamera.setCameraResolution(width, height)
+        binding.CvCamera.enableView()
+    }
+
+    /** e.g. `1920 × 1080  ·  16:9  ·  2.1 MP` */
+    private fun describeSize(size: android.util.Size): String {
+        val megaPixels = size.width.toLong() * size.height / 1_000_000.0
+        return "${size.width} × ${size.height}  ·  ${aspectRatioOf(size)}  ·  ${"%.1f".format(megaPixels)} MP"
+    }
+
+    private fun aspectRatioOf(size: android.util.Size): String {
+        val divisor = gcd(size.width, size.height)
+        return "${size.width / divisor}:${size.height / divisor}"
+    }
+
+    private tailrec fun gcd(
+        a: Int,
+        b: Int,
+    ): Int = if (b == 0) (if (a == 0) 1 else a) else gcd(b, a % b)
 
     private fun cameraSwitch() {
         mCameraId =
@@ -370,6 +414,9 @@ class MainActivity :
         }
 
     private fun captureFrame(frame: Mat) {
+        // Fire on the frame that is actually saved, so the flash lines up with the capture.
+        // play() marshals itself onto the UI thread, so calling from the camera thread is fine.
+        shutterEffect.play()
         try {
             val bitmap = Bitmap.createBitmap(frame.cols(), frame.rows(), Bitmap.Config.ARGB_8888)
             Utils.matToBitmap(frame, bitmap)
@@ -418,6 +465,8 @@ class MainActivity :
             FILTER_BINARY -> frame.toBinary()
             FILTER_SKETCH -> frame.toSketch()
             FILTER_CONTOURS -> frame.toContours()
+            FILTER_POSTERIZE -> frame.toPosterize()
+            FILTER_VIGNETTE -> frame.toVignette()
             else -> frame
         }
 
@@ -425,6 +474,7 @@ class MainActivity :
         Timber.d("onDestroy")
         super.onDestroy()
         binding.CvCamera.disableView()
+        shutterEffect.release()
     }
 
     override fun onPause() {

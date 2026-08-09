@@ -13,7 +13,7 @@
     <string name="blur_filter">Blur Filter</string>
     <string name="hsv_filter">HSV Filter</string>
     <string name="edge_filter">Edge Detection Filter</string>
-    <string name="cameraResolution">Camera Resolution\n</string>
+    <string name="cameraResolution">Camera Resolution</string>
     <string name="negative_filter">Negative Filter</string>
     <string name="sharpen_filter">Sharpen Filter</string>
     <string name="emboss_filter">Emboss Filter</string>
@@ -21,16 +21,30 @@
     <string name="binary_filter">Binary Threshold Filter</string>
     <string name="sketch_filter">Sketch Filter</string>
     <string name="contours_filter">Contours Detection</string>
-    <string name="no_filter">No Filter</string>
+    <string name="posterize_filter">Posterize Filter</string>
+    <string name="vignette_filter">Vignette Filter</string>
+    <string name="no_filter">No Effect</string>
 
     <!-- Face detection -->
     <string name="face_detection">Face Detection</string>
     <string name="face_detection_on">Face Detection: ON</string>
     <string name="face_detection_off">Face Detection: OFF</string>
 
+    <!-- Canvas scaling -->
+    <string name="canvas_fit">Canvas: Fit (whole frame)</string>
+    <string name="canvas_fill">Canvas: Fill (cropped)</string>
+
+    <!-- Resolution picker -->
+    <string name="no_resolutions">No resolutions available</string>
+    <string name="switching_resolution">Switching to %1$d × %2$d…</string>
+
+    <!-- FPS overlay -->
+    <string name="toggleFps">FPS Overlay</string>
+    <string name="fps_overlay_on">FPS overlay: ON</string>
+    <string name="fps_overlay_off">FPS overlay: OFF</string>
+
     <!-- Photo capture -->
     <string name="capture_photo">Capture Photo</string>
-    <string name="capturing_photo">Capturing photo…</string>
     <string name="photo_saved">Photo saved: %1$s</string>
     <string name="photo_save_error">Error saving photo</string>
 </resources>
