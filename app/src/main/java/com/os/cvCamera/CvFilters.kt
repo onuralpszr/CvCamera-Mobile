@@ -152,20 +152,27 @@ fun Mat.toCartoon(): Mat {
         9.0,
     )
 
-    // Apply bilateral filter for color smoothing
-    Imgproc.bilateralFilter(this, color, 9, 300.0, 300.0)
+    // bilateralFilter only accepts CV_8UC1 or CV_8UC3, while camera frames are CV_8UC4,
+    // so drop the alpha channel for the smoothing pass and restore it afterwards.
+    val rgb = Mat()
+    cvtColor(this, rgb, Imgproc.COLOR_RGBA2RGB)
+    Imgproc.bilateralFilter(rgb, color, 9, 300.0, 300.0)
+    val colorRgba = Mat()
+    cvtColor(color, colorRgba, Imgproc.COLOR_RGB2RGBA)
 
     // Convert edges to color
     val edgesColor = Mat()
     cvtColor(edges, edgesColor, Imgproc.COLOR_GRAY2RGBA)
 
     // Combine edges with color image
-    Core.bitwise_and(color, edgesColor, this)
+    Core.bitwise_and(colorRgba, edgesColor, this)
 
     // Release temporary matrices
     gray.release()
     edges.release()
     color.release()
+    rgb.release()
+    colorRgba.release()
     edgesColor.release()
 
     return this

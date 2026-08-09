@@ -1,4 +1,4 @@
-package com.os.cvCamera
+package com.os.cvCamera.features
 
 import android.graphics.Color
 import android.media.MediaActionSound
@@ -10,27 +10,18 @@ import timber.log.Timber
 /**
  * Classic camera shutter feedback: a quick flash over the preview plus the system shutter sound.
  *
- * Deliberately self-contained so it can be plugged in or pulled out without touching layouts,
- * menus or the capture pipeline:
+ * Triggered by [CameraFeature.onPhotoCaptureStarted], so the flash coincides with the frame that
+ * is saved. The overlay view is created lazily and added to [host]; no layout changes are needed.
  *
- * ```
- * private val shutterEffect by lazy { ShutterEffect(binding.root) }  // plug in
- * shutterEffect.play()                                              // at the moment of capture
- * shutterEffect.release()                                           // in onDestroy()
- * ```
- *
- * Deleting those three lines removes the feature completely. Nothing else references it.
- *
- * @param host container the flash overlay is added to; it is created lazily and sits on top.
- * @param withSound play the system `SHUTTER_CLICK` sound alongside the flash.
- * @param flashColor colour of the flash. White reads as a photo being taken; black reads as a
- *   mechanical shutter.
+ * @param host container the flash overlay is added to.
+ * @param withSound whether the system `SHUTTER_CLICK` sound accompanies the flash.
+ * @param flashColor colour of the flash overlay.
  */
 class ShutterEffect(
     private val host: ViewGroup,
     private val withSound: Boolean = true,
     private val flashColor: Int = Color.WHITE,
-) {
+) : CameraFeature {
     private companion object {
         /** Rise is snappy, fall is slower — that asymmetry is what reads as a shutter. */
         const val FADE_IN_MS = 45L
@@ -73,8 +64,8 @@ class ShutterEffect(
         return view
     }
 
-    /** Fire the shutter flash and sound. Safe to call repeatedly; must run on the UI thread. */
-    fun play() {
+    /** Plays the flash and shutter sound. Safe to call from any thread. */
+    override fun onPhotoCaptureStarted() {
         host.post {
             sound?.play(MediaActionSound.SHUTTER_CLICK)
 
@@ -96,8 +87,8 @@ class ShutterEffect(
         }
     }
 
-    /** Release the sound resources and drop the overlay. Call from `onDestroy()`. */
-    fun release() {
+    /** Releases the sound resources and removes the overlay. */
+    override fun detach() {
         sound?.release()
         overlay?.let { view ->
             view.animate().cancel()

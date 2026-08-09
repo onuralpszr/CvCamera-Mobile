@@ -1,4 +1,4 @@
-package com.os.cvCamera
+package com.os.cvCamera.features
 
 import android.content.Context
 import android.view.OrientationEventListener
@@ -16,21 +16,17 @@ import kotlin.math.roundToInt
  * so the layout never reflows; the device angle is tracked separately and applied as a view
  * rotation.
  *
- * Self-contained, like [ShutterEffect] — plug it in with three lines:
- * ```
- * private val controlsRotator by lazy { ControlsRotator(this) { rotatableControls() } }
- * controlsRotator.start()   // onResume
- * controlsRotator.stop()    // onPause
- * ```
+ * The activity is locked to portrait, so the device angle is tracked separately and applied as a
+ * view rotation.
  *
- * @param context used to observe device orientation.
- * @param targets evaluated on each change, so views created later (menu items are inflated
- *   asynchronously) are still picked up.
+ * @param context source of device orientation events.
+ * @param targets re-evaluated on each change so that views inflated later, such as menu item
+ *   icons, are included.
  */
 class ControlsRotator(
     context: Context,
     private val targets: () -> List<View>,
-) {
+) : CameraFeature {
     private companion object {
         const val ANIMATION_MS = 220L
 
@@ -40,7 +36,7 @@ class ControlsRotator(
 
     /**
      * Device angle snapped to a quadrant: 0, 90, 180 or 270, as reported by
-     * `OrientationEventListener`. Also used to tag saved photos, see [PhotoOrientation].
+     * `OrientationEventListener`.
      */
     var deviceAngle: Int = 0
         private set
@@ -61,7 +57,7 @@ class ControlsRotator(
             }
         }
 
-    fun start() {
+    override fun onResume() {
         if (listener.canDetectOrientation()) {
             listener.enable()
         } else {
@@ -69,7 +65,7 @@ class ControlsRotator(
         }
     }
 
-    fun stop() = listener.disable()
+    override fun onPause() = listener.disable()
 
     private fun snapToQuadrant(orientation: Int) = (orientation / 90.0).roundToInt() * 90 % 360
 
