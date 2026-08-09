@@ -26,7 +26,7 @@ android {
         externalNativeBuild {
             cmake {
                  arguments(
-                    "-DOpenCV_DIR=${file("../opencvsdk4130").absolutePath}/sdk/native/jni",
+                    "-DOpenCV_DIR=${file("../opencvsdk4140").absolutePath}/sdk/native/jni",
                     "-DANDROID_TOOLCHAIN=clang",
                     "-DANDROID_STL=c++_shared"
                 )
@@ -118,7 +118,7 @@ dependencies {
     implementation(libs.androidx.startup)
 
     // Source - OpenCV-4 - Patched
-    implementation(project(":opencvsdk4130"))
+    implementation(project(":opencvsdk4140"))
 
     // Testing
     testImplementation(libs.junit)

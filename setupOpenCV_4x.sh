@@ -1,25 +1,39 @@
 #!/usr/bin/env sh
+# Download the OpenCV 4.x Android SDK and prepare it as a Gradle module.
+#
+# Produces ./opencvsdk4140 — referenced by settings.gradle.kts and app/build.gradle.kts.
+# Safe to re-run: an already-prepared SDK is left untouched.
+set -eu
 
-wget -O opencv-4.13.0-android-sdk.zip https://github.com/opencv/opencv/releases/download/4.13.0/opencv-4.13.0-android-sdk.zip
-unzip -qq opencv-4.13.0-android-sdk.zip
-mv OpenCV-android-sdk opencvsdk4130
+OPENCV_VERSION="4.14.0"
+OPENCV_SDK_DIR="opencvsdk4140"
+OPENCV_ZIP="opencv-${OPENCV_VERSION}-android-sdk.zip"
+OPENCV_URL="https://github.com/opencv/opencv/releases/download/${OPENCV_VERSION}/${OPENCV_ZIP}"
+OPENCV_SHA256="e8cfaf2e51f2e2127a6ede91718d1ef7587f8b6e62db922816e7c33a1f1116a7"
 
-# Apply OpenCV Build.gradle and Manifest patch
-# ENVIRONMENT VARIABLES check for Github Action CI exist do patching
-if [ -n "$GITHUB_ACTIONS" ]; then
-    echo "GITHUB_ACTIONS is set"
-    echo "Patching OpenCV Build.gradle and Manifest"
-    patch opencvsdk4130/sdk/build.gradle patches/cv_build_gradle_4x.diff
-    patch opencvsdk4130/sdk/java/AndroidManifest.xml patches/manifest_lint.diff
-    echo "Copying OpenCV Lint Baseline"
-    cp patches/opencv-lint-baseline.xml opencvsdk4130/sdk/opencv-lint-baseline.xml
-    # patch opencvsdk4130/sdk/java/src/org/opencv/core/MatAt.kt patches/cv_matat_kt.diff
-else
-    echo "GITHUB_ACTIONS is not set"
-    echo "Patching OpenCV Build.gradle and Manifest"
-    patch opencvsdk4130/sdk/build.gradle patches/cv_build_gradle_4x.diff
-    patch opencvsdk4130/sdk/java/AndroidManifest.xml patches/manifest_lint.diff
-    echo "Copying OpenCV Lint Baseline"
-    cp patches/opencv-lint-baseline.xml opencvsdk4130/sdk/opencv-lint-baseline.xml
-    # patch opencvsdk4130/sdk/java/src/org/opencv/core/MatAt.kt patches/cv_matat_kt.diff
+if [ -d "${OPENCV_SDK_DIR}/sdk" ]; then
+    echo "==> ${OPENCV_SDK_DIR} already exists, nothing to do."
+    echo "    Remove it and re-run this script to start from a clean SDK."
+    exit 0
 fi
+
+if [ ! -f "${OPENCV_ZIP}" ]; then
+    echo "==> Downloading OpenCV ${OPENCV_VERSION} Android SDK"
+    wget -q --show-progress -O "${OPENCV_ZIP}" "${OPENCV_URL}"
+fi
+
+echo "==> Verifying checksum"
+echo "${OPENCV_SHA256}  ${OPENCV_ZIP}" | sha256sum -c -
+
+echo "==> Extracting"
+unzip -qq "${OPENCV_ZIP}"
+mv OpenCV-android-sdk "${OPENCV_SDK_DIR}"
+
+echo "==> Patching build.gradle and AndroidManifest.xml"
+patch "${OPENCV_SDK_DIR}/sdk/build.gradle" patches/cv_build_gradle_4x.diff
+patch "${OPENCV_SDK_DIR}/sdk/java/AndroidManifest.xml" patches/manifest_lint.diff
+
+echo "==> Copying lint baseline"
+cp patches/opencv-lint-baseline.xml "${OPENCV_SDK_DIR}/sdk/opencv-lint-baseline.xml"
+
+echo "==> OpenCV ${OPENCV_VERSION} ready in ${OPENCV_SDK_DIR}"
