@@ -2,7 +2,7 @@
 
 # CvCamera-Mobile
 
-**A production-shaped OpenCV 4 camera template for Android — Camera2 preview, a native C++/JNI bridge, and every feature in its own pluggable file.**
+**A production-shaped OpenCV 4 camera template for Android. Camera2 preview, a native C++/JNI bridge, and every feature in its own pluggable file.**
 
 [![MIT](https://img.shields.io/badge/License-MIT-yellow?logo=MIT&logoColor=white)](https://opensource.org/license/mit/)
 [![OpenCV](https://img.shields.io/badge/OpenCV-4.14.0-5C3EE8?logo=OpenCV&logoColor=white)](https://opencv.org/)
@@ -20,7 +20,7 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 <img src="appPreview/appOverview.png" width="220" alt="Live preview with the FPS overlay"/>
-<img src="appPreview/appOverview2.png" width="220" alt="Effect applied to the live preview"/>
+<img src="appPreview/appOverview2.png" width="220" alt="Canny edge detection on the live preview"/>
 
 </div>
 
@@ -75,7 +75,7 @@ top. A new capability means a new file implementing `CameraFeature` plus one lin
 capability means deleting its file and its line.
 
 `CameraFeature` provides `attach`/`detach`, `onResume`/`onPause`, `onMenuItemSelected`,
-`processFrame`, `onCameraSwitched`, `onPhotoCaptureStarted` and `onPhotoSaved` — all optional.
+`processFrame`, `onCameraSwitched`, `onPhotoCaptureStarted` and `onPhotoSaved`, all optional.
 
 ## Getting started
 
@@ -126,11 +126,11 @@ emulator with "change of renderer detected".
           :app:lintDebug :app:testDebugUnitTest   # what CI runs
 ```
 
-* **Version catalog** — every dependency and SDK level lives in `gradle/libs.versions.toml`.
-* **Kotlin DSL** — all build scripts are `.kts`.
-* **Spotless + ktlint** — enforced in CI.
-* **Timber** — logging, debug builds only.
-* **Conventional commits** — enforced by convention; `cliff.toml` drives the changelog.
+* **Version catalog**: every dependency and SDK level lives in `gradle/libs.versions.toml`.
+* **Kotlin DSL**: all build scripts are `.kts`.
+* **Spotless + ktlint**: enforced in CI.
+* **Timber**: logging, debug builds only.
+* **Conventional commits**: enforced by convention; `cliff.toml` drives the changelog.
 
 `CvCheckUnitTest` asserts the linked OpenCV version, which is the guard that the SDK swap in
 `setupOpenCV_4x.sh` actually took effect.

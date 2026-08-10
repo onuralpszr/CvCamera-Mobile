@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # Download the OpenCV 4.x Android SDK and prepare it as a Gradle module.
 #
-# Produces ./opencvsdk4140 — referenced by settings.gradle.kts and app/build.gradle.kts.
+# Produces ./opencvsdk4140, referenced by settings.gradle.kts and app/build.gradle.kts.
 # Safe to re-run: an already-prepared SDK is left untouched.
 set -eu
 

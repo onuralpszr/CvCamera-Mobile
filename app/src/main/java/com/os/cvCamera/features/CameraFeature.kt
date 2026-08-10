@@ -53,8 +53,8 @@ interface CameraFeature {
     fun onCameraSwitched() = Unit
 
     /**
-     * A capture was requested and the frame is about to be encoded. Called on the camera thread —
-     * use this for shutter feedback so it lines up with the frame actually saved.
+     * A capture was requested and the frame is about to be encoded. Called on the camera thread,
+     * so this suits shutter feedback that must line up with the frame actually saved.
      */
     fun onPhotoCaptureStarted() = Unit
 

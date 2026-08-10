@@ -23,7 +23,7 @@ class ShutterEffect(
     private val flashColor: Int = Color.WHITE,
 ) : CameraFeature {
     private companion object {
-        /** Rise is snappy, fall is slower — that asymmetry is what reads as a shutter. */
+        /** Rise is snappy and fall is slower. That asymmetry is what reads as a shutter. */
         const val FADE_IN_MS = 45L
         const val FADE_OUT_MS = 190L
         const val PEAK_ALPHA = 0.85f
