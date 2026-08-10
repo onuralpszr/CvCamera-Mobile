@@ -9,10 +9,8 @@
     <string name="about">About</string>
     <string name="about_app_version">App version: %1$s (build %2$d)</string>
     <string name="about_git_hash">Git commit: %1$s</string>
-    <string name="about_opencv_java">OpenCV (Java): %1$s</string>
-    <string name="about_opencv_native">OpenCV (native): %1$s</string>
+    <string name="about_opencv">OpenCV: %1$s</string>
     <string name="about_android">Android %1$s (API %2$d)</string>
-    <string name="about_unavailable">unavailable</string>
     <string name="filters">Switch Filters</string>
     <string name="resizeCanvas">Resize Canvas</string>
     <string name="grayscale_filter">Grayscale Filter</string>

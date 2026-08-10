@@ -39,6 +39,20 @@ The last part is the point: the app doubles as a template. Each feature is a `Ca
 registered on one line, so the project can be reduced to a bare preview or extended without
 touching unrelated code.
 
+## Examples
+
+Three apps, one per integration style, all sharing the same OpenCV SDK module.
+
+| Module | Language | Processing | What it shows |
+| --- | --- | --- | --- |
+| `app/` | Kotlin | OpenCV Java bindings | The full app: effects, face detection, torch, capture, pluggable features |
+| `java/` | Java | OpenCV Java bindings | The same camera pipeline with no Kotlin anywhere |
+| `cpp/` | Kotlin plus C++ | Native `cv::` over JNI | Frame processing in C++, with only the `Mat` address crossing the boundary |
+
+`app/` has no native code at all, so it is the reference for a pure Java bindings integration.
+`cpp/` is the reference for doing the work in C++. Build any of them with
+`./gradlew :app:installDebug`, `:java:installDebug` or `:cpp:installDebug`.
+
 ## Camera features
 
 | Feature | File | Notes |
@@ -53,8 +67,7 @@ touching unrelated code.
 | Photo orientation | `features/PhotoOrientation.kt` | Writes the EXIF orientation tag |
 | Rotating controls | `features/ControlsRotator.kt` | Icons rotate, the bar stays at the bottom |
 
-Also included: front/back switching, capture to `MediaStore`, and a native
-`cv::getVersionString()` call proving the JNI path works end to end.
+Also included: front/back switching and capture to `MediaStore`.
 
 ## Adding or removing a feature
 

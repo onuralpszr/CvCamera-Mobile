@@ -16,3 +16,7 @@ rootProject.name = "cvCamera"
 include(":app")
 include(":opencvsdk4140")
 project(":opencvsdk4140").projectDir = file("opencvsdk4140/sdk")
+
+// Language specific examples. The flagship app in :app is the Kotlin one.
+include(":cpp")
+include(":java")
