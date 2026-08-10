@@ -19,8 +19,9 @@
 [![snyk-security](https://snyk.io/test/github/onuralpszr/CvCamera-Mobile/badge.svg)](https://snyk.io/test/github/onuralpszr/CvCamera-Mobile)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commit-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
-<img src="appPreview/appOverview.png" width="220" alt="Live preview with the FPS overlay"/>
-<img src="appPreview/appOverview2.png" width="220" alt="Canny edge detection on the live preview"/>
+<img src="appPreview/appOverview.png" width="220" alt="Live camera preview with the FPS overlay"/>
+<img src="appPreview/appOverview2.png" width="220" alt="Bottom bar menu"/>
+<img src="appPreview/appOverview3.png" width="220" alt="Effect picker"/>
 
 </div>
 
