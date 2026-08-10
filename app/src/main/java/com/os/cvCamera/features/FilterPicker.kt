@@ -1,7 +1,6 @@
 package com.os.cvCamera.features
 
 import android.app.Activity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.os.cvCamera.R
 import com.os.cvCamera.toBinary
 import com.os.cvCamera.toBlur
@@ -63,14 +62,10 @@ class FilterPicker(
         if (itemId != R.id.filters) return false
 
         val labels = effects.map { activity.getString(it.labelRes) }.toTypedArray()
-        MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.filters)
-            .setSingleChoiceItems(labels, selected) { dialog, which ->
-                dialog.dismiss()
-                selected = which
-                Timber.d("Effect selected: ${labels[which]}")
-            }.setNegativeButton(android.R.string.cancel, null)
-            .show()
+        activity.showSingleChoiceDialog(R.string.filters, labels, selected) { which ->
+            selected = which
+            Timber.d("Effect selected: ${labels[which]}")
+        }
         return true
     }
 

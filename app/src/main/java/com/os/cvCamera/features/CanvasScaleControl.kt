@@ -1,7 +1,6 @@
 package com.os.cvCamera.features
 
 import android.app.Activity
-import android.widget.Toast
 import com.os.cvCamera.CanvasScaleMode
 import com.os.cvCamera.ExtendJavaCamera2View
 import com.os.cvCamera.R
@@ -28,8 +27,7 @@ class CanvasScaleControl(
             }
         cameraView.canvasScaleMode = next
 
-        val label = if (next == CanvasScaleMode.FILL) R.string.canvas_fill else R.string.canvas_fit
-        Toast.makeText(activity, activity.getString(label), Toast.LENGTH_SHORT).show()
+        activity.showToast(if (next == CanvasScaleMode.FILL) R.string.canvas_fill else R.string.canvas_fit)
         return true
     }
 }

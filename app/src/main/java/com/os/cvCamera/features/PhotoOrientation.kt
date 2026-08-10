@@ -39,8 +39,8 @@ class PhotoOrientation(
     override fun onPause() = listener.disable()
 
     override fun onPhotoSaved(uri: Uri) {
-        val orientation = exifOrientationFor(deviceAngle)
-        if (orientation == ExifInterface.ORIENTATION_NORMAL) return
+        val orientation = ExifOrientation.forDeviceAngle(deviceAngle)
+        if (orientation == ExifOrientation.NORMAL) return
 
         try {
             context.contentResolver.openFileDescriptor(uri, "rw")?.use { descriptor ->
@@ -53,22 +53,5 @@ class PhotoOrientation(
             // A missing tag only affects presentation, so never fail the capture over it.
             Timber.e(e, "Failed to write EXIF orientation")
         }
-    }
-
-    private companion object {
-        /**
-         * EXIF orientation for a device angle as reported by `OrientationEventListener`
-         * (0 = upright, 90 = rotated clockwise a quarter turn, and so on).
-         *
-         * Rotating the device clockwise makes the scene appear rotated counter-clockwise in the
-         * fixed-portrait frame, so the tag asks the viewer to rotate it back clockwise.
-         */
-        fun exifOrientationFor(deviceAngle: Int): Int =
-            when (((deviceAngle % 360) + 360) % 360) {
-                90 -> ExifInterface.ORIENTATION_ROTATE_90
-                180 -> ExifInterface.ORIENTATION_ROTATE_180
-                270 -> ExifInterface.ORIENTATION_ROTATE_270
-                else -> ExifInterface.ORIENTATION_NORMAL
-            }
     }
 }
