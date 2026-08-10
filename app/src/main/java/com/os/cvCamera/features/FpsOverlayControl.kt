@@ -1,7 +1,6 @@
 package com.os.cvCamera.features
 
 import android.app.Activity
-import android.widget.Toast
 import com.os.cvCamera.ExtendJavaCamera2View
 import com.os.cvCamera.R
 
@@ -16,8 +15,7 @@ class FpsOverlayControl(
         if (itemId != R.id.toggleFps) return false
 
         val shown = cameraView.toggleFpsMeter()
-        val label = if (shown) R.string.fps_overlay_on else R.string.fps_overlay_off
-        Toast.makeText(activity, activity.getString(label), Toast.LENGTH_SHORT).show()
+        activity.showToast(if (shown) R.string.fps_overlay_on else R.string.fps_overlay_off)
         return true
     }
 }

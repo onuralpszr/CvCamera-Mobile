@@ -5,7 +5,6 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.util.TypedValue
 import android.view.Menu
-import android.widget.Toast
 import com.os.cvCamera.ExtendJavaCamera2View
 import com.os.cvCamera.R
 
@@ -26,13 +25,13 @@ class TorchControl(
         if (itemId != R.id.flashlight) return false
 
         if (!cameraView.hasFlash()) {
-            toast(R.string.flashlight_unavailable)
+            activity.showToast(R.string.flashlight_unavailable)
             return true
         }
 
         cameraView.torchEnabled = !cameraView.torchEnabled
         syncIcon()
-        toast(if (cameraView.torchEnabled) R.string.flashlight_on else R.string.flashlight_off)
+        activity.showToast(if (cameraView.torchEnabled) R.string.flashlight_on else R.string.flashlight_off)
         return true
     }
 
@@ -55,6 +54,4 @@ class TorchControl(
         activity.theme.resolveAttribute(android.R.attr.colorAccent, accent, true)
         item.icon?.colorFilter = PorterDuffColorFilter(accent.data, PorterDuff.Mode.SRC_ATOP)
     }
-
-    private fun toast(resId: Int) = Toast.makeText(activity, activity.getString(resId), Toast.LENGTH_SHORT).show()
 }

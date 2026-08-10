@@ -15,9 +15,8 @@ import android.widget.Toast
 import androidx.core.view.get
 import androidx.core.view.size
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.os.cvCamera.BuildConfig.GIT_HASH
-import com.os.cvCamera.BuildConfig.VERSION_NAME
 import com.os.cvCamera.databinding.ActivityMainBinding
+import com.os.cvCamera.features.AboutDialog
 import com.os.cvCamera.features.CameraFeature
 import com.os.cvCamera.features.CanvasScaleControl
 import com.os.cvCamera.features.ControlsRotator
@@ -66,6 +65,7 @@ class MainActivity :
      */
     private val features: List<CameraFeature> by lazy {
         listOf(
+            AboutDialog(this) { openCVVersion() },
             FilterPicker(this),
             FaceDetection(this),
             ResolutionPicker(this, binding.CvCamera),
@@ -126,17 +126,6 @@ class MainActivity :
 
         binding.bottomAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.about -> {
-                    val cvVer = openCVVersion() // Get OpenCV version from native code
-                    Toast
-                        .makeText(
-                            this,
-                            "CvCamera-Mobile - Version $VERSION_NAME-$GIT_HASH - OpenCV $cvVer ",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    true
-                }
-
                 R.id.capturePhoto -> {
                     // The shutter flash and sound are the feedback here; the saved-photo toast
                     // follows once the file is written.
