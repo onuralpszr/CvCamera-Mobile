@@ -102,7 +102,7 @@ dependencies {
     implementation(libs.androidx.exifinterface)
 
     // Source - OpenCV-4 - Patched
-    implementation(project(":opencvsdk4140"))
+    implementation(project(":camera-ui"))
 
     // Testing
     testImplementation(libs.junit)

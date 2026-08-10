@@ -41,17 +41,33 @@ touching unrelated code.
 
 ## Examples
 
-Three apps, one per integration style, all sharing the same OpenCV SDK module.
+Three apps with the same UI, one per integration style. Everything shared lives in the
+`camera-ui` library: the camera view, the bottom bar, the dialogs and the feature framework. Each
+app supplies only its own effect implementations, which is the part that differs by language.
 
-| Module | Language | Processing | What it shows |
+| Module | Language | Effects implemented in | Effect count |
 | --- | --- | --- | --- |
-| `app/` | Kotlin | OpenCV Java bindings | The full app: effects, face detection, torch, capture, pluggable features |
-| `java/` | Java | OpenCV Java bindings | The same camera pipeline with no Kotlin anywhere |
-| `cpp/` | Kotlin plus C++ | Native `cv::` over JNI | Frame processing in C++, with only the `Mat` address crossing the boundary |
+| `app/` | Kotlin | `Mat` extension functions over the OpenCV Java bindings | 17 |
+| `java/` | Java | OpenCV Java bindings, no Kotlin in this app's sources | 11 |
+| `cpp/` | Kotlin plus C++ | Native `cv::` calls over JNI, only the `Mat` address crosses | 11 |
 
-`app/` has no native code at all, so it is the reference for a pure Java bindings integration.
-`cpp/` is the reference for doing the work in C++. Build any of them with
+`app/` additionally has Haar cascade face detection. Build any of them with
 `./gradlew :app:installDebug`, `:java:installDebug` or `:cpp:installDebug`.
+
+Each app is a thin subclass of `CameraScreenActivity` that names its effects:
+
+```kotlin
+class MainActivity : CameraScreenActivity() {
+    override fun createFeatures(): List<CameraFeature> =
+        listOf(
+            FilterPicker(this, KotlinEffects.all()),
+            FaceDetection(this),
+        ) + defaultFeatures()
+}
+```
+
+`defaultFeatures()` supplies torch, canvas scaling, the FPS overlay, resolution selection, shutter
+feedback, EXIF orientation and rotating control icons, so a new example gets the whole UI for free.
 
 ## Camera features
 

@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">OpenCV NDK</string>
-    <string name="mode_changed">Native mode: %1$s</string>
+    <string name="implementation_ndk">Native C++ over JNI</string>
 </resources>

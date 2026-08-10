@@ -1,0 +1,64 @@
+<resources>
+    <!-- Bottom bar -->
+    <string name="camera_switch">Change camera</string>
+    <string name="capture_photo">Capture photo</string>
+    <string name="filters">Switch filters</string>
+    <string name="face_detection">Face detection</string>
+    <string name="about">About</string>
+    <string name="resize_canvas">Resize canvas</string>
+    <string name="camera_resolution">Camera resolution</string>
+    <string name="toggle_fps">FPS overlay</string>
+    <string name="flashlight">Flashlight</string>
+
+    <!-- Flashlight -->
+    <string name="flashlight_on">Flashlight: ON</string>
+    <string name="flashlight_off">Flashlight: OFF</string>
+    <string name="flashlight_unavailable">This camera has no flash</string>
+
+    <!-- Canvas scaling -->
+    <string name="canvas_fit">Canvas: Fit (whole frame)</string>
+    <string name="canvas_fill">Canvas: Fill (cropped)</string>
+
+    <!-- Resolution picker -->
+    <string name="no_resolutions">No resolutions available</string>
+    <string name="switching_resolution">Switching to %1$d × %2$d…</string>
+
+    <!-- FPS overlay -->
+    <string name="fps_overlay_on">FPS overlay: ON</string>
+    <string name="fps_overlay_off">FPS overlay: OFF</string>
+
+    <!-- Face detection -->
+    <string name="face_detection_on">Face detection: ON</string>
+    <string name="face_detection_off">Face detection: OFF</string>
+
+    <!-- About -->
+    <string name="about_app_version">App version: %1$s (build %2$d)</string>
+    <string name="about_opencv">OpenCV: %1$s</string>
+    <string name="about_opencv_native">OpenCV (native): %1$s</string>
+    <string name="about_git_hash">Git commit: %1$s</string>
+    <string name="about_android">Android %1$s (API %2$d)</string>
+    <string name="about_implementation">Processing: %1$s</string>
+
+    <!-- Photo capture -->
+    <string name="photo_saved">Photo saved: %1$s</string>
+    <string name="photo_save_error">Error saving photo</string>
+
+    <!-- Effects shared by every example -->
+    <string name="effect_none">No effect</string>
+    <string name="effect_greyscale">Greyscale</string>
+    <string name="effect_canny">Canny edges</string>
+    <string name="effect_sepia">Sepia</string>
+    <string name="effect_blur">Blur</string>
+    <string name="effect_negative">Negative</string>
+    <string name="effect_sobel">Sobel</string>
+    <string name="effect_hsv">HSV</string>
+    <string name="effect_sharpen">Sharpen</string>
+    <string name="effect_emboss">Emboss</string>
+    <string name="effect_cartoon">Cartoon</string>
+    <string name="effect_binary">Binary threshold</string>
+    <string name="effect_sketch">Sketch</string>
+    <string name="effect_contours">Contours</string>
+    <string name="effect_posterize">Posterize</string>
+    <string name="effect_vignette">Vignette</string>
+    <string name="effect_edge">Edge detection</string>
+</resources>
