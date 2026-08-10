@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Single choice row with the radio indicator set directly on the view. Material3 leaves
+     android:listChoiceIndicatorSingle unset, so relying on the theme attribute renders no
+     indicator at all. -->
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    style="?attr/textAppearanceBodyLarge"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="48dp"
+    android:gravity="center_vertical"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:drawablePadding="20dp"
+    android:textColor="?attr/colorOnSurface"
+    android:checkMark="@drawable/radio_choice_indicator"
+    android:ellipsize="marquee"
+    android:singleLine="true"/>
