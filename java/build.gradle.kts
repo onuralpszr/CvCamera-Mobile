@@ -14,6 +14,10 @@ android {
         versionName = libs.versions.versionName.get()
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,7 +32,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(project(":opencvsdk4140"))
+    implementation(project(":camera-ui"))
 }
