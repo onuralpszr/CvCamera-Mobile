@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">OpenCV Java</string>
+    <string name="mode_changed">Effect: %1$s</string>
+</resources>

@@ -23,16 +23,6 @@ android {
         buildConfigField("String", "GIT_HASH", "\"$gitCommitHash\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        externalNativeBuild {
-            cmake {
-                 arguments(
-                    "-DOpenCV_DIR=${file("../opencvsdk4140").absolutePath}/sdk/native/jni",
-                    "-DANDROID_TOOLCHAIN=clang",
-                    "-DANDROID_STL=c++_shared"
-                )
-                cppFlags("")
-            }
-        }
     }
 
     signingConfigs {
@@ -71,13 +61,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
-    }
-
-    externalNativeBuild {
-        cmake {
-            path = file("src/main/cpp/CMakeLists.txt")
-            version = "3.22.1"
-        }
     }
 
     buildFeatures {

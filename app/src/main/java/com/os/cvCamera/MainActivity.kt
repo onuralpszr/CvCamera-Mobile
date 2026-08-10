@@ -65,7 +65,7 @@ class MainActivity :
      */
     private val features: List<CameraFeature> by lazy {
         listOf(
-            AboutDialog(this) { openCVVersion() },
+            AboutDialog(this),
             FilterPicker(this),
             FaceDetection(this),
             ResolutionPicker(this, binding.CvCamera),
@@ -81,11 +81,8 @@ class MainActivity :
     companion object {
         init {
             System.loadLibrary("opencv_java4")
-            System.loadLibrary("cvcamera")
         }
     }
-
-    private external fun openCVVersion(): String?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
