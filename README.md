@@ -27,7 +27,7 @@
 
 ---
 
-## What this is
+## What this is .... a very nice mobile application template 😊
 
 A barebones but complete starting point for OpenCV 4.x on Android. It wires up a live
 [Camera2](https://developer.android.com/media/camera/camera2) preview through OpenCV's
