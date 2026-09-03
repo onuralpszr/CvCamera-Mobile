@@ -164,8 +164,3 @@ emulator with "change of renderer detected".
 
 `CvCheckUnitTest` asserts the linked OpenCV version, which is the guard that the SDK swap in
 `setupOpenCV_4x.sh` actually took effect.
-
-## Keywords
-
-Kotlin, OpenCV 4, Android, Android Studio, Camera2, NDK, JNI, C++, Version Catalog, Kotlin DSL,
-Spotless, Material 3
